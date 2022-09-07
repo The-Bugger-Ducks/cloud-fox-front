@@ -9,7 +9,6 @@ export const Container = styled.aside`
   background: ${({ theme }) => theme.colors.white};
   width: 16rem;
   height: 100vh;
-  font-family: 'Poppins', sans-serif;
 
   display: flex;
   flex-direction: column;
