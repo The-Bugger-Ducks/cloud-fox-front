@@ -19,6 +19,7 @@ export const Container = styled.div`
   padding: 3rem;
   height: 17.125rem;
   height: 100vh;
+  overflow-y: scroll;
 `;
 
 export const Divider = styled.img``;
@@ -58,4 +59,7 @@ export const EditButton = styled.img`
 export const CardContainer = styled.div`
   padding: 0;
   margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 `;

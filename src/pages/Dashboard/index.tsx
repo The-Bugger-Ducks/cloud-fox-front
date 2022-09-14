@@ -38,6 +38,8 @@ export default function Dashboard() {
 
         <CardContainer>
           <Card />
+          <Card />
+          <Card />
         </CardContainer>
       </Container>
     </>
