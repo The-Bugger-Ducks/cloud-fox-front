@@ -1,3 +1,39 @@
+import Sidebar from "../../components/Sidebar";
+import editIcon from "../../assets/edit.svg";
+import filterIcon from "../../assets/filter.svg";
+import divider from "../../assets/divider.svg";
+import {
+  Container,
+  Header,
+  PageTitle,
+  Title,
+  Subtitle,
+  StationName,
+  EditButton,
+  Divider,
+  Filter,
+} from "./styles";
+
 export default function Dashboard() {
-  return <>oie</>;
+  return (
+    <>
+      <Sidebar />
+      <Container>
+        <Header>
+          <PageTitle>
+            <Title>Dashboard</Title>
+
+            <Divider src={divider} alt="Divisor" />
+
+            <StationName>
+              <Subtitle>Escola Professor Francisco de Azevedo</Subtitle>
+              <EditButton src={editIcon} alt="Editar estação" />
+            </StationName>
+          </PageTitle>
+
+          <Filter src={filterIcon} alt="Filtrar gráficos" />
+        </Header>
+      </Container>
+    </>
+  );
 }
