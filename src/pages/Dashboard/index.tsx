@@ -1,4 +1,5 @@
 import Sidebar from "../../components/Sidebar";
+import Card from "../../components/Card";
 import editIcon from "../../assets/edit.svg";
 import filterIcon from "../../assets/filter.svg";
 import divider from "../../assets/divider.svg";
@@ -12,6 +13,7 @@ import {
   EditButton,
   Divider,
   Filter,
+  CardContainer,
 } from "./styles";
 
 export default function Dashboard() {
@@ -33,6 +35,10 @@ export default function Dashboard() {
 
           <Filter src={filterIcon} alt="Filtrar gráficos" />
         </Header>
+
+        <CardContainer>
+          <Card />
+        </CardContainer>
       </Container>
     </>
   );

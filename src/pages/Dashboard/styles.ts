@@ -54,3 +54,8 @@ export const EditButton = styled.img`
   width: 1.5rem;
   height: 1.5rem;
 `;
+
+export const CardContainer = styled.div`
+  padding: 0;
+  margin-top: 3rem;
+`;
