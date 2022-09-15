@@ -7,6 +7,11 @@ type ButtonProps = {
 };
 
 export const CustomButton = styled.button<ButtonProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
   background: ${({ theme, backgroundColor }) =>
     backgroundColor ?? theme.colors.primary};
   border-radius: 5px;
@@ -23,4 +28,13 @@ export const CustomButton = styled.button<ButtonProps>`
       backgroundColor ?? theme.colors.primary};
     background: ${({ theme, fontColor }) => fontColor ?? theme.colors.white};
   }
+`;
+
+export const Icon = styled.div`
+  margin-right: 1rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
