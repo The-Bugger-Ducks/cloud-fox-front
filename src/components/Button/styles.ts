@@ -24,9 +24,21 @@ export const CustomButton = styled.button<ButtonProps>`
   text-align: center;
 
   &:hover {
-    color: ${({ theme, backgroundColor }) =>
-      backgroundColor ?? theme.colors.primary};
-    background: ${({ theme, fontColor }) => fontColor ?? theme.colors.white};
+    color: ${({ theme, backgroundColor, fontColor }) =>
+      backgroundColor === theme.colors.white
+        ? fontColor
+        : backgroundColor ?? theme.colors.primary};
+    background: ${({ theme, backgroundColor, fontColor }) =>
+      backgroundColor === theme.colors.white
+        ? backgroundColor
+        : fontColor ?? theme.colors.white};
+    border: 1px solid
+      ${({ theme, backgroundColor }) =>
+        backgroundColor === theme.colors.white
+          ? theme.colors.primary
+          : backgroundColor ?? theme.colors.primary};
+    transition: all 0.1s ease;
+    -webkit-transition: all 0.4s ease;
   }
 `;
 
