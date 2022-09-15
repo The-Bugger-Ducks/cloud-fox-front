@@ -17,6 +17,29 @@ import {
 } from "./styles";
 
 export default function Dashboard() {
+  const options = {
+    chart: {
+      type: "spline",
+    },
+    title: {
+      text: "",
+    },
+    yAxis: {
+      title: {
+        text: "yaxis nome",
+      },
+      tickInterval: 1,
+    },
+    series: [
+      {
+        name: "Minha série",
+
+        color: "#AA55DD",
+        data: [1, 2, 1, 4, 3, 6],
+      },
+    ],
+  };
+
   return (
     <>
       <Sidebar />
@@ -37,9 +60,7 @@ export default function Dashboard() {
         </Header>
 
         <CardContainer>
-          <Card />
-          <Card />
-          <Card />
+          <Card options={options} title={"Gráfico do sensor pluviométrico"} />
         </CardContainer>
       </Container>
     </>

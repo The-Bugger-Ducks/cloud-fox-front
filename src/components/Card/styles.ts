@@ -18,7 +18,6 @@ export const CardContainer = styled.div`
 `;
 
 export const Border = styled.div`
-  height: 16rem;
   width: 100%;
   padding: 1px;
   background: linear-gradient(145.3deg, #ee7733 6.85%, #7711bb 94.01%);
