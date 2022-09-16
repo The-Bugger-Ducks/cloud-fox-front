@@ -1,8 +1,9 @@
 import Sidebar from "../../components/Sidebar";
 import Card from "../../components/Card";
-import editIcon from "../../assets/edit.svg";
-import filterIcon from "../../assets/filter.svg";
-import divider from "../../assets/divider.svg";
+// import editIcon from "../../assets/edit.svg";
+// import filterIcon from "../../assets/filter.svg";
+// import divider from "../../assets/divider.svg";
+import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 import {
   Container,
   Header,
@@ -48,15 +49,15 @@ export default function Dashboard() {
           <PageTitle>
             <Title>Dashboard</Title>
 
-            <Divider src={divider} alt="Divisor" />
+            <Divider src={DividerIcon} alt="Divisor" />
 
             <StationName>
               <Subtitle>Escola Professor Francisco de Azevedo</Subtitle>
-              <EditButton src={editIcon} alt="Editar estação" />
+              <EditButton src={EditIcon} alt="Editar estação" />
             </StationName>
           </PageTitle>
 
-          <Filter src={filterIcon} alt="Filtrar gráficos" />
+          <Filter src={FilterIcon} alt="Filtrar gráficos" />
         </Header>
 
         <CardContainer>
