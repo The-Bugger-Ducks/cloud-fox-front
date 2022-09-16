@@ -1,8 +1,5 @@
 import Sidebar from "../../components/Sidebar";
 import Card from "../../components/Card";
-// import editIcon from "../../assets/edit.svg";
-// import filterIcon from "../../assets/filter.svg";
-// import divider from "../../assets/divider.svg";
 import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 import {
   Container,
