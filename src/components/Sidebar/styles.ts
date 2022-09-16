@@ -7,18 +7,13 @@ type NavbarLinkProps = {
 
 export const Container = styled.aside`
   background: ${({ theme }) => theme.colors.white};
-  width: 16rem;
+  min-width: 16rem;
   height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000 !important;
 `;
 
 export const Header = styled.div`
@@ -44,7 +39,7 @@ export const Navbar = styled.div`
   justify-content: center;
 `;
 
-export const NavbarLink = styled(Link)<NavbarLinkProps>`
+export const NavbarLink = styled(Link) <NavbarLinkProps>`
   margin-bottom: 1.5rem;
 
   font-weight: ${({ theme }) => theme.fontWeights.regular};
