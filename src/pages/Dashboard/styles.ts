@@ -17,7 +17,6 @@ export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   margin-left: 16rem;
   padding: 3rem;
-  height: 17.125rem;
   height: 100vh;
   overflow-y: scroll;
 `;
