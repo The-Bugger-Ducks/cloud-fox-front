@@ -1,6 +1,5 @@
 import { api } from "../../services/api";
 import { DashboardInterface } from "../../interfaces/dashboard";
-import { validateStatus } from "../Handlers/problemResponseStatusCode";
 
 export class DashboardRequests {
   public async getStationData(
