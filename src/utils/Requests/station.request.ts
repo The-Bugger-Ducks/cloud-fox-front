@@ -19,15 +19,4 @@ export class StationRequests {
       alert("Não foi possível obter estações.");
     }
   }
-
-  public async getStationById(id: string) {
-    try {
-      let response = await api.get(`station/${id}`);
-      const stations: ActiveStationInterface = response.data;
-      return stations;
-    } catch (error) {
-      console.log(error);
-      alert("Não foi possível obter estações.");
-    }
-  }
 }
