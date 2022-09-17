@@ -187,7 +187,7 @@ export default function Dashboard() {
             <Divider src={DividerIcon} alt="Divisor" />
 
             <StationName>
-              <Subtitle>{station?.id}</Subtitle>
+              <Subtitle>FATEC</Subtitle>
               <EditButton src={EditIcon} alt="Editar estação" />
             </StationName>
           </PageTitle>
