@@ -6,6 +6,8 @@ import {
   Container,
   Title,
   ProfileContainer,
+  ProfileContent,
+  ProfileInformations,
   Avatar,
   UserName,
   UserEmail,
@@ -15,21 +17,33 @@ import {
   ImageCard,
   TitleCard,
   SubtitleCard,
+  DeleteIcon,
 } from './styles';
-import { oneIcon, threeIcon, twoIcon } from '../../assets/icons';
+import { oneIcon, threeIcon, trash, twoIcon } from '../../assets/icons';
 
 export default function MyProfile() {
+  function handleDeleteAccount() {
+    console.log('delete account');
+  }
+
   return (
     <>
       <Sidebar />
       <Container>
         <Title>MEU PERFIL</Title>
         <ProfileContainer>
-          <Avatar
-            src={'https://avatars.githubusercontent.com/u/78885451?v=4'}
-          />
-          <UserName>Lucinda Pereira</UserName>
-          <UserEmail>lucinda.pereira@gmail.com</UserEmail>
+          <ProfileContent>
+            <DeleteIcon>
+              <img src={trash} onClick={handleDeleteAccount} />
+            </DeleteIcon>
+            <ProfileInformations>
+              <Avatar
+                src={'https://avatars.githubusercontent.com/u/78885451?v=4'}
+              />
+              <UserName>Lucinda Pereira</UserName>
+              <UserEmail>lucinda.pereira@gmail.com</UserEmail>
+            </ProfileInformations>
+          </ProfileContent>
         </ProfileContainer>
 
         <Topic>Nível de permissão</Topic>

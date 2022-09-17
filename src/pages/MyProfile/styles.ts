@@ -5,6 +5,7 @@ export const Container = styled.div`
   margin-left: 16rem;
   padding: 3rem;
   height: 100vh;
+  overflow-y: scroll;
 `;
 
 export const Title = styled.h1`
@@ -16,17 +17,31 @@ export const Title = styled.h1`
 `;
 
 export const ProfileContainer = styled.div`
+  padding: 1px;
+  margin-bottom: 2rem;
+
+  border-radius: 20px;
+  background: linear-gradient(259.89deg, #7711bb 6.85%, #ee7733 99.96%);
+`;
+
+export const ProfileContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+
+  border-radius: 19px;
+  padding: 2rem;
+
+  background: ${({ theme }) => theme.colors.white};
+`;
+
+export const ProfileInformations = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
-
-  border-radius: 20px;
-  padding: 3rem;
-  position: relative;
-  border: 1px solid #ee7733;
-  //border: 1px solid linear-gradient(to right, 259.89deg, #7711bb 6.85%, #ee7733 99.96%);
+  width: 100%;
 `;
 
 export const Avatar = styled.img`
@@ -51,9 +66,7 @@ export const UserEmail = styled.p`
 `;
 
 export const DeleteIcon = styled.div`
-  position: absolute;
-  top: 24;
-  right: 24;
+  cursor: pointer;
 `;
 
 export const Topic = styled.h2`
