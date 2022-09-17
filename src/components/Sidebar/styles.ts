@@ -16,7 +16,7 @@ export const Container = styled.aside`
   align-items: center;
   justify-content: space-between;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000 !important;
