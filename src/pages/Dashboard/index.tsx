@@ -1,5 +1,5 @@
 import Sidebar from "../../components/Sidebar";
-import Card from "../../components/Card";
+import CardChart from "../../components/CardChart";
 import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 import {
   Container,
@@ -58,7 +58,10 @@ export default function Dashboard() {
         </Header>
 
         <CardContainer>
-          <Card options={options} title={"Gráfico do sensor pluviométrico"} />
+          <CardChart
+            options={options}
+            title={"Gráfico do sensor pluviométrico"}
+          />
         </CardContainer>
       </Container>
     </>

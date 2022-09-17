@@ -1,4 +1,4 @@
-import CustomHighchart from "../../components/CustomHighchart";
+import CustomHighchart from "../CustomHighchart";
 import { Title, CardContainer, Border, Content } from "./styles";
 
 type CardProps = {
@@ -6,7 +6,7 @@ type CardProps = {
   title: string;
 };
 
-export default function Card({ options, title }: CardProps) {
+export default function CardChart({ options, title }: CardProps) {
   return (
     <CardContainer>
       <Title>{title}</Title>
