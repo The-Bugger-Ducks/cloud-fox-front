@@ -9,7 +9,7 @@ type CardProps = {
 export default function CardChart({ options, title }: CardProps) {
   return (
     <CardContainer>
-      <Title>{title}</Title>
+      <Title title={title}>{title}</Title>
       <Border>
         <Content>
           <CustomHighchart options={options} />
