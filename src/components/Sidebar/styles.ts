@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 type NavbarLinkProps = {
   isActive?: boolean;
@@ -7,17 +7,20 @@ type NavbarLinkProps = {
 
 export const Container = styled.aside`
   background: ${({ theme }) => theme.colors.white};
-  min-width: 16rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  width: 16rem;
   height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  position: fixed;
+  z-index: 1000 !important;
 `;
 
 export const Header = styled.div`
-  margin-top: 3rem;
 
   display: flex;
   flex-direction: column;
