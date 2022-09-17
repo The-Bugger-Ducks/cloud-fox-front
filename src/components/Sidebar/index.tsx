@@ -42,8 +42,8 @@ export default function Sidebar() {
         <Title>MENU</Title>
 
         <Navbar>
-          {routes.map(route => (
-            <NavbarLink to={route.path}>{route.name}</NavbarLink>
+          {routes.map((route, index) => (
+            <NavbarLink key={index} to={route.path}>{route.name}</NavbarLink>
           ))}
         </Navbar>
       </Header>

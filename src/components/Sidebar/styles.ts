@@ -21,7 +21,8 @@ export const Container = styled.aside`
 `;
 
 export const Header = styled.div`
-
+  margin-top: 3rem;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
