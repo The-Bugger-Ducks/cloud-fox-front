@@ -11,6 +11,7 @@ import {
 import { Container, Title, Buttons } from './styles';
 
 import theme from '../../global/theme';
+import UserRequests from '../../utils/Requests/user.request';
 
 export default function LoginModal() {
   const CLIENT_ID =
@@ -27,10 +28,19 @@ export default function LoginModal() {
   });
 
   const onSuccess = (res: any) => {
-    console.log('success:', res);
+    UserRequests.createUser(
+      res.profileObj.givenName,
+      res.profileObj.email,
+      res.profileObj.imageUrl
+    ).then(user => localStorage.setItem('userId', user?.id ?? ''));
   };
+
   const onFailure = (err: any) => {
     console.log('failed:', err);
+
+    alert(
+      'Que pena! Algo deu errado com seu login. Tente novamente mais tarde!'
+    );
   };
 
   return (
