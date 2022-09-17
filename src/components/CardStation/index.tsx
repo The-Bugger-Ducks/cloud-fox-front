@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import weather from "../../assets/weather.svg";
 import {
   Title,
@@ -15,8 +16,10 @@ type CardProps = {
 };
 
 export default function CardChart({ id, title, description }: CardProps) {
+  const navigate = useNavigate();
+
   return (
-    <CardContainer>
+    <CardContainer onClick={() => navigate("/dashboard")}>
       <Border>
         <Content>
           <Title>{title}</Title>

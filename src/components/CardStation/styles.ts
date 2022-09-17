@@ -20,6 +20,7 @@ export const CardContainer = styled.div`
   flex-direction: row-reverse;
   position: relative;
   margin-bottom: 3rem;
+  cursor: pointer;
 `;
 
 export const Border = styled.div`
