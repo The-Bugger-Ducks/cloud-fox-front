@@ -1,5 +1,5 @@
 import axios from "axios";
 
-export const apiStations = axios.create({
+export const api = axios.create({
   baseURL: "https://cloud-fox.onrender.com/",
 });

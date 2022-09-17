@@ -37,7 +37,7 @@ export default function Home() {
               <CardStation
                 key={index}
                 id={station.id}
-                title="Escola Professor Francisco de Azevedo"
+                title={station.name}
                 description={station.description}
               />
             ))}
