@@ -19,7 +19,7 @@ export default function Sidebar() {
 
         <Navbar>
           <NavbarLink to="/home">Home</NavbarLink>
-          <NavbarLink to="/home">Meu Perfil</NavbarLink>
+          <NavbarLink to="/myProfile">Meu Perfil</NavbarLink>
           <NavbarLink to="/login">Login</NavbarLink>
         </Navbar>
       </Header>

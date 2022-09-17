@@ -22,6 +22,7 @@ export const CustomButton = styled.button<ButtonProps>`
   width: 15.625rem;
   height: 2.25rem;
   text-align: center;
+  cursor: pointer;
 
   &:hover {
     color: ${({ theme, backgroundColor, fontColor }) =>
