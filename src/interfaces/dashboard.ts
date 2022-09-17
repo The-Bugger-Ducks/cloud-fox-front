@@ -1,22 +1,22 @@
 export interface DashboardInterface {
   id: string;
-  moment?: string;
+  moment: string;
 
-  pluvValue?: number | number[];
+  pluvValue?: number;
   pluvUnit?: string;
 
-  heatValue?: number | number[];
+  heatValue?: number;
   heatUnit?: string;
 
-  atmPresValue: number | number[];
+  atmPresValue: number;
   atmPresUnit?: string;
 
-  humidityValue?: number | number[];
+  humidityValue?: number;
   humidityUnit?: string;
 
-  WindDirectionValue?: number | number[];
+  WindDirectionValue?: number;
   WindDirectionUnit?: string;
 
-  WindVelocityValue?: number | number[];
+  WindVelocityValue?: number;
   WindVelocityUnit?: string;
 }

@@ -17,16 +17,13 @@ import {
   CardContainer,
 } from "./styles";
 
-import { StationRequests } from "../../utils/Requests/station.request";
 import { DashboardRequests } from "../../utils/Requests/dashboard.request";
 
 import { ActiveStationInterface } from "../../interfaces/station";
 import { DashboardInterface } from "../../interfaces/dashboard";
-import Highcharts from "highcharts";
 
 export default function Dashboard() {
   const { id } = useParams();
-  const stationRequests = new StationRequests();
   const dashboardRequests = new DashboardRequests();
 
   const [station, setStation] = useState<ActiveStationInterface | undefined>();
@@ -37,81 +34,23 @@ export default function Dashboard() {
     getDashboardData();
   }, []);
 
-  // Trecho comentado enquanto não há rota para tal
-  // const getStation = async () => {
-  //   if (id) {
-  //     const response = await stationRequests.getStationById(id);
-  //     setStation(response);
-  //   } else {
-  //     alert("Estação não encontrada");
-  //   }
-  // };
-
   const getDashboardData = async () => {
     if (id) {
-      const defaultInitialDate = new Date(1663383600);
-      const defaultFinallDate = new Date(1663642801);
+      const response = await dashboardRequests.getDashboardData(id);
 
-      // Trecho comentado enquanto não há compatibilidade entre axios e backend
-      // const response = await dashboardRequests.getDashboardData(id);
-
-      const response = [
-        {
-          id: "d6ddd86e-d600-4805-b630-9e94980c9679",
-          moment: "1663383600",
-          pluvValue: 1.2,
-          pluvUnit: "mm",
-          heatValue: 1.5,
-          heatUnit: "ºC",
-          atmPresValue: 1.3,
-          atmPresUnit: "atm",
-          humidityValue: 1.6,
-          humidityUnit: "g/Kg",
-          WindDirectionValue: 270,
-          WindDirectionUnit: "°",
-          WindVelocityValue: 1.6,
-          WindVelocityUnit: "m/s",
-        },
-        {
-          id: "1e22402a-6f2c-4e98-b1f4-251136cf1ed0",
-          moment: "1663470000",
-          pluvValue: 1.5,
-          pluvUnit: "mm",
-          heatValue: 1.5,
-          heatUnit: "ºC",
-          atmPresValue: 1.3,
-          atmPresUnit: "atm",
-          humidityValue: 1.6,
-          humidityUnit: "g/Kg",
-          WindDirectionValue: 270,
-          WindDirectionUnit: "°",
-          WindVelocityValue: 1.6,
-          WindVelocityUnit: "m/s",
-        },
-        {
-          id: "3c31dd75-ad53-4695-8234-54438f4d7672",
-          moment: "1663556400",
-          pluvValue: 1.3,
-          pluvUnit: "mm",
-          heatValue: 1.5,
-          heatUnit: "ºC",
-          atmPresValue: 1.3,
-          atmPresUnit: "atm",
-          humidityValue: 1.6,
-          humidityUnit: "g/Kg",
-          WindDirectionValue: 270,
-          WindDirectionUnit: "°",
-          WindVelocityValue: 1.6,
-          WindVelocityUnit: "m/s",
-        },
-      ];
+      if (!response) {
+        alert("Não foram encontrados dados para a estação selecionada");
+        return;
+      }
+      const collectsData: DashboardInterface[] = response.collects;
+      const stationData: ActiveStationInterface = response.station;
 
       let chartsData: any = {
         pluvSerie: [],
         pluvUnit: "",
       };
 
-      response?.forEach((data) => {
+      collectsData?.forEach((data) => {
         if (data.pluvValue && data.pluvUnit) {
           chartsData.pluvSerie.push([parseInt(data.moment), data.pluvValue]);
           chartsData.pluvUnit = data.pluvUnit;
@@ -122,7 +61,7 @@ export default function Dashboard() {
 
       if (chartsData.pluvSerie.length != 0) {
         chartsOptions.push({
-          title: `Dados pluviométrico captados pela estação do dia ${defaultInitialDate.toLocaleDateString()} até ${defaultFinallDate.toLocaleDateString()}`,
+          title: `Dados pluviométrico captados pela estação`,
           options: {
             chart: {
               type: "spline",
@@ -168,9 +107,10 @@ export default function Dashboard() {
         });
 
         console.log(chartsOptions);
-
-        setCharts(chartsOptions);
       }
+
+      setCharts(chartsOptions);
+      setStation(stationData);
     } else {
       alert("Estação não encontrada");
     }
@@ -187,7 +127,7 @@ export default function Dashboard() {
             <Divider src={DividerIcon} alt="Divisor" />
 
             <StationName>
-              <Subtitle>FATEC</Subtitle>
+              <Subtitle>{station?.name}</Subtitle>
               <EditButton src={EditIcon} alt="Editar estação" />
             </StationName>
           </PageTitle>
