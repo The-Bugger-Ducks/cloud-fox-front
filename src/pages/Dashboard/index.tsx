@@ -1,6 +1,6 @@
-import Sidebar from "../../components/Sidebar";
-import Card from "../../components/Card";
-import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
+import Sidebar from '../../components/Sidebar';
+import Card from '../../components/Card';
+import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons';
 import {
   Container,
   Header,
@@ -12,27 +12,27 @@ import {
   Divider,
   Filter,
   CardContainer,
-} from "./styles";
+} from './styles';
 
 export default function Dashboard() {
   const options = {
     chart: {
-      type: "spline",
+      type: 'spline',
     },
     title: {
-      text: "",
+      text: '',
     },
     yAxis: {
       title: {
-        text: "yaxis nome",
+        text: 'yaxis nome',
       },
       tickInterval: 1,
     },
     series: [
       {
-        name: "Minha série",
+        name: 'Minha série',
 
-        color: "#AA55DD",
+        color: '#AA55DD',
         data: [1, 2, 1, 4, 3, 6],
       },
     ],
@@ -58,7 +58,7 @@ export default function Dashboard() {
         </Header>
 
         <CardContainer>
-          <Card options={options} title={"Gráfico do sensor pluviométrico"} />
+          <Card options={options} title={'Gráfico do sensor pluviométrico'} />
         </CardContainer>
       </Container>
     </>

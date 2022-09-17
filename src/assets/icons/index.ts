@@ -1,6 +1,17 @@
-import oneIcon from './one-icon.svg';
-import twoIcon from './two-icon.svg';
-import threeIcon from './three-icon.svg';
-import trash from './trash.svg';
+import OneIcon from './one-icon.svg';
+import TwoIcon from './two-icon.svg';
+import ThreeIcon from './three-icon.svg';
+import Trash from './trash.svg';
+import EditIcon from './edit.svg';
+import FilterIcon from './filter.svg';
+import DividerIcon from './dividerIcon.svg';
 
-export { oneIcon, twoIcon, threeIcon, trash };
+export {
+  OneIcon,
+  TwoIcon,
+  ThreeIcon,
+  Trash,
+  EditIcon,
+  FilterIcon,
+  DividerIcon,
+};

@@ -19,7 +19,7 @@ import {
   SubtitleCard,
   DeleteIcon,
 } from './styles';
-import { oneIcon, threeIcon, trash, twoIcon } from '../../assets/icons';
+import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons';
 
 export default function MyProfile() {
   function handleDeleteAccount() {
@@ -34,7 +34,7 @@ export default function MyProfile() {
         <ProfileContainer>
           <ProfileContent>
             <DeleteIcon>
-              <img src={trash} onClick={handleDeleteAccount} />
+              <img src={Trash} onClick={handleDeleteAccount} />
             </DeleteIcon>
             <ProfileInformations>
               <Avatar
@@ -49,7 +49,7 @@ export default function MyProfile() {
         <Topic>Nível de permissão</Topic>
         <LevelCards>
           <LevelCard>
-            <ImageCard src={oneIcon} />
+            <ImageCard src={OneIcon} />
             <TitleCard>Simples</TitleCard>
             <SubtitleCard>
               Vizualizar estações e seus respectivos dashboards
@@ -61,7 +61,7 @@ export default function MyProfile() {
           </LevelCard>
 
           <LevelCard>
-            <ImageCard src={twoIcon} />
+            <ImageCard src={TwoIcon} />
             <TitleCard>Avançado</TitleCard>
             <SubtitleCard>
               Gerenciar estações e sensores e vizualizar dashboards de cada
@@ -74,7 +74,7 @@ export default function MyProfile() {
           </LevelCard>
 
           <LevelCard>
-            <ImageCard src={threeIcon} />
+            <ImageCard src={ThreeIcon} />
             <TitleCard>Administrativo</TitleCard>
             <SubtitleCard>
               Gerenciar nível de acesso dos usuários cadastrados, estações e
