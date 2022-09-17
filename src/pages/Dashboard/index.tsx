@@ -48,12 +48,31 @@ export default function Dashboard() {
       let chartsData: any = {
         pluvSerie: [],
         pluvUnit: "",
+
+        heatSerie: [],
+        heatUnit: "",
+
+        windVelocitySerie: [],
+        windVelocityUnit: "",
       };
 
       collectsData?.forEach((data) => {
         if (data.pluvValue && data.pluvUnit) {
           chartsData.pluvSerie.push([parseInt(data.moment), data.pluvValue]);
           chartsData.pluvUnit = data.pluvUnit;
+        }
+
+        if (data.heatValue && data.heatUnit) {
+          chartsData.heatSerie.push([parseInt(data.moment), data.heatValue]);
+          chartsData.heatUnit = data.heatUnit;
+        }
+
+        if (data.WindVelocityValue && data.WindVelocityUnit) {
+          chartsData.windVelocitySerie.push([
+            parseInt(data.moment),
+            data.WindVelocityValue,
+          ]);
+          chartsData.windVelocityUnit = data.WindVelocityUnit;
         }
       });
 
@@ -105,8 +124,102 @@ export default function Dashboard() {
             ],
           },
         });
+      }
 
-        console.log(chartsOptions);
+      if (chartsData.heatSerie.length != 0) {
+        chartsOptions.push({
+          title: `Dados de temperatura captados pela estação`,
+          options: {
+            chart: {
+              type: "spline",
+            },
+            title: {
+              text: "",
+            },
+            yAxis: {
+              title: {
+                text: `Total de temperaturas (${chartsData.heatUnit.toUpperCase()}) captadas`,
+              },
+              labels: {
+                format: "{value} " + chartsData.heatUnit.toUpperCase(),
+              },
+              tickInterval: 1,
+            },
+            xAxis: {
+              type: "datetime",
+              dateTimeLabelFormats: {
+                weekly: "%e. %b %y",
+                twicemonthly: "%e. %b %y",
+                monthly: "%b %y",
+                twomonths: "%b %y",
+                threemonths: "%b %y",
+                fourmonths: "%b %y",
+                sixmonths: "%b %y",
+                yearly: "%Y",
+              },
+              labels: {
+                format: "{value:%b}",
+                align: "left",
+                x: 3,
+              },
+            },
+            series: [
+              {
+                name: `Temperatura em ${chartsData.heatUnit.toUpperCase()} captada pela estação`,
+                color: "#AA55DD",
+                data: chartsData.heatSerie,
+              },
+            ],
+          },
+        });
+      }
+
+      if (chartsData.windVelocitySerie.length != 0) {
+        chartsOptions.push({
+          title: `Dados de velocidade do vento captados pela estação`,
+          options: {
+            chart: {
+              type: "spline",
+            },
+            title: {
+              text: "",
+            },
+            yAxis: {
+              title: {
+                text: `Total de velocidade (${chartsData.windVelocityUnit.toUpperCase()}) captada`,
+              },
+              labels: {
+                format: "{value} " + chartsData.windVelocityUnit.toUpperCase(),
+              },
+              tickInterval: 1,
+            },
+            xAxis: {
+              type: "datetime",
+              dateTimeLabelFormats: {
+                weekly: "%e. %b %y",
+                twicemonthly: "%e. %b %y",
+                monthly: "%b %y",
+                twomonths: "%b %y",
+                threemonths: "%b %y",
+                fourmonths: "%b %y",
+                sixmonths: "%b %y",
+                yearly: "%Y",
+              },
+              labels: {
+                format: "{value:%b}",
+                align: "left",
+                x: 3,
+              },
+            },
+            series: [
+              {
+                name: `Velocidade em ${chartsData.windVelocityUnit.toUpperCase()} captada pela estação`,
+                color: "#AA55DD",
+                data: chartsData.windVelocitySerie,
+              },
+            ],
+          },
+        });
       }
 
       setCharts(chartsOptions);
