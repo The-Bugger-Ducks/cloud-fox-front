@@ -53,7 +53,7 @@ export default function Dashboard() {
       const defaultFinallDate = new Date(1663642801);
 
       // Trecho comentado enquanto não há compatibilidade entre axios e backend
-      // const response = await dashboardRequests.getStationData(id);
+      // const response = await dashboardRequests.getDashboardData(id);
 
       const response = [
         {

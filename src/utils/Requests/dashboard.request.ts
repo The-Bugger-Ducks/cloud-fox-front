@@ -2,7 +2,7 @@ import { api } from "../../services/api";
 import { DashboardInterface } from "../../interfaces/dashboard";
 
 export class DashboardRequests {
-  public async getStationData(
+  public async getDashboardData(
     stationID: string,
     startDate?: number,
     endDate?: number,
