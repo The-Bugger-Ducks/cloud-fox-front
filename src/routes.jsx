@@ -1,8 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import MyProfile from "./pages/MyProfile";
+import Dashboard from "./pages/Dashboard";
 
 export default function AppRoutes() {
   return (
