@@ -3,7 +3,12 @@ import { DashboardInterface } from "../../interfaces/dashboard";
 import { validateStatus } from "../Handlers/problemResponseStatusCode";
 
 export class DashboardRequests {
-  public async getStationData(stationID: string) {
+  public async getStationData(
+    stationID: string,
+    startDate?: number,
+    endDate?: number,
+    parameter?: number
+  ) {
     try {
       const payload: any = {
         station: stationID,
@@ -11,6 +16,18 @@ export class DashboardRequests {
         endDate: 1663642801,
         parameter: null,
       };
+
+      if (startDate) {
+        payload.startDate = startDate;
+      }
+
+      if (endDate) {
+        payload.endDate = startDate;
+      }
+
+      if (parameter) {
+        payload.parameter = parameter;
+      }
 
       let response = await api.get(`dashboard`, payload);
       const data: DashboardInterface[] = response.data;
