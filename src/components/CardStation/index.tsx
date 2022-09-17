@@ -10,7 +10,7 @@ import {
 } from "./styles";
 
 type CardProps = {
-  id: number;
+  id: string;
   title: string;
   description: string;
 };
@@ -19,7 +19,7 @@ export default function CardChart({ id, title, description }: CardProps) {
   const navigate = useNavigate();
 
   return (
-    <CardContainer onClick={() => navigate("/dashboard")}>
+    <CardContainer onClick={() => navigate("/dashboard/" + id)}>
       <Border>
         <Content>
           <Title>{title}</Title>
