@@ -1,11 +1,11 @@
-import Leflet from 'leaflet';
+import Leflet from 'leaflet'
 
-import { ClimatologyIcon } from '../../assets/icons';
+import { ClimatologyIcon } from '../../assets/icons'
 
 const mapIcon = Leflet.icon({
   iconUrl: ClimatologyIcon,
 
-  iconSize: [20, 20],
+  iconSize: [20, 20]
 
 })
 

@@ -1,22 +1,22 @@
-import { api } from "../../services/api";
-import { ActiveStationInterface } from "../../interfaces/station";
+import { api } from '../../services/api'
+import { ActiveStationInterface } from '../../interfaces/station'
 
 export class StationRequests {
   public async getStations(isActive?: boolean) {
     try {
-      let response = null;
+      let response = null
 
       if (isActive) {
-        response = await api.get(`stations/isActive=true`);
+        response = await api.get('stations/isActive=true')
       } else {
-        response = await api.get(`stations/`);
+        response = await api.get('stations/')
       }
 
-      const stations: ActiveStationInterface[] = response.data;
-      return stations;
+      const stations: ActiveStationInterface[] = response.data
+      return stations
     } catch (error) {
-      console.log(error);
-      alert("Não foi possível obter estações.");
+      console.log(error)
+      alert('Não foi possível obter estações.')
     }
   }
 }

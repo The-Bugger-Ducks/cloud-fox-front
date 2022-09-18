@@ -1,12 +1,12 @@
-import CustomHighchart from "../CustomHighchart";
-import { Title, CardContainer, Border, Content } from "./styles";
+import CustomHighchart from '../CustomHighchart'
+import { Title, CardContainer, Border, Content } from './styles'
 
-type CardProps = {
-  options: Object;
-  title: string;
-};
+interface CardProps {
+  options: Object
+  title: string
+}
 
-export default function CardChart({ options, title }: CardProps) {
+export default function CardChart ({ options, title }: CardProps) {
   return (
     <CardContainer>
       <Title title={title}>{title}</Title>
@@ -16,5 +16,5 @@ export default function CardChart({ options, title }: CardProps) {
         </Content>
       </Border>
     </CardContainer>
-  );
+  )
 }

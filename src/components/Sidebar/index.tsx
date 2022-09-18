@@ -6,35 +6,30 @@ import {
   NavbarLink,
   Footer,
   Logo,
-  LogoTitle,
-} from './styles';
+  LogoTitle
+} from './styles'
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.png'
 
-export default function Sidebar() {
+export default function Sidebar () {
   const routes = [
     {
-      name: "Home",
-      path: "/home",
-      onClick: () => {}
+      name: 'Home',
+      path: '/home'
     },
     {
-      name: "Meu Perfil",
-      path: "/home",
-      onClick: () => {}
+      name: 'Meu Perfil',
+      path: '/myProfile'
     },
     {
-      name: "Login",
-      path: "/login",
-      onClick: () => {}
+      name: 'Login',
+      path: '/login'
     },
     {
-      name: "Usuários privilegiados",
-      path: "/privileged-users",
-      onClick: () => {}
-    },
+      name: 'Usuários privilegiados',
+      path: '/privileged-users'
+    }
   ]
-
 
   return (
     <Container>
@@ -53,5 +48,5 @@ export default function Sidebar() {
         <LogoTitle>Cloud Fox</LogoTitle>
       </Footer>
     </Container>
-  );
+  )
 }

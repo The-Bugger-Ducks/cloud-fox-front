@@ -1,15 +1,15 @@
-import { CustomButton, Icon } from './styles';
+import { CustomButton, Icon } from './styles'
 
-type ButtonProps = {
-  title: string;
-  fontColor?: string;
-  backgroundColor?: string;
-  marginBottom?: string;
-  onClick?: () => void;
-  icon?: any;
-};
+interface ButtonProps {
+  title: string
+  fontColor?: string
+  backgroundColor?: string
+  marginBottom?: string
+  onClick?: () => void
+  icon?: any
+}
 
-export default function Button({
+export default function Button ({
   title,
   fontColor,
   backgroundColor,
@@ -29,5 +29,5 @@ export default function Button({
       {icon && <Icon>{icon}</Icon>}
       {title}
     </CustomButton>
-  );
+  )
 }

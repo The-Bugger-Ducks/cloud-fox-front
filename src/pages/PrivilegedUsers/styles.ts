@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import theme from '../../global/theme';
+import styled from 'styled-components'
+import theme from '../../global/theme'
 
 interface Page {
-  pageActive: boolean,
+  pageActive: boolean
 }
 
 export const Main = styled.main`
@@ -10,14 +10,14 @@ export const Main = styled.main`
   margin-left: 16rem;
   height: 100vh;
   overflow-y: scroll;
-`;
+`
 
 export const PageTitle = styled.div`
   height: 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-`;
+`
 
 export const Divider = styled.img`
   -webkit-user-select: none;
@@ -25,7 +25,7 @@ export const Divider = styled.img`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-`;
+`
 
 export const Title = styled.h1`
   font-size: 1.5rem;
@@ -37,13 +37,13 @@ export const Title = styled.h1`
   &:hover {
     color: ${(props: Page) => { if (!props.pageActive) return theme.colors.primary }};
   }
-`;
+`
 
 export const Subtitle = styled.h2`
   color: ${({ theme }) => theme.colors.gray};
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   font-size: ${({ theme }) => theme.fontSizes.title};
-`;
+`
 
 export const Table = styled.table`
   margin-top: 1rem;
@@ -51,7 +51,7 @@ export const Table = styled.table`
   width: 100%;
   min-width: 550px;
   height: auto;
-`;
+`
 
 export const TableHead = styled.th`
   padding-bottom: 0.5rem;
@@ -61,7 +61,7 @@ export const TableHead = styled.th`
   font-size: 1rem;
   
   color: ${theme.colors.secondary}
-`;
+`
 
 export const TableData = styled.td`
   padding: 0.5rem 0.5rem 0.5rem 0;
@@ -69,7 +69,7 @@ export const TableData = styled.td`
   text-align: left;
   font-size: 1rem;
   font-weight: 400;
-`;
+`
 
 export const ActionButtonContainer = styled.div`
   display: flex;

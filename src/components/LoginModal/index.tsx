@@ -1,37 +1,37 @@
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
-import { useEffect } from 'react';
+import { GoogleLogin } from 'react-google-login'
+import { gapi } from 'gapi-script'
+import { useEffect } from 'react'
 
-import Button from '../Button';
+import Button from '../Button'
 import {
   AiOutlineGooglePlus,
   AiFillFacebook,
-  AiFillApple,
-} from 'react-icons/ai';
-import { Container, Title, Buttons } from './styles';
+  AiFillApple
+} from 'react-icons/ai'
+import { Container, Title, Buttons } from './styles'
 
-import theme from '../../global/theme';
+import theme from '../../global/theme'
 
-export default function LoginModal() {
+export default function LoginModal () {
   const CLIENT_ID =
-    '826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com';
+    '826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com'
 
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
         clientId: CLIENT_ID,
-        scope: '',
-      });
-    };
-    gapi.load('client:auth2', initClient);
-  });
+        scope: ''
+      })
+    }
+    gapi.load('client:auth2', initClient)
+  })
 
   const onSuccess = (res: any) => {
-    console.log('success:', res);
-  };
+    console.log('success:', res)
+  }
   const onFailure = (err: any) => {
-    console.log('failed:', err);
-  };
+    console.log('failed:', err)
+  }
 
   return (
     <Container>
@@ -71,5 +71,5 @@ export default function LoginModal() {
         />
       </Buttons>
     </Container>
-  );
+  )
 }

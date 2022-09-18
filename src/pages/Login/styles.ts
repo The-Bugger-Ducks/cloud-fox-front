@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import backgroundImage from "../../assets/login-background.png";
+import backgroundImage from '../../assets/login-background.png'
 
 export const Container = styled.div`
   margin-left: 16rem;
@@ -11,4 +11,4 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`

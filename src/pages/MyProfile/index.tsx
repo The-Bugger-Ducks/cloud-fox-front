@@ -1,7 +1,7 @@
-import Button from '../../components/Button';
-import Sidebar from '../../components/Sidebar';
+import Button from '../../components/Button'
+import Sidebar from '../../components/Sidebar'
 
-import theme from '../../global/theme';
+import theme from '../../global/theme'
 import {
   Container,
   Title,
@@ -17,13 +17,13 @@ import {
   ImageCard,
   TitleCard,
   SubtitleCard,
-  DeleteIcon,
-} from './styles';
-import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons';
+  DeleteIcon
+} from './styles'
+import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons'
 
-export default function MyProfile() {
-  function handleDeleteAccount() {
-    console.log('delete account');
+export default function MyProfile () {
+  function handleDeleteAccount () {
+    console.log('delete account')
   }
 
   return (
@@ -85,5 +85,5 @@ export default function MyProfile() {
         </LevelCards>
       </Container>
     </>
-  );
+  )
 }
