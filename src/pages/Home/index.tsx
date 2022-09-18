@@ -6,12 +6,10 @@ import CardStation from '../../components/CardStation'
 import Button from '../../components/Button'
 import { Container, Title, CardContainer, ButtonContainer } from './styles'
 
-import { StationRequests } from '../../utils/Requests/station.request'
+import StationRequests from '../../utils/Requests/station.request'
 import { ActiveStationInterface } from '../../interfaces/station'
 
 export default function Home () {
-  const stationRequests = new StationRequests()
-
   const [stations, setStations] = useState<
   ActiveStationInterface[] | undefined
   >([])
@@ -21,7 +19,7 @@ export default function Home () {
   }, [])
 
   const getStations = async () => {
-    const response = await stationRequests.getStations()
+    const response = await StationRequests.getStations()
     setStations(response)
   }
 

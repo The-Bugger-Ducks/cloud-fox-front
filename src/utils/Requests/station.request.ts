@@ -1,22 +1,19 @@
 import { api } from '../../services/api'
 import { ActiveStationInterface } from '../../interfaces/station'
 
-export class StationRequests {
+class StationRequests {
   public async getStations(isActive?: boolean) {
     try {
-      let response = null
+      const response = isActive
+        ? await api.get('stations/isActive=true')
+        : await api.get('stations/')
 
-      if (isActive) {
-        response = await api.get('stations/isActive=true')
-      } else {
-        response = await api.get('stations/')
-      }
-
-      const stations: ActiveStationInterface[] = response.data
-      return stations
+      return response.data as ActiveStationInterface[]
     } catch (error) {
       console.log(error)
       alert('Não foi possível obter estações.')
     }
   }
 }
+
+export default new StationRequests()

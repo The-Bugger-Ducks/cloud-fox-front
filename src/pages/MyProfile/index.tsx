@@ -1,3 +1,10 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { User } from '../../interfaces/user'
+import UserRequests from '../../utils/Requests/user.request'
+import SolicitationRequests from '../../utils/Requests/solicitation.request'
+
 import Button from '../../components/Button'
 import Sidebar from '../../components/Sidebar'
 
@@ -21,68 +28,108 @@ import {
 } from './styles'
 import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons'
 
+interface LevelCardI {
+  icon: string
+  title: string
+  value: 'simple' | 'advanced' | 'admin'
+  subtitle: string
+}
+
 export default function MyProfile () {
-  function handleDeleteAccount () {
-    console.log('delete account')
+  const navigate = useNavigate()
+  const [user, setUser] = useState<User>()
+
+  const userId = localStorage.getItem('userId') ?? ''
+
+  const levelCards: LevelCardI[] = [
+    {
+      icon: OneIcon,
+      title: 'Simples',
+      value: 'simple',
+      subtitle: 'Vizualizar estações e seus respectivos dashboards'
+    },
+    {
+      icon: TwoIcon,
+      title: 'Avançado',
+      value: 'advanced',
+      subtitle:
+        'Gerenciar estações e sensores e vizualizar dashboards de cada estação'
+    },
+    {
+      icon: ThreeIcon,
+      title: 'Administrador',
+      value: 'admin',
+      subtitle:
+        'Gerenciar nível de acesso dos usuários cadastrados, estações e sensores'
+    }
+  ]
+
+  function levelAccessTitle (level: number) {
+    if (
+      (level === 1 && user?.role === 'simple') ||
+      (level === 2 && user?.role === 'advanced') ||
+      (level === 3 && user?.role === 'admin')
+    ) { return 'Nível de acesso atual' }
+
+    return 'Solicitar nível de acesso'
   }
+
+  function handleLevelAccess (role: 'simple' | 'advanced' | 'admin') {
+    SolicitationRequests.createSolicitation(userId, role)
+  }
+
+  function handleDeleteAccount () {
+    UserRequests.deleteUser(userId).then(() => navigate('/home'))
+  }
+
+  useEffect(() => {
+    UserRequests.getUser(userId).then(user => setUser(user))
+  }, [])
 
   return (
     <>
       <Sidebar />
       <Container>
-        <Title>MEU PERFIL</Title>
-        <ProfileContainer>
-          <ProfileContent>
-            <DeleteIcon>
-              <img src={Trash} onClick={handleDeleteAccount} />
-            </DeleteIcon>
-            <ProfileInformations>
-              <Avatar
-                src={'https://avatars.githubusercontent.com/u/78885451?v=4'}
-              />
-              <UserName>Lucinda Pereira</UserName>
-              <UserEmail>lucinda.pereira@gmail.com</UserEmail>
-            </ProfileInformations>
-          </ProfileContent>
-        </ProfileContainer>
-
-        <Topic>Nível de permissão</Topic>
-        <LevelCards>
-          <LevelCard>
-            <ImageCard src={OneIcon} />
-            <TitleCard>Simples</TitleCard>
-            <SubtitleCard>
-              Vizualizar estações e seus respectivos dashboards
-            </SubtitleCard>
-            <Button
-              title={'Nível de acesso atual'}
-              backgroundColor={theme.colors.secondary}
-            />
-          </LevelCard>
-
-          <LevelCard>
-            <ImageCard src={TwoIcon} />
-            <TitleCard>Avançado</TitleCard>
-            <SubtitleCard>
-              Gerenciar estações e sensores e vizualizar dashboards de cada
-              estação
-            </SubtitleCard>
-            <Button
-              title={'Cancelar solicitação'}
-              backgroundColor={theme.colors.gray}
-            />
-          </LevelCard>
-
-          <LevelCard>
-            <ImageCard src={ThreeIcon} />
-            <TitleCard>Administrativo</TitleCard>
-            <SubtitleCard>
-              Gerenciar nível de acesso dos usuários cadastrados, estações e
-              sensores
-            </SubtitleCard>
-            <Button title={'Solicitar nível de acesso'} />
-          </LevelCard>
-        </LevelCards>
+        {(user == null)
+          ? (
+          <>Carregando informações...</>
+            )
+          : (
+          <>
+            <Title>MEU PERFIL</Title>
+            <ProfileContainer>
+              <ProfileContent>
+                <DeleteIcon>
+                  <img src={Trash} onClick={handleDeleteAccount} />
+                </DeleteIcon>
+                <ProfileInformations>
+                  <Avatar src={user.imgSrc} />
+                  <UserName>{user.username}</UserName>
+                  <UserEmail>{user.email}</UserEmail>
+                </ProfileInformations>
+              </ProfileContent>
+            </ProfileContainer>
+            <Topic>Nível de permissão</Topic>
+            <LevelCards>
+              {levelCards.map((card, index) => (
+                <LevelCard key={index}>
+                  <ImageCard src={card.icon} />
+                  <TitleCard>{card.title}</TitleCard>
+                  <SubtitleCard>{card.subtitle}</SubtitleCard>
+                  <Button
+                    title={levelAccessTitle(index + 1)}
+                    backgroundColor={
+                      levelAccessTitle(index + 1) === 'Nível de acesso atual'
+                        ? theme.colors.secondary
+                        : theme.colors.primary
+                    }
+                    onClick={() => handleLevelAccess(card.value)}
+                  />
+                </LevelCard>
+              ))}
+            </LevelCards>
+          </>
+            )}
       </Container>
     </>
   )
