@@ -14,6 +14,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/myProfile" element={<MyProfile />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:id" element={<Dashboard />} />
       <Route path="/privileged-users" element={<PrivilegedUsers />} />
     </Routes>
   );
