@@ -1,23 +1,30 @@
-import { api } from "../../services/api";
-import { DashboardInterface } from "../../interfaces/dashboard";
-import { validateStatus } from "../Handlers/problemResponseStatusCode";
+import { api } from '../../services/api';
+import { DashboardInterface } from '../../interfaces/dashboard';
+import { ActiveStationInterface } from '../../interfaces/station';
 
 export class DashboardRequests {
-  public async getStationData(stationID: string) {
+  public async getDashboardData(stationID: string, parameter?: number) {
     try {
       const payload: any = {
         station: stationID,
-        startDate: 1663383600,
-        endDate: 1663642801,
         parameter: null,
       };
 
-      let response = await api.get(`dashboard`, payload);
-      const data: DashboardInterface[] = response.data;
+      if (parameter) {
+        payload.parameter = parameter;
+      }
+
+      let response = await api.get(
+        `dashboard?stationId=${payload.station}&parameter=${payload.parameter}`
+      );
+      const data: {
+        collects: DashboardInterface[];
+        station: ActiveStationInterface;
+      } = response.data;
       return data;
     } catch (error) {
       console.log(error);
-      alert("Não foi possível obter dados do dashboard.");
+      alert('Não foi possível obter dados do dashboard.');
     }
   }
 }
