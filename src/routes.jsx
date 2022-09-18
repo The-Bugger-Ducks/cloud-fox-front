@@ -12,7 +12,7 @@ export default function AppRoutes() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/myProfile" element={<MyProfile />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:id" element={<Dashboard />} />
     </Routes>
   );
 }
