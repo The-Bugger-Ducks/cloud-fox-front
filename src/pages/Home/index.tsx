@@ -30,7 +30,7 @@ export default function Home() {
       <Sidebar />
       <Container>
         <Title>Homepage</Title>
-        <Map />
+        <Map stations={stations ?? []} />
         <CardContainer>
           {stations &&
             stations.map((station, index) => (

@@ -5,6 +5,7 @@ import Trash from "./trash.svg";
 import EditIcon from "./edit.svg";
 import FilterIcon from "./filter.svg";
 import DividerIcon from "./divider.svg";
+import ClimatologyIcon from "./climatology.png";
 
 export {
   OneIcon,
@@ -14,4 +15,5 @@ export {
   EditIcon,
   FilterIcon,
   DividerIcon,
+  ClimatologyIcon
 };
