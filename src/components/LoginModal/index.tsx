@@ -1,6 +1,6 @@
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from '../Button';
 import {
@@ -32,7 +32,9 @@ export default function LoginModal() {
       res.profileObj.givenName,
       res.profileObj.email,
       res.profileObj.imageUrl
-    ).then(user => localStorage.setItem('userId', user?.id ?? ''));
+    ).then(user => {
+      localStorage.setItem('userId', user?.id ?? '');
+    });
   };
 
   const onFailure = (err: any) => {

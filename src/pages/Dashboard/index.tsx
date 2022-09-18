@@ -17,14 +17,13 @@ import {
   CardContainer,
 } from './styles';
 
-import { DashboardRequests } from '../../utils/Requests/dashboard.request';
+import DashboardRequests from '../../utils/Requests/dashboard.request';
 
 import { ActiveStationInterface } from '../../interfaces/station';
 import { DashboardInterface } from '../../interfaces/dashboard';
 
 export default function Dashboard() {
   const { id } = useParams();
-  const dashboardRequests = new DashboardRequests();
 
   const [station, setStation] = useState<ActiveStationInterface | undefined>();
   const [charts, setCharts] = useState<any[]>();
@@ -36,7 +35,7 @@ export default function Dashboard() {
 
   const getDashboardData = async () => {
     if (id) {
-      const response = await dashboardRequests.getDashboardData(id);
+      const response = await DashboardRequests.getDashboardData(id);
 
       if (!response) {
         alert('Não foram encontrados dados para a estação selecionada');
@@ -78,7 +77,7 @@ export default function Dashboard() {
 
       let chartsOptions: any = [];
 
-      if (chartsData.pluvSerie.length != 0) {
+      if (chartsData.pluvSerie.length !== 0) {
         chartsOptions.push({
           title: `Dados pluviométrico captados pela estação`,
           options: {
@@ -126,7 +125,7 @@ export default function Dashboard() {
         });
       }
 
-      if (chartsData.heatSerie.length != 0) {
+      if (chartsData.heatSerie.length !== 0) {
         chartsOptions.push({
           title: `Dados de temperatura captados pela estação`,
           options: {
@@ -174,7 +173,7 @@ export default function Dashboard() {
         });
       }
 
-      if (chartsData.windVelocitySerie.length != 0) {
+      if (chartsData.windVelocitySerie.length !== 0) {
         chartsOptions.push({
           title: `Dados de velocidade do vento captados pela estação`,
           options: {

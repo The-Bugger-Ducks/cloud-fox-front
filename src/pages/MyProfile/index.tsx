@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user';
 import UserRequests from '../../utils/Requests/user.request';
+import SolicitationRequests from '../../utils/Requests/solicitation.request';
 
 import Button from '../../components/Button';
 import Sidebar from '../../components/Sidebar';
@@ -26,27 +28,37 @@ import {
 } from './styles';
 import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons';
 
+type LevelCard = {
+  icon: string;
+  title: string;
+  value: 'simple' | 'advanced' | 'admin';
+  subtitle: string;
+};
+
 export default function MyProfile() {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState(true);
 
   const userId = localStorage.getItem('userId') ?? '';
 
-  const levelCards = [
+  const levelCards: LevelCard[] = [
     {
       icon: OneIcon,
       title: 'Simples',
+      value: 'simple',
       subtitle: 'Vizualizar estações e seus respectivos dashboards',
     },
     {
       icon: TwoIcon,
       title: 'Avançado',
+      value: 'advanced',
       subtitle:
         'Gerenciar estações e sensores e vizualizar dashboards de cada estação',
     },
     {
       icon: ThreeIcon,
       title: 'Administrador',
+      value: 'admin',
       subtitle:
         'Gerenciar nível de acesso dos usuários cadastrados, estações e sensores',
     },
@@ -54,37 +66,32 @@ export default function MyProfile() {
 
   function levelAccessTitle(level: number) {
     if (
-      (level == 1 && user?.role === 'simple') ||
-      (level == 2 && user?.role === 'advanced') ||
-      (level == 3 && user?.role === 'admin')
+      (level === 1 && user?.role === 'simple') ||
+      (level === 2 && user?.role === 'advanced') ||
+      (level === 3 && user?.role === 'admin')
     )
       return 'Nível de acesso atual';
 
     return 'Solicitar nível de acesso';
   }
 
-  function handleLevelAccess() {
-    alert(
-      'Recurso não disponível no momento, por favor aguarde novas versões do sistema!'
-    );
+  function handleLevelAccess(role: 'simple' | 'advanced' | 'admin') {
+    SolicitationRequests.createSolicitation(userId, role);
   }
 
   function handleDeleteAccount() {
-    UserRequests.deleteUser(userId);
+    UserRequests.deleteUser(userId).then(() => navigate('/home'));
   }
 
   useEffect(() => {
-    UserRequests.getUser(userId).then(user => {
-      setUser(user);
-      setLoading(false);
-    });
+    UserRequests.getUser(userId).then(user => setUser(user));
   }, []);
 
   return (
     <>
       <Sidebar />
       <Container>
-        {loading ? (
+        {!user ? (
           <>Carregando informações...</>
         ) : (
           <>
@@ -95,9 +102,9 @@ export default function MyProfile() {
                   <img src={Trash} onClick={handleDeleteAccount} />
                 </DeleteIcon>
                 <ProfileInformations>
-                  <Avatar src={user?.imgSrc} />
-                  <UserName>{user?.username}</UserName>
-                  <UserEmail>{user?.email}</UserEmail>
+                  <Avatar src={user.imgSrc} />
+                  <UserName>{user.username}</UserName>
+                  <UserEmail>{user.email}</UserEmail>
                 </ProfileInformations>
               </ProfileContent>
             </ProfileContainer>
@@ -115,7 +122,7 @@ export default function MyProfile() {
                         ? theme.colors.secondary
                         : theme.colors.primary
                     }
-                    onClick={handleLevelAccess}
+                    onClick={() => handleLevelAccess(card.value)}
                   />
                 </LevelCard>
               ))}
