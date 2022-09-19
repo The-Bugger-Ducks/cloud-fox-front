@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Button from '../../components/Button'
 import Sidebar from '../../components/Sidebar'
 import theme from '../../global/theme'
 
 import { DividerIcon } from '../../assets/icons'
+
+import userRequest from '../../utils/Requests/user.request'
+import SolicitationRequests from '../../utils/Requests/solicitation.request'
+
+import { User } from '../../interfaces/user'
+import { SolicitationUser } from '../../interfaces/solicitation'
 
 import {
   ActionButtonContainer,
@@ -18,11 +24,41 @@ import {
   Title
 } from './styles'
 
-import { User } from '../../interfaces/user.interface'
-
 export default function PrivilegedUsers () {
   const [userContentPage, setUserContentPage] = useState<boolean>(true)
   const [solicitaionContentPage, setSolicitaionContentPage] = useState<boolean>(false)
+
+  const [solicitationUsers, setSolicitationUsers] = useState<SolicitationUser[]>([])
+  const [users, setUsers] = useState<User[]>([])
+
+  useEffect(() => {
+    getPrivilegedUsers()
+    getSolicitationUsers()
+  }, [])
+
+  const getPrivilegedUsers = async () => {
+    try {
+      const response = await userRequest.getUsers()
+
+      if (response === null) throw new Error('Solicitation not found')
+
+      setUsers(response ?? [])
+    } catch (error) {
+      alert('Error')
+    }
+  }
+
+  const getSolicitationUsers = async () => {
+    try {
+      const response = await SolicitationRequests.getSolicitations()
+
+      if (response === null) throw new Error('Solicitation not found')
+
+      setSolicitationUsers(response ?? [])
+    } catch (error) {
+      alert('Error')
+    }
+  }
 
   const headerUserContentPage = [
     {
@@ -54,21 +90,6 @@ export default function PrivilegedUsers () {
     }
   ]
 
-  const users: User[] = [
-    {
-      id: '213213',
-      username: 'Laura Caixão',
-      email: 'laura.caixao@gmail.com',
-      role: 'simple'
-    },
-    {
-      id: '215243523',
-      username: 'Nancy Souza',
-      email: 'nancy.souza@gmail.com',
-      role: 'admin'
-    }
-  ]
-
   const roleSelectList = [
     {
       role: 'admin',
@@ -94,10 +115,10 @@ export default function PrivilegedUsers () {
     )
   }
 
-  const SelectUserRole = ({ userRole }: { userRole: User['role'] }) => {
+  const SelectUserRole = ({ user }: { user: User }) => {
     return (
       <TableData>
-        <Select id="update-role-user" onChange={onUserRoleChange} defaultValue={userRole}>
+        <Select id="update-role-user" onChange={(event) => onUserRoleChange(event, user)} defaultValue={user.role}>
           {roleSelectList.map(({ role, label }, index) => (
             <option key={index} value={role}>{label}</option>
           ))}
@@ -106,19 +127,37 @@ export default function PrivilegedUsers () {
     )
   }
 
-  const ActionsUserRole = ({ user }: { user: User }) => {
+  const ActionsUserRole = ({ solicitation }: { solicitation: SolicitationUser }) => {
     return (
       <TableData>
         <ActionButtonContainer>
-          <Button title="Aprovar" onClick={() => console.log('aaaa')}/>
-          <Button title="Recusar" backgroundColor={theme.colors.gray} onClick={() => console.log('aaaa')}/>
+          <Button title="Aprovar" onClick={() => handleUserRoleChanged(solicitation, true)}/>
+          <Button title="Recusar" backgroundColor={theme.colors.gray} onClick={() => handleUserRoleChanged(solicitation, false)}/>
         </ActionButtonContainer>
       </TableData>
     )
   }
 
-  const onUserRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value)
+  const onUserRoleChange = (event: React.ChangeEvent<HTMLSelectElement>, user: User) => {
+    // const value = event.target.value as User['role']
+
+    alert('Recurso indisponível no momento')
+  }
+
+  const handleUserRoleChanged = (solicitation: SolicitationUser, accept: boolean) => {
+    try {
+      if (accept) {
+        SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id, solicitation.roleReq)
+      } else {
+        SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id)
+      }
+
+      const solicitationFiltered = solicitationUsers.filter(solicitationUser => solicitationUser.id !== solicitation.id)
+
+      setSolicitationUsers(solicitationFiltered)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onChangePage = (selected: boolean) => {
@@ -144,7 +183,7 @@ export default function PrivilegedUsers () {
             pageActive={solicitaionContentPage}
             onClick={() => onChangePage(solicitaionContentPage)}
           >
-            SOLICITAÇÕES PRIVILEGIADOS
+            SOLICITAÇÕES
           </Title>
         </PageTitle>
 
@@ -164,17 +203,24 @@ export default function PrivilegedUsers () {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {userContentPage &&
+              users.map(user => (
               <tr key={user.id}>
                 <TableData>{user.username}</TableData>
                 <TableData>{user.email}</TableData>
                 <PrivilegeLabelElement role={user.role} />
-                {userContentPage
-                  ? <SelectUserRole userRole={user.role} />
-                  : <ActionsUserRole user={user} />
-                }
+                <SelectUserRole user={user} />
               </tr>
-            ))}
+              ))}
+            {solicitaionContentPage &&
+              solicitationUsers.map(solicitation => (
+              <tr key={solicitation.id}>
+                <TableData>{solicitation.user.username}</TableData>
+                <TableData>{solicitation.user.email}</TableData>
+                <PrivilegeLabelElement role={solicitation.roleReq} />
+                <ActionsUserRole solicitation={solicitation} />
+              </tr>
+              ))}
           </tbody>
         </Table>
       </Main>
