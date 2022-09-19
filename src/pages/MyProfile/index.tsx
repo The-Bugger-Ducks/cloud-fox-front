@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { User } from '../../interfaces/user';
-import UserRequests from '../../utils/Requests/user.request';
-import SolicitationRequests from '../../utils/Requests/solicitation.request';
+import { User } from '../../interfaces/user'
+import UserRequests from '../../utils/Requests/user.request'
+import SolicitationRequests from '../../utils/Requests/solicitation.request'
 
-import Button from '../../components/Button';
-import Sidebar from '../../components/Sidebar';
+import Button from '../../components/Button'
+import Sidebar from '../../components/Sidebar'
 
-import theme from '../../global/theme';
+import theme from '../../global/theme'
 import {
   Container,
   Title,
@@ -24,85 +24,86 @@ import {
   ImageCard,
   TitleCard,
   SubtitleCard,
-  DeleteIcon,
-} from './styles';
-import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons';
+  DeleteIcon
+} from './styles'
+import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons'
 
-type LevelCardProps = {
-  icon: string;
-  title: string;
-  value: 'simple' | 'advanced' | 'admin';
-  subtitle: string;
-};
+interface LevelCardProps {
+  icon: string
+  title: string
+  value: 'simple' | 'advanced' | 'admin'
+  subtitle: string
+}
 
-export default function MyProfile() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<User>();
+export default function MyProfile () {
+  const navigate = useNavigate()
+  const [user, setUser] = useState<User>()
 
-  const userId = localStorage.getItem('userId') ?? '';
+  const userId = localStorage.getItem('userId') ?? ''
 
   const levelCards: LevelCardProps[] = [
     {
       icon: OneIcon,
       title: 'Simples',
       value: 'simple',
-      subtitle: 'Vizualizar estações e seus respectivos dashboards',
+      subtitle: 'Vizualizar estações e seus respectivos dashboards'
     },
     {
       icon: TwoIcon,
       title: 'Avançado',
       value: 'advanced',
       subtitle:
-        'Gerenciar estações e sensores e vizualizar dashboards de cada estação',
+        'Gerenciar estações e sensores e vizualizar dashboards de cada estação'
     },
     {
       icon: ThreeIcon,
       title: 'Administrador',
       value: 'admin',
       subtitle:
-        'Gerenciar nível de acesso dos usuários cadastrados, estações e sensores',
-    },
-  ];
+        'Gerenciar nível de acesso dos usuários cadastrados, estações e sensores'
+    }
+  ]
 
-  function levelAccessTitle(level: number) {
+  function levelAccessTitle (level: number) {
     if (
       (level === 1 && user?.role === 'simple') ||
       (level === 2 && user?.role === 'advanced') ||
       (level === 3 && user?.role === 'admin')
-    )
-      return 'Nível de acesso atual';
+    ) { return 'Nível de acesso atual' }
 
-    return 'Solicitar nível de acesso';
+    return 'Solicitar nível de acesso'
   }
 
-  function handleLevelAccess(role: 'simple' | 'advanced' | 'admin') {
-    SolicitationRequests.createSolicitation(userId, role);
+  function handleLevelAccess (role: 'simple' | 'advanced' | 'admin') {
+    SolicitationRequests.createSolicitation(userId, role)
   }
 
-  function handleDeleteAccount() {
+  function handleDeleteAccount () {
     const confirmation = window.confirm(
       'Tem certeza que quer deletar a conta?'
-    );
+    )
     confirmation &&
       UserRequests.deleteUser(userId).then(() => {
-        navigate('/home');
-        localStorage.clear();
-      });
+        navigate('/home')
+        localStorage.clear()
+      })
   }
 
   useEffect(() => {
-    if (userId.length === 0) navigate(`/login`);
+    if (userId.length === 0) navigate('/login')
 
-    UserRequests.getUser(userId).then(user => setUser(user));
-  }, [userId]);
+    UserRequests.getUser(userId).then(user => setUser(user))
+  }, [userId])
 
   return (
     <>
       <Sidebar />
       <Container>
-        {!user ? (
+        {(user == null)
+          ? (
           <>Carregando informações...</>
-        ) : (
+            )
+          : (
           <>
             <Title>MEU PERFIL</Title>
             <ProfileContainer>
@@ -141,8 +142,8 @@ export default function MyProfile() {
               ))}
             </LevelCards>
           </>
-        )}
+            )}
       </Container>
     </>
-  );
+  )
 }

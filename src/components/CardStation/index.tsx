@@ -1,25 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import weather from "../../assets/weather.svg";
+import { useNavigate } from 'react-router-dom'
+import weather from '../../assets/weather.svg'
 import {
   Title,
   CardContainer,
   Border,
   Content,
   Weather,
-  Description,
-} from "./styles";
+  Description
+} from './styles'
 
-type CardProps = {
-  id: string;
-  title: string;
-  description: string;
-};
+interface CardProps {
+  id: string
+  title: string
+  description: string
+}
 
-export default function CardChart({ id, title, description }: CardProps) {
-  const navigate = useNavigate();
+export default function CardChart ({ id, title, description }: CardProps) {
+  const navigate = useNavigate()
 
   return (
-    <CardContainer onClick={() => navigate("/dashboard/" + id)}>
+    <CardContainer onClick={() => navigate('/dashboard/' + id)}>
       <Border>
         <Content>
           <Title>{title}</Title>
@@ -28,5 +28,5 @@ export default function CardChart({ id, title, description }: CardProps) {
       </Border>
       <Weather src={weather} alt="Tempo" />
     </CardContainer>
-  );
+  )
 }

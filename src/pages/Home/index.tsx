@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-import Sidebar from '../../components/Sidebar';
-import Map from '../../components/Map';
-import CardStation from '../../components/CardStation';
-import Button from '../../components/Button';
-import { Container, Title, CardContainer, ButtonContainer } from './styles';
+import Sidebar from '../../components/Sidebar'
+import Map from '../../components/Map'
+import CardStation from '../../components/CardStation'
+import Button from '../../components/Button'
+import { Container, Title, CardContainer, ButtonContainer } from './styles'
 
-import StationRequests from '../../utils/Requests/station.request';
-import { ActiveStationInterface } from '../../interfaces/station';
+import StationRequests from '../../utils/Requests/station.request'
+import { ActiveStationInterface } from '../../interfaces/station'
 
-export default function Home() {
+export default function Home () {
   const [stations, setStations] = useState<
-    ActiveStationInterface[] | undefined
-  >([]);
+  ActiveStationInterface[] | undefined
+  >([])
 
   useEffect(() => {
-    getStations();
-  }, []);
+    getStations()
+  }, [])
 
   const getStations = async () => {
-    const response = await StationRequests.getStations();
-    setStations(response);
-  };
+    const response = await StationRequests.getStations()
+    setStations(response)
+  }
 
   return (
     <>
       <Sidebar />
       <Container>
         <Title>Homepage</Title>
-        <Map />
+        <Map stations={stations ?? []} />
         <CardContainer>
-          {stations &&
+          {(stations != null) &&
             stations.map((station, index) => (
               <CardStation
                 key={index}
@@ -46,5 +46,5 @@ export default function Home() {
         </ButtonContainer>
       </Container>
     </>
-  );
+  )
 }

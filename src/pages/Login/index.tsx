@@ -1,9 +1,9 @@
-import LoginModal from '../../components/LoginModal';
-import Sidebar from '../../components/Sidebar';
+import LoginModal from '../../components/LoginModal'
+import Sidebar from '../../components/Sidebar'
 
-import { Container } from './styles';
+import { Container } from './styles'
 
-export default function Login() {
+export default function Login () {
   return (
     <>
       <Sidebar />
@@ -11,5 +11,5 @@ export default function Login() {
         <LoginModal />
       </Container>
     </>
-  );
+  )
 }

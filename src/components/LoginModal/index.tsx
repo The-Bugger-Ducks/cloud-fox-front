@@ -1,33 +1,34 @@
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
-import Button from '../Button';
+import { GoogleLogin } from 'react-google-login'
+import { gapi } from 'gapi-script'
+
+import Button from '../Button'
 import {
   AiOutlineGooglePlus,
   AiFillFacebook,
-  AiFillApple,
-} from 'react-icons/ai';
-import { Container, Title, Buttons } from './styles';
+  AiFillApple
+} from 'react-icons/ai'
+import { Container, Title, Buttons } from './styles'
 
-import theme from '../../global/theme';
-import UserRequests from '../../utils/Requests/user.request';
-import { useNavigate } from 'react-router-dom';
+import theme from '../../global/theme'
+import UserRequests from '../../utils/Requests/user.request'
+import { useNavigate } from 'react-router-dom'
 
-export default function LoginModal() {
-  const navigate = useNavigate();
+export default function LoginModal () {
+  const navigate = useNavigate()
   const CLIENT_ID =
-    '826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com';
+    '826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com'
 
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
         clientId: CLIENT_ID,
-        scope: '',
-      });
-    };
-    gapi.load('client:auth2', initClient);
-  });
+        scope: ''
+      })
+    }
+    gapi.load('client:auth2', initClient)
+  })
 
   const onSuccess = (res: any) => {
     UserRequests.createUser(
@@ -37,18 +38,18 @@ export default function LoginModal() {
         ? res.profileObj.imageUrl
         : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'
     ).then(user => {
-      localStorage.setItem('userId', user?.id ?? '');
-      navigate('/myProfile');
-    });
-  };
+      localStorage.setItem('userId', user?.id ?? '')
+      navigate('/myProfile')
+    })
+  }
 
   const onFailure = (err: any) => {
-    console.log('failed:', err);
+    console.log('failed:', err)
 
     alert(
       'Que pena! Algo deu errado com seu login. Tente novamente mais tarde!'
-    );
-  };
+    )
+  }
 
   return (
     <Container>
@@ -88,5 +89,5 @@ export default function LoginModal() {
         />
       </Buttons>
     </Container>
-  );
+  )
 }

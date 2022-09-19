@@ -1,3 +1,7 @@
+
+import { User } from '../../interfaces/user'
+import UserRequests from '../../utils/Requests/user.request'
+
 import {
   Container,
   Header,
@@ -6,21 +10,52 @@ import {
   NavbarLink,
   Footer,
   Logo,
-  LogoTitle,
-} from './styles';
+  LogoTitle
+} from './styles'
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.png'
+import { useEffect, useState } from 'react'
 
-export default function Sidebar() {
+export default function Sidebar () {
+  const userId = localStorage.getItem('userId') ?? ''
+
+  useEffect(() => {
+    UserRequests.getUser(userId).then(user => {
+      if (user?.role === 'admin') {
+        routes.push(
+          {
+            name: 'Usuários privilegiados',
+            path: '/privileged-users'
+          }
+        )
+      }
+    })
+  }, [userId])
+
+  const routes = [
+    {
+      name: 'Home',
+      path: '/home'
+    },
+    {
+      name: 'Meu Perfil',
+      path: '/myProfile'
+    },
+    {
+      name: 'Login',
+      path: '/login'
+    }
+  ]
+
   return (
     <Container>
       <Header>
         <Title>MENU</Title>
 
         <Navbar>
-          <NavbarLink to="/home">Home</NavbarLink>
-          <NavbarLink to="/myProfile">Meu Perfil</NavbarLink>
-          <NavbarLink to="/login">Login</NavbarLink>
+          {routes.map((route, index) => (
+            <NavbarLink key={index} to={route.path}>{route.name}</NavbarLink>
+          ))}
         </Navbar>
       </Header>
 
@@ -29,5 +64,5 @@ export default function Sidebar() {
         <LogoTitle>Cloud Fox</LogoTitle>
       </Footer>
     </Container>
-  );
+  )
 }

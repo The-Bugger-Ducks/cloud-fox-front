@@ -1,14 +1,18 @@
-import { Solicitation } from '../../interfaces/solicitation';
-import { api } from '../../services/api';
+import { SolicitationUser } from '../../interfaces/solicitation'
+import { api } from '../../services/api'
+
+import { validateStatus } from '../handlers/HandlerResponseStatusCodeFound'
 
 class SolicitationRequests {
   public async getSolicitations() {
     try {
-      const response = await api.get(`solicitation`);
-      return response.data as Solicitation[];
+      const response = await api.get('solicitations', {
+        validateStatus
+      })
+      return response.data as SolicitationUser[]
     } catch (error) {
-      console.log(error);
-      alert('Não foi possível obter os dados das solicitações.');
+      console.log(error)
+      alert('Não foi possível obter os dados das solicitações.')
     }
   }
 
@@ -17,15 +21,15 @@ class SolicitationRequests {
     role: 'simple' | 'advanced' | 'admin'
   ) {
     try {
-      await api.post(`users/solicitation`, {
+      await api.post('users/solicitation', {
         roleReq: role,
-        user: userId,
-      });
+        user: userId
+      })
 
-      alert('Solicitação enviada com sucesso');
+      alert('Solicitação enviada com sucesso')
     } catch (error) {
-      console.log(error);
-      alert('Não foi possível solicitar a troca de nível de perfil.');
+      console.log(error)
+      alert('Não foi possível solicitar a troca de nível de perfil.')
     }
   }
 
@@ -35,16 +39,16 @@ class SolicitationRequests {
     role?: 'simple' | 'advanced' | 'admin'
   ) {
     try {
-      const response = await api.delete(`solicitation`, {
-        data: { id, role, user: userId },
-      });
+      const response = await api.delete('solicitation', {
+        data: { id, role, user: userId }
+      })
       // retorna string com mensagem se atualizou ou recusou
-      return response.data;
+      return response.data
     } catch (error) {
-      console.log(error);
-      alert('Não foi possível alterar a solicitação.');
+      console.log(error)
+      alert('Não foi possível alterar a solicitação.')
     }
   }
 }
 
-export default new SolicitationRequests();
+export default new SolicitationRequests()
