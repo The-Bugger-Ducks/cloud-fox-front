@@ -28,7 +28,7 @@ import {
 } from './styles'
 import { OneIcon, ThreeIcon, Trash, TwoIcon } from '../../assets/icons'
 
-interface LevelCardI {
+interface LevelCardProps {
   icon: string
   title: string
   value: 'simple' | 'advanced' | 'admin'
@@ -41,7 +41,7 @@ export default function MyProfile () {
 
   const userId = localStorage.getItem('userId') ?? ''
 
-  const levelCards: LevelCardI[] = [
+  const levelCards: LevelCardProps[] = [
     {
       icon: OneIcon,
       title: 'Simples',
@@ -79,12 +79,21 @@ export default function MyProfile () {
   }
 
   function handleDeleteAccount () {
-    UserRequests.deleteUser(userId).then(() => navigate('/home'))
+    const confirmation = window.confirm(
+      'Tem certeza que quer deletar a conta?'
+    )
+    confirmation &&
+      UserRequests.deleteUser(userId).then(() => {
+        navigate('/home')
+        localStorage.clear()
+      })
   }
 
   useEffect(() => {
+    if (userId.length === 0) navigate('/login')
+
     UserRequests.getUser(userId).then(user => setUser(user))
-  }, [])
+  }, [userId])
 
   return (
     <>
@@ -100,7 +109,11 @@ export default function MyProfile () {
             <ProfileContainer>
               <ProfileContent>
                 <DeleteIcon>
-                  <img src={Trash} onClick={handleDeleteAccount} />
+                  <img
+                    alt="ìcone de lixeira para deletar conta"
+                    src={Trash}
+                    onClick={handleDeleteAccount}
+                  />
                 </DeleteIcon>
                 <ProfileInformations>
                   <Avatar src={user.imgSrc} />
