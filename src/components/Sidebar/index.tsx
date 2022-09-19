@@ -19,20 +19,7 @@ import { useEffect, useState } from 'react'
 export default function Sidebar () {
   const userId = localStorage.getItem('userId') ?? ''
 
-  useEffect(() => {
-    UserRequests.getUser(userId).then(user => {
-      if (user?.role === 'admin') {
-        routes.push(
-          {
-            name: 'Usuários privilegiados',
-            path: '/privileged-users'
-          }
-        )
-      }
-    })
-  }, [userId])
-
-  const routes = [
+  const [routes, setRoutes] = useState([
     {
       name: 'Home',
       path: '/home'
@@ -45,7 +32,34 @@ export default function Sidebar () {
       name: 'Login',
       path: '/login'
     }
-  ]
+  ])
+
+  useEffect(() => {
+    UserRequests.getUser(userId).then(user => {
+      console.log(user)
+
+      if (user?.role === 'admin') {
+        setRoutes([
+          {
+            name: 'Home',
+            path: '/home'
+          },
+          {
+            name: 'Meu Perfil',
+            path: '/myProfile'
+          },
+          {
+            name: 'Login',
+            path: '/login'
+          },
+          {
+            name: 'Usuários privilegiados',
+            path: '/privileged-users'
+          }
+        ])
+      }
+    })
+  }, [userId])
 
   return (
     <Container>
