@@ -57,18 +57,18 @@ export default function Dashboard () {
 
       collectsData?.forEach(data => {
         if (data.pluvValue && data.pluvUnit) {
-          chartsData.pluvSerie.push([parseInt(data.moment), data.pluvValue])
+          chartsData.pluvSerie.push([parseInt(data.moment) * 1000, data.pluvValue])
           chartsData.pluvUnit = data.pluvUnit
         }
 
         if (data.heatValue && data.heatUnit) {
-          chartsData.heatSerie.push([parseInt(data.moment), data.heatValue])
+          chartsData.heatSerie.push([parseInt(data.moment) * 1000, data.heatValue])
           chartsData.heatUnit = data.heatUnit
         }
 
         if (data.WindVelocityValue && data.WindVelocityUnit) {
           chartsData.windVelocitySerie.push([
-            parseInt(data.moment),
+            parseInt(data.moment) * 1000,
             data.WindVelocityValue
           ])
           chartsData.windVelocityUnit = data.WindVelocityUnit
