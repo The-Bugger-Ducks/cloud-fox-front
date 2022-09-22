@@ -31,12 +31,12 @@ const consfigDashboard: DashboardConfigInterface = {
   index: ["pluv", "heat", "atm", "humidity", "WindDirection", "WindVelocity"],
 
   chartsTitles: {
-    pluvValue: "título",
-    heatValue: "título",
-    atmPresValue: "título",
-    humidityValue: "título",
-    WindDirectionValue: "título",
-    WindVelocityValue: "título",
+    pluvValue: "Dados pluviométrico captados pela estação",
+    heatValue: "Dados de temperatura captados pela estação",
+    atmPresValue: "Dados de velocidade do vento captados pela estação",
+    humidityValue: "Dados de humidade captados pela estação",
+    WindDirectionValue: "Dados de direção do vento captados pela estação",
+    WindVelocityValue: "Dados de velocidade do vento captados pela estação",
   },
 };
 

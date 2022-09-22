@@ -3,14 +3,8 @@ import dashboardConfig from "../../dashboard.config";
 import { DashboardInterface } from "../../interfaces/dashboard";
 import { ActiveStationInterface } from "../../interfaces/station";
 
-export default async function handlerDashboardData(
-  stationID: string,
-  parameter?: number
-) {
-  const dashboardParams = await DashboardRequests.getDashboardData(
-    stationID,
-    parameter && parameter
-  );
+export default function handlerDashboardData(apiResponse: any) {
+  const dashboardParams = apiResponse;
 
   let organizedParams = _initializeObjectParams();
 
@@ -35,12 +29,9 @@ function _initializeObjectParams() {
 
 function _populateObjectParams(
   baseObject: any,
-  rawObject: {
-    collects: DashboardInterface[];
-    station: ActiveStationInterface;
-  }
+  rawObject: DashboardInterface[]
 ) {
-  rawObject.collects.forEach((params: any) => {
+  rawObject.forEach((params: any) => {
     if (params["moment"]) {
       for (let param in params) {
         if (param in baseObject) {
@@ -79,7 +70,7 @@ function _generateOptions(objectPopulated: any) {
             type: "spline",
           },
           title: {
-            text: title,
+            text: "",
           },
           yAxis: {
             title: {
