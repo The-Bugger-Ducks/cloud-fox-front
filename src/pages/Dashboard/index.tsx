@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import Sidebar from '../../components/Sidebar'
-import CardChart from '../../components/CardChart'
-import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons'
+import Sidebar from "../../components/Sidebar";
+import CardChart from "../../components/CardChart";
+import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 import {
   Container,
   Header,
@@ -14,219 +14,221 @@ import {
   EditButton,
   Divider,
   Filter,
-  CardContainer
-} from './styles'
+  CardContainer,
+} from "./styles";
 
-import DashboardRequests from '../../utils/Requests/dashboard.request'
+import DashboardRequests from "../../utils/Requests/dashboard.request";
 
-import { ActiveStationInterface } from '../../interfaces/station'
-import { DashboardInterface } from '../../interfaces/dashboard'
+import { ActiveStationInterface } from "../../interfaces/station";
+import { DashboardInterface } from "../../interfaces/dashboard";
+import handlerDashboardData from "../../utils/Handlers/handlerDashboardData";
 
-export default function Dashboard () {
-  const { id } = useParams()
+export default function Dashboard() {
+  const { id } = useParams();
 
-  const [station, setStation] = useState<ActiveStationInterface | undefined>()
-  const [charts, setCharts] = useState<any[]>()
+  const [station, setStation] = useState<ActiveStationInterface | undefined>();
+  const [charts, setCharts] = useState<any[]>();
 
   useEffect(() => {
     // getStation();
-    getDashboardData()
-  }, [])
+    getDashboardData();
+    id && handlerDashboardData(id);
+  }, []);
 
   const getDashboardData = async () => {
     if (id) {
-      const response = await DashboardRequests.getDashboardData(id)
+      const response = await DashboardRequests.getDashboardData(id);
 
       if (response == null) {
-        alert('Não foram encontrados dados para a estação selecionada')
-        return
+        alert("Não foram encontrados dados para a estação selecionada");
+        return;
       }
-      const collectsData: DashboardInterface[] = response.collects
-      const stationData: ActiveStationInterface = response.station
+      const collectsData: DashboardInterface[] = response.collects;
+      const stationData: ActiveStationInterface = response.station;
 
       const chartsData: any = {
         pluvSerie: [],
-        pluvUnit: '',
+        pluvUnit: "",
 
         heatSerie: [],
-        heatUnit: '',
+        heatUnit: "",
 
         windVelocitySerie: [],
-        windVelocityUnit: ''
-      }
+        windVelocityUnit: "",
+      };
 
-      collectsData?.forEach(data => {
+      collectsData?.forEach((data) => {
         if (data.pluvValue && data.pluvUnit) {
-          chartsData.pluvSerie.push([parseInt(data.moment) * 1000, data.pluvValue])
-          chartsData.pluvUnit = data.pluvUnit
+          chartsData.pluvSerie.push([parseInt(data.moment), data.pluvValue]);
+          chartsData.pluvUnit = data.pluvUnit;
         }
 
         if (data.heatValue && data.heatUnit) {
-          chartsData.heatSerie.push([parseInt(data.moment) * 1000, data.heatValue])
-          chartsData.heatUnit = data.heatUnit
+          chartsData.heatSerie.push([parseInt(data.moment), data.heatValue]);
+          chartsData.heatUnit = data.heatUnit;
         }
 
         if (data.WindVelocityValue && data.WindVelocityUnit) {
           chartsData.windVelocitySerie.push([
-            parseInt(data.moment) * 1000,
-            data.WindVelocityValue
-          ])
-          chartsData.windVelocityUnit = data.WindVelocityUnit
+            parseInt(data.moment),
+            data.WindVelocityValue,
+          ]);
+          chartsData.windVelocityUnit = data.WindVelocityUnit;
         }
-      })
+      });
 
-      const chartsOptions: any = []
+      const chartsOptions: any = [];
 
       if (chartsData.pluvSerie.length !== 0) {
         chartsOptions.push({
-          title: 'Dados pluviométrico captados pela estação',
+          title: "Dados pluviométrico captados pela estação",
           options: {
             chart: {
-              type: 'spline'
+              type: "spline",
             },
             title: {
-              text: ''
+              text: "",
             },
             yAxis: {
               title: {
-                text: `Total de ${chartsData.pluvUnit.toUpperCase()} captados`
+                text: `Total de ${chartsData.pluvUnit.toUpperCase()} captados`,
               },
               labels: {
-                format: '{value} ' + chartsData.pluvUnit.toUpperCase()
+                format: "{value} " + chartsData.pluvUnit.toUpperCase(),
               },
-              tickInterval: 1
+              tickInterval: 1,
             },
             xAxis: {
-              type: 'datetime',
+              type: "datetime",
               dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
+                weekly: "%e. %b %y",
+                twicemonthly: "%e. %b %y",
+                monthly: "%b %y",
+                twomonths: "%b %y",
+                threemonths: "%b %y",
+                fourmonths: "%b %y",
+                sixmonths: "%b %y",
+                yearly: "%Y",
               },
               labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
+                format: "{value:%b}",
+                align: "left",
+                x: 3,
+              },
             },
             series: [
               {
                 name: `${chartsData.pluvUnit.toUpperCase()} de chuva captados pela estação`,
-                color: '#AA55DD',
-                data: chartsData.pluvSerie
-              }
-            ]
-          }
-        })
+                color: "#AA55DD",
+                data: chartsData.pluvSerie,
+              },
+            ],
+          },
+        });
       }
 
       if (chartsData.heatSerie.length !== 0) {
         chartsOptions.push({
-          title: 'Dados de temperatura captados pela estação',
+          title: "Dados de temperatura captados pela estação",
           options: {
             chart: {
-              type: 'spline'
+              type: "spline",
             },
             title: {
-              text: ''
+              text: "",
             },
             yAxis: {
               title: {
-                text: `Total de temperaturas (${chartsData.heatUnit.toUpperCase()}) captadas`
+                text: `Total de temperaturas (${chartsData.heatUnit.toUpperCase()}) captadas`,
               },
               labels: {
-                format: '{value} ' + chartsData.heatUnit.toUpperCase()
+                format: "{value} " + chartsData.heatUnit.toUpperCase(),
               },
-              tickInterval: 1
+              tickInterval: 1,
             },
             xAxis: {
-              type: 'datetime',
+              type: "datetime",
               dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
+                weekly: "%e. %b %y",
+                twicemonthly: "%e. %b %y",
+                monthly: "%b %y",
+                twomonths: "%b %y",
+                threemonths: "%b %y",
+                fourmonths: "%b %y",
+                sixmonths: "%b %y",
+                yearly: "%Y",
               },
               labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
+                format: "{value:%b}",
+                align: "left",
+                x: 3,
+              },
             },
             series: [
               {
                 name: `Temperatura em ${chartsData.heatUnit.toUpperCase()} captada pela estação`,
-                color: '#AA55DD',
-                data: chartsData.heatSerie
-              }
-            ]
-          }
-        })
+                color: "#AA55DD",
+                data: chartsData.heatSerie,
+              },
+            ],
+          },
+        });
       }
 
       if (chartsData.windVelocitySerie.length !== 0) {
         chartsOptions.push({
-          title: 'Dados de velocidade do vento captados pela estação',
+          title: "Dados de velocidade do vento captados pela estação",
           options: {
             chart: {
-              type: 'spline'
+              type: "spline",
             },
             title: {
-              text: ''
+              text: "",
             },
             yAxis: {
               title: {
-                text: `Total de velocidade (${chartsData.windVelocityUnit.toUpperCase()}) captada`
+                text: `Total de velocidade (${chartsData.windVelocityUnit.toUpperCase()}) captada`,
               },
               labels: {
-                format: '{value} ' + chartsData.windVelocityUnit.toUpperCase()
+                format: "{value} " + chartsData.windVelocityUnit.toUpperCase(),
               },
-              tickInterval: 1
+              tickInterval: 1,
             },
             xAxis: {
-              type: 'datetime',
+              type: "datetime",
               dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
+                weekly: "%e. %b %y",
+                twicemonthly: "%e. %b %y",
+                monthly: "%b %y",
+                twomonths: "%b %y",
+                threemonths: "%b %y",
+                fourmonths: "%b %y",
+                sixmonths: "%b %y",
+                yearly: "%Y",
               },
               labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
+                format: "{value:%b}",
+                align: "left",
+                x: 3,
+              },
             },
             series: [
               {
                 name: `Velocidade em ${chartsData.windVelocityUnit.toUpperCase()} captada pela estação`,
-                color: '#AA55DD',
-                data: chartsData.windVelocitySerie
-              }
-            ]
-          }
-        })
+                color: "#AA55DD",
+                data: chartsData.windVelocitySerie,
+              },
+            ],
+          },
+        });
       }
 
-      setCharts(chartsOptions)
-      setStation(stationData)
+      setCharts(chartsOptions);
+      setStation(stationData);
     } else {
-      alert('Estação não encontrada')
+      alert("Estação não encontrada");
     }
-  }
+  };
 
   return (
     <>
@@ -248,7 +250,7 @@ export default function Dashboard () {
         </Header>
 
         <CardContainer>
-          {(charts != null) &&
+          {charts != null &&
             charts?.map((chart, index) => (
               <CardChart
                 options={chart.options}
@@ -259,5 +261,5 @@ export default function Dashboard () {
         </CardContainer>
       </Container>
     </>
-  )
+  );
 }
