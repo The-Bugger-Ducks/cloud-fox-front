@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Sidebar from "../../components/Sidebar";
 import Map from "../../components/Map";
 import CardStation from "../../components/CardStation";
 import Button from "../../components/Button";
+import StationRegistrationModal from "../../components/StationRegistrationModal";
 import { Container, Title, CardContainer, ButtonContainer } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
+import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
 
 export default function Home() {
+  const stationRegistrationModalRef = useRef<StationRegistrationModalRef>(null);
+
   const [stations, setStations] = useState<
     ActiveStationInterface[] | undefined
   >([]);
@@ -23,8 +27,13 @@ export default function Home() {
     setStations(response);
   };
 
+  const showModalStationRegistration = () => {
+    stationRegistrationModalRef.current?.showModal();
+  };
+
   return (
     <>
+      <StationRegistrationModal ref={stationRegistrationModalRef} />
       <Sidebar />
       <Container>
         <Title>Homepage</Title>
@@ -42,7 +51,10 @@ export default function Home() {
         </CardContainer>
 
         <ButtonContainer>
-          <Button title="Ativar estação" />
+          <Button
+            title="Ativar estação"
+            onClick={() => showModalStationRegistration()}
+          />
         </ButtonContainer>
       </Container>
     </>
