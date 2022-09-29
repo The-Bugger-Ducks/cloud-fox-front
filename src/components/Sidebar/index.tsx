@@ -15,37 +15,43 @@ import {
 
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
+import SessionController from '../../utils/handlers/SessionController'
+
+const routesDefault = [
+  {
+    name: 'Home',
+    path: '/home'
+  },
+  {
+    name: 'Meu Perfil',
+    path: '/myProfile'
+  },
+  {
+    name: 'Login',
+    path: '/login'
+  },
+  {
+    name: 'Usuários privilegiados',
+    path: '/privileged-users'
+  }
+]
+
 
 export default function Sidebar () {
-  const userId = localStorage.getItem('userId') ?? ''
+  const [routes, setRoutes] = useState<{name: string, path: string}[]>(routesDefault);
 
   useEffect(() => {
-    UserRequests.getUser(userId).then(user => {
-      if (user?.role === 'admin') {
-        routes.push(
-          {
-            name: 'Usuários privilegiados',
-            path: '/privileged-users'
-          }
-        )
-      }
+    setRoutes(prevRoute => {
+      const filterRoutes = prevRoute.filter(route => {
+        return SessionController.getUserInfo()?.role !== 'admin' ? 
+          route.path !== '/login' && route.path !== '/privileged-users' :
+          route.path !== '/login'
+      })
+      return filterRoutes
     })
-  }, [userId])
+  }, [])
 
-  const routes = [
-    {
-      name: 'Home',
-      path: '/home'
-    },
-    {
-      name: 'Meu Perfil',
-      path: '/myProfile'
-    },
-    {
-      name: 'Login',
-      path: '/login'
-    }
-  ]
+  
 
   return (
     <Container>

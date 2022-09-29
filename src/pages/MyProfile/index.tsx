@@ -6,7 +6,6 @@ import UserRequests from '../../utils/Requests/user.request'
 import SolicitationRequests from '../../utils/Requests/solicitation.request'
 
 import Button from '../../components/Button'
-import Sidebar from '../../components/Sidebar'
 
 import theme from '../../global/theme'
 import {
@@ -97,7 +96,6 @@ export default function MyProfile () {
 
   return (
     <>
-      <Sidebar />
       <Container>
         {(user == null)
           ? (

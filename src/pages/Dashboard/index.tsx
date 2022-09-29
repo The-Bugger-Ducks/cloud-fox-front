@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import Sidebar from '../../components/Sidebar'
 import CardChart from '../../components/CardChart'
 import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons'
 import {
@@ -230,7 +229,6 @@ export default function Dashboard () {
 
   return (
     <>
-      <Sidebar />
       <Container>
         <Header>
           <PageTitle>

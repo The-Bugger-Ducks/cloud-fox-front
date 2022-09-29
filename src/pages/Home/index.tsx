@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import Sidebar from '../../components/Sidebar'
 import Map from '../../components/Map'
 import CardStation from '../../components/CardStation'
 import Button from '../../components/Button'
@@ -25,7 +24,6 @@ export default function Home () {
 
   return (
     <>
-      <Sidebar />
       <Container>
         <Title>Homepage</Title>
         <Map stations={stations ?? []} />

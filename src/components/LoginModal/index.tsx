@@ -14,9 +14,11 @@ import { Container, Title, Buttons } from './styles'
 import theme from '../../global/theme'
 import UserRequests from '../../utils/Requests/user.request'
 import { useNavigate } from 'react-router-dom'
+import SessionController from '../../utils/handlers/SessionController'
 
 export default function LoginModal () {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const CLIENT_ID =
     '826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com'
 
@@ -38,7 +40,7 @@ export default function LoginModal () {
         ? res.profileObj.imageUrl
         : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'
     ).then(user => {
-      localStorage.setItem('userId', user?.id ?? '')
+      SessionController.setUserInfo(user!!)
       navigate('/myProfile')
     })
   }
