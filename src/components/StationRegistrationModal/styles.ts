@@ -32,7 +32,12 @@ export const Body = styled.div`
   justify-content: space-between;
 `;
 
-export const Main = styled.div``;
+export const Main = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+`;
 
 export const Footer = styled.div`
   display: flex;
@@ -45,4 +50,39 @@ export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.black};
   font-weight: ${({ theme }) => theme.fontWeights.semi_bold};
   font-size: ${({ theme }) => theme.fontSizes.subtitle};
+`;
+
+export const Questions = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const Label = styled.label`
+  color: ${({ theme }) => theme.colors.black};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  font-size: ${({ theme }) => theme.fontSizes.text};
+  margin-bottom: 0.5rem;
+`;
+
+export const TextInput = styled.input`
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1rem;
+`;
+
+export const TextArea = styled.textarea`
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1rem;
+  height: 10rem;
+  margin-bottom: 1rem;
 `;

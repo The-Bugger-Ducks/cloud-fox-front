@@ -20,7 +20,7 @@ import {
 import DashboardRequests from "../../utils/Requests/dashboard.request";
 
 import { ActiveStationInterface } from "../../interfaces/station";
-import handlerDashboardData from "../../utils/Handlers/handlerDashboardData";
+import handlerDashboardData from "../../utils/handlers/handlerDashboardData"
 
 export default function Dashboard() {
   const { id } = useParams();

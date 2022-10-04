@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { Container, Body, Main, Footer, Title } from "./styles";
 import Button from "../../components/Button";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
+import { Container, Body, Main, Footer, Title, Questions, Label, TextInput, TextArea } from "./styles";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>(
   (props, ref) => {
@@ -20,6 +20,13 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>(
         <Body>
           <Main>
             <Title>Cadastrar estação</Title>
+            <Questions>
+              <Label>Nome da estação</Label>
+              <TextInput type="text" placeholder="Escola Fulano de Tal" />
+              
+              <Label>Descrição da estação</Label>
+              <TextArea />
+            </Questions>
           </Main>
           <Footer>
             <Button
