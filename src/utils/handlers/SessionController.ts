@@ -24,6 +24,10 @@ class SessionController {
     localStorage.setItem("user_data", JSON.stringify(user));
   }
 
+  clearUserInfo() {
+    localStorage.removeItem("user_data");
+  }
+
   getUserInfo() {
     const sessionUser = localStorage.getItem("user_data");
 
