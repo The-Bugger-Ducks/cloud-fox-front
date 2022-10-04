@@ -24,7 +24,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   
   useEffect(() => {
     const userData = SessionController.getUserInfo();
-    debugger
     
     if (userData) setUserInfo(userData)    
   }, [])
