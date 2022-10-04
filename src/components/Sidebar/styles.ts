@@ -57,6 +57,20 @@ export const NavbarLink = styled(Link) <NavbarLinkProps>`
   }
 `
 
+export const NavbarSpan = styled.span`
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  font-size: ${({ theme }) => theme.fontSizes.subtitle};
+  color: ${({ theme }) => theme.colors.black};
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
 export const Footer = styled.footer`
   margin-bottom: 3rem;
 
