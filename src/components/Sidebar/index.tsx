@@ -15,6 +15,7 @@ import {
 import logo from '../../assets/logo.png'
 
 import { AuthContext } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 interface CustomTreeItemLike {
   icon?: string;
@@ -29,11 +30,18 @@ export default function Sidebar () {
 
   const { userInfo, handleClearUserInfo } = useContext(AuthContext);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const newRoutes = filterRoutesByUserRole()
     setRoutes(newRoutes)
   }, [userInfo])
 
+
+  function handleLogoutUser() {    
+    handleClearUserInfo()
+    navigate('/home')
+  }
 
   function filterRoutesByUserRole() {
     let routesFiltered: CustomTreeItemLike[] = [
@@ -60,7 +68,7 @@ export default function Sidebar () {
         },
         {
           text: 'Sair',
-          onClick: () => handleClearUserInfo()
+          onClick: () => handleLogoutUser()
         }
       )
     } else {
