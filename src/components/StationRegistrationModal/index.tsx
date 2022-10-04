@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../../components/Button";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
+import Minimap from "../Minimap"
 import { Container, Body, Main, Footer, Title, Questions, Label, TextInput, TextArea } from "./styles";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>(
@@ -26,6 +27,9 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>(
               
               <Label>Descrição da estação</Label>
               <TextArea />
+
+              <Label>Localização da estação</Label>
+              <Minimap />
             </Questions>
           </Main>
           <Footer>
