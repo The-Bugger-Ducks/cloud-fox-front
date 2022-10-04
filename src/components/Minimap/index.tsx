@@ -5,7 +5,6 @@ import mapIcon from '../../utils/Leaflet/mapIcon'
 import {
   MapContainer,
   Marker,
-  Popup,
   TileLayer,
   useMapEvents,
 } from 'react-leaflet'
