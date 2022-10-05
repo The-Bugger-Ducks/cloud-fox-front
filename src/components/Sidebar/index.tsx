@@ -1,6 +1,4 @@
-
-import { User } from '../../interfaces/user'
-import UserRequests from '../../utils/Requests/user.request'
+import { useEffect, useState, useContext, MouseEvent } from 'react'
 
 import {
   Container,
@@ -10,51 +8,95 @@ import {
   NavbarLink,
   Footer,
   Logo,
-  LogoTitle
+  LogoTitle,
+  NavbarSpan
 } from './styles'
 
 import logo from '../../assets/logo.png'
-import { useEffect, useState } from 'react'
+
+import { AuthContext } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
+
+interface CustomTreeItemLike {
+  icon?: string;
+  text?: string;
+  path?: string;
+  onClick?: (e: MouseEvent) => void;
+  invisible?: boolean;
+}
 
 export default function Sidebar () {
-  const userId = localStorage.getItem('userId') ?? ''
+  const [routes, setRoutes] = useState<CustomTreeItemLike[]>();
+
+  const { userInfo, handleClearUserInfo } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    UserRequests.getUser(userId).then(user => {
-      if (user?.role === 'admin') {
-        routes.push(
-          {
-            name: 'Usuários privilegiados',
-            path: '/privileged-users'
-          }
-        )
-      }
-    })
-  }, [userId])
+    const newRoutes = filterRoutesByUserRole()
+    setRoutes(newRoutes)
+  }, [userInfo])
 
-  const routes = [
-    {
-      name: 'Home',
-      path: '/home'
-    },
-    {
-      name: 'Meu Perfil',
-      path: '/myProfile'
-    },
-    {
-      name: 'Login',
-      path: '/login'
-    }
-  ]
 
-  return (
+  function handleLogoutUser() {    
+    handleClearUserInfo()
+    navigate('/home')
+  }
+
+  function filterRoutesByUserRole() {
+    let routesFiltered: CustomTreeItemLike[] = [
+      {
+        text: 'Página Inicial',
+        path: '/home'
+      },
+    ]
+
+    if (userInfo?.role === "admin") {
+      routesFiltered.push({
+        text: 'Usuários privilegiados',
+        path: '/privileged-users'
+      })
+    } else if (userInfo?.role === "advanced") {   
+    } else if (userInfo?.role === "simple") {
+    }    
+
+    if (userInfo?.role !== undefined) {
+      routesFiltered.push(        
+        {
+          text: 'Meu Perfil',
+          path: '/myProfile'
+        },
+        {
+          text: 'Sair',
+          onClick: () => handleLogoutUser()
+        }
+      )
+    } else {
+      routesFiltered.push(
+        {
+          text: 'Entrar',
+          path: '/login'
+        },
+      )  
+    } 
+
+    return routesFiltered as CustomTreeItemLike[]
+  }
+
+  return (     
     <Container>
       <Header>
         <Title>MENU</Title>
 
         <Navbar>
-          {routes.map((route, index) => (
-            <NavbarLink key={index} to={route.path}>{route.name}</NavbarLink>
+          {routes?.map((route, index) => (
+            <div key={index}>
+              {route.path ? (
+                <NavbarLink  to={route.path}>{route.text}</NavbarLink>
+              ):(
+                <NavbarSpan onClick={route?.onClick}>{route.text}</NavbarSpan>
+              )}
+            </div>
           ))}
         </Navbar>
       </Header>

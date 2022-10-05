@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 import Button from '../../components/Button'
-import Sidebar from '../../components/Sidebar'
 import theme from '../../global/theme'
 
 import { DividerIcon } from '../../assets/icons'
@@ -169,7 +168,6 @@ export default function PrivilegedUsers () {
 
   return (
     <>
-      <Sidebar />
       <Main>
         <PageTitle>
           <Title
