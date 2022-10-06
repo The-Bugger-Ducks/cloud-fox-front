@@ -1,5 +1,6 @@
 import { api } from '../../services/api'
 import { ActiveStationInterface } from '../../interfaces/station'
+import { LatLngLiteral } from 'leaflet';
 
 class StationRequests {
   public async getStations(isActive?: boolean) {
@@ -12,6 +13,28 @@ class StationRequests {
     } catch (error) {
       console.log(error)
       alert('Não foi possível obter estações.')
+    }
+  }
+
+  public async createStation(id: string, name: string, lat: LatLngLiteral, lon: LatLngLiteral, description: string, parameterTypes?: []) {
+    try {
+      const payload = {
+        id : id,
+        name: name,
+        lat: lat,
+        lon: lon,
+        description: description,
+        parameterTypes: parameterTypes
+      }
+
+      const response = api.post("/stations", payload)
+
+      alert("Estação cadastrada com sucesso!")
+
+      return response
+    } catch (error) {
+      console.log(error)
+      alert('Não foi possível cadastrar estação.')
     }
   }
 }

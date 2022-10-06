@@ -65,7 +65,7 @@ export const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-export const TextInput = styled.input`
+export const Input = styled.input`
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
