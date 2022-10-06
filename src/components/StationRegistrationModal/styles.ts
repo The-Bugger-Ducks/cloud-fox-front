@@ -83,6 +83,6 @@ export const TextArea = styled.textarea`
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
   margin-bottom: 1rem;
-  height: 10rem;
+  height: 5rem;
   margin-bottom: 1rem;
 `;
