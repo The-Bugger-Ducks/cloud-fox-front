@@ -1,227 +1,228 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from "react";
 
-import Button from '../../components/Button'
-import theme from '../../global/theme'
+import Button from "../../components/Button";
+import theme from "../../global/theme";
 
-import { DividerIcon } from '../../assets/icons'
+import { DividerIcon } from "../../assets/icons";
 
-import userRequest from '../../utils/Requests/user.request'
-import SolicitationRequests from '../../utils/Requests/solicitation.request'
+import userRequest from "../../utils/Requests/user.request";
+import SolicitationRequests from "../../utils/Requests/solicitation.request";
 
-import { User } from '../../interfaces/user'
-import { SolicitationUser } from '../../interfaces/solicitation'
+import { User } from "../../interfaces/user";
+import { SolicitationUser } from "../../interfaces/solicitation";
 
-import {
-  ActionButtonContainer,
-  Divider,
-  Main,
-  PageTitle,
-  Select,
-  Table,
-  TableData,
-  TableHead,
-  Title
-} from './styles'
+import { ActionButtonContainer, Divider, Main, PageTitle, Select, Table, TableData, TableHead, Title } from "./styles";
 
-export default function PrivilegedUsers () {
-  const [userContentPage, setUserContentPage] = useState<boolean>(true)
-  const [solicitaionContentPage, setSolicitaionContentPage] = useState<boolean>(false)
+export default function PrivilegedUsers() {
+	const [userContentPage, setUserContentPage] = useState<boolean>(true);
+	const [solicitaionContentPage, setSolicitaionContentPage] = useState<boolean>(false);
 
-  const [solicitationUsers, setSolicitationUsers] = useState<SolicitationUser[]>([])
-  const [users, setUsers] = useState<User[]>([])
+	const [solicitationUsers, setSolicitationUsers] = useState<SolicitationUser[]>([]);
+	const [users, setUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    getPrivilegedUsers()
-    getSolicitationUsers()
-  }, [])
+	const selectRoleRef = useRef<HTMLSelectElement>(null);
 
-  const getPrivilegedUsers = async () => {
-    try {
-      const response = await userRequest.getUsers()
+	useEffect(() => {
+		getPrivilegedUsers();
+		getSolicitationUsers();
+	}, []);
 
-      if (response === null) throw new Error('Solicitation not found')
+	const getPrivilegedUsers = async () => {
+		try {
+			const response = await userRequest.getAdvancedUsers();
 
-      setUsers(response ?? [])
-    } catch (error) {
-      alert('Error')
-    }
-  }
+			if (response === null) throw new Error("Solicitation not found");
 
-  const getSolicitationUsers = async () => {
-    try {
-      const response = await SolicitationRequests.getSolicitations()
+			setUsers(response ?? []);
+		} catch (error) {
+			alert("Error");
+		}
+	};
 
-      if (response === null) throw new Error('Solicitation not found')
+	const getSolicitationUsers = async () => {
+		try {
+			const response = await SolicitationRequests.getSolicitations();
 
-      setSolicitationUsers(response ?? [])
-    } catch (error) {
-      alert('Error')
-    }
-  }
+			if (response === null) throw new Error("Solicitation not found");
 
-  const headerUserContentPage = [
-    {
-      title: 'Nome'
-    },
-    {
-      title: 'Email'
-    },
-    {
-      title: 'Privilégio atual'
-    },
-    {
-      title: 'Atualizar privilégio'
-    }
-  ]
+			setSolicitationUsers(response ?? []);
+		} catch (error) {
+			alert("Error");
+		}
+	};
 
-  const headerSolicitaionContentPage = [
-    {
-      title: 'Nome'
-    },
-    {
-      title: 'Email'
-    },
-    {
-      title: 'Privilégio desejado'
-    },
-    {
-      title: 'Ações'
-    }
-  ]
+	const headerUserContentPage = [
+		{
+			title: "Nome",
+		},
+		{
+			title: "Email",
+		},
+		{
+			title: "Privilégio atual",
+		},
+		{
+			title: "Atualizar privilégio",
+		},
+	];
 
-  const roleSelectList = [
-    {
-      role: 'admin',
-      label: 'Administrativo'
-    },
-    {
-      role: 'advanced',
-      label: 'Avançado'
-    },
-    {
-      role: 'simple',
-      label: 'Simples'
-    }
-  ]
+	const headerSolicitaionContentPage = [
+		{
+			title: "Nome",
+		},
+		{
+			title: "Email",
+		},
+		{
+			title: "Privilégio desejado",
+		},
+		{
+			title: "Ações",
+		},
+	];
 
-  const PrivilegeLabelElement = ({ role }: { role: User['role'] }) => {
-    const findRole = roleSelectList.find(option => option.role === role)
+	const roleSelectList = [
+		{
+			role: "admin",
+			label: "Administrativo",
+		},
+		{
+			role: "advanced",
+			label: "Avançado",
+		},
+		{
+			role: "simple",
+			label: "Simples",
+		},
+	];
 
-    return (
-      <TableData>
-        {findRole?.label}
-      </TableData>
-    )
-  }
+	const PrivilegeLabelElement = ({ role }: { role: User["role"] }) => {
+		const findRole = roleSelectList.find((option) => option.role === role);
 
-  const SelectUserRole = ({ user }: { user: User }) => {
-    return (
-      <TableData>
-        <Select id="update-role-user" onChange={(event) => onUserRoleChange(event, user)} defaultValue={user.role}>
-          {roleSelectList.map(({ role, label }, index) => (
-            <option key={index} value={role}>{label}</option>
-          ))}
-        </Select>
-      </TableData>
-    )
-  }
+		return <TableData>{findRole?.label}</TableData>;
+	};
 
-  const ActionsUserRole = ({ solicitation }: { solicitation: SolicitationUser }) => {
-    return (
-      <TableData>
-        <ActionButtonContainer>
-          <Button title="Aprovar" onClick={() => handleUserRoleChanged(solicitation, true)}/>
-          <Button title="Recusar" backgroundColor={theme.colors.gray} onClick={() => handleUserRoleChanged(solicitation, false)}/>
-        </ActionButtonContainer>
-      </TableData>
-    )
-  }
+	const SelectUserRole = ({ user }: { user: User }) => {
+		return (
+			<TableData>
+				<Select
+					id="update-role-user"
+					onChange={(event) => onUserRoleChange(event, user)}
+					defaultValue={user.role}
+					ref={selectRoleRef}
+				>
+					{roleSelectList.map(({ role, label }, index) => (
+						<option key={index} value={role}>
+							{label}
+						</option>
+					))}
+				</Select>
+			</TableData>
+		);
+	};
 
-  const onUserRoleChange = (event: React.ChangeEvent<HTMLSelectElement>, user: User) => {
-    // const value = event.target.value as User['role']
+	const ActionsUserRole = ({ solicitation }: { solicitation: SolicitationUser }) => {
+		return (
+			<TableData>
+				<ActionButtonContainer>
+					<Button title="Aprovar" onClick={() => handleUserRoleChanged(solicitation, true)} />
+					<Button
+						title="Recusar"
+						backgroundColor={theme.colors.gray}
+						onClick={() => handleUserRoleChanged(solicitation, false)}
+					/>
+				</ActionButtonContainer>
+			</TableData>
+		);
+	};
 
-    alert('Recurso indisponível no momento')
-  }
+	const onUserRoleChange = async (event: React.ChangeEvent<HTMLSelectElement>, user: User) => {
+		const newRole = event.target.value as User["role"];
 
-  const handleUserRoleChanged = (solicitation: SolicitationUser, accept: boolean) => {
-    try {
-      if (accept) {
-        SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id, solicitation.roleReq)
-      } else {
-        SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id)
-      }
+		try {
+			await userRequest.setUserRole(user.id, newRole);
 
-      const solicitationFiltered = solicitationUsers.filter(solicitationUser => solicitationUser.id !== solicitation.id)
+			if (newRole === "simple") {
+				setUsers((prevUsers) => {
+					return prevUsers.filter((prevUser) => prevUser.id !== user.id);
+				});
+			}
+		} catch (error) {
+			event.target.value = user.role;
+			event.target.focus();
+			alert("Não foi possível alterar o privilégio desse usuário.");
+		}
+	};
 
-      setSolicitationUsers(solicitationFiltered)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+	const handleUserRoleChanged = (solicitation: SolicitationUser, accept: boolean) => {
+		try {
+			if (accept) {
+				SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id, solicitation.roleReq);
+			} else {
+				SolicitationRequests.validateSolicitation(solicitation.id, solicitation.user.id);
+			}
 
-  const onChangePage = (selected: boolean) => {
-    if (selected) return
+			const solicitationFiltered = solicitationUsers.filter(
+				(solicitationUser) => solicitationUser.id !== solicitation.id
+			);
 
-    setUserContentPage(!userContentPage)
-    setSolicitaionContentPage(!solicitaionContentPage)
-  }
+			setSolicitationUsers(solicitationFiltered);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-  return (
-    <>
-      <Main>
-        <PageTitle>
-          <Title
-            pageActive={userContentPage}
-            onClick={() => onChangePage(userContentPage)}
-          >
-            USUÁRIOS PRIVILEGIADOS
-          </Title>
-          <Divider src={DividerIcon} alt="Divisor" />
-          <Title
-            pageActive={solicitaionContentPage}
-            onClick={() => onChangePage(solicitaionContentPage)}
-          >
-            SOLICITAÇÕES
-          </Title>
-        </PageTitle>
+	const onChangePage = (selected: boolean) => {
+		if (selected) return;
 
-        <Table>
-          <thead>
-            <tr>
-              {userContentPage &&
-                headerUserContentPage.map((item, index) => (
-                  <TableHead key={index}>{item.title}</TableHead>
-                ))
-              }
-              {solicitaionContentPage &&
-                headerSolicitaionContentPage.map((item, index) => (
-                  <TableHead key={index}>{item.title}</TableHead>
-                ))
-              }
-            </tr>
-          </thead>
-          <tbody>
-            {userContentPage &&
-              users.map(user => (
-              <tr key={user.id}>
-                <TableData>{user.username}</TableData>
-                <TableData>{user.email}</TableData>
-                <PrivilegeLabelElement role={user.role} />
-                <SelectUserRole user={user} />
-              </tr>
-              ))}
-            {solicitaionContentPage &&
-              solicitationUsers.map(solicitation => (
-              <tr key={solicitation.id}>
-                <TableData>{solicitation.user.username}</TableData>
-                <TableData>{solicitation.user.email}</TableData>
-                <PrivilegeLabelElement role={solicitation.roleReq} />
-                <ActionsUserRole solicitation={solicitation} />
-              </tr>
-              ))}
-          </tbody>
-        </Table>
-      </Main>
-    </>
-  )
+		setUserContentPage(!userContentPage);
+		setSolicitaionContentPage(!solicitaionContentPage);
+	};
+
+	return (
+		<>
+			<Main>
+				<PageTitle>
+					<Title pageActive={userContentPage} onClick={() => onChangePage(userContentPage)}>
+						USUÁRIOS PRIVILEGIADOS
+					</Title>
+					<Divider src={DividerIcon} alt="Divisor" />
+					<Title pageActive={solicitaionContentPage} onClick={() => onChangePage(solicitaionContentPage)}>
+						SOLICITAÇÕES
+					</Title>
+				</PageTitle>
+
+				<Table>
+					<thead>
+						<tr>
+							{userContentPage &&
+								headerUserContentPage.map((item, index) => <TableHead key={index}>{item.title}</TableHead>)}
+							{solicitaionContentPage &&
+								headerSolicitaionContentPage.map((item, index) => <TableHead key={index}>{item.title}</TableHead>)}
+						</tr>
+					</thead>
+					<tbody>
+						{userContentPage &&
+							users.map((user) => (
+								<tr key={user.id}>
+									<TableData>{user.username}</TableData>
+									<TableData>{user.email}</TableData>
+									<PrivilegeLabelElement role={user.role} />
+									<SelectUserRole user={user} />
+								</tr>
+							))}
+						{solicitaionContentPage &&
+							solicitationUsers.map((solicitation) => (
+								<tr key={solicitation.id}>
+									<TableData>{solicitation.user.username}</TableData>
+									<TableData>{solicitation.user.email}</TableData>
+									<PrivilegeLabelElement role={solicitation.roleReq} />
+									<ActionsUserRole solicitation={solicitation} />
+								</tr>
+							))}
+					</tbody>
+				</Table>
+			</Main>
+		</>
+	);
 }
