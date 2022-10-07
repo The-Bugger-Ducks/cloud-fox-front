@@ -35,7 +35,7 @@ export default function PrivilegedUsers() {
 
 			setUsers(response ?? []);
 		} catch (error) {
-			alert("Error");
+			alert("Ocorreu um erro ao listar os usuários privilegiados. Tente novamente mais tarde!");
 		}
 	};
 
@@ -47,7 +47,9 @@ export default function PrivilegedUsers() {
 
 			setSolicitationUsers(response ?? []);
 		} catch (error) {
-			alert("Error");
+			alert(
+				"Ocorreu um erro ao listar as solicitações de troca de privilégio dos usuários. Tente novamente mais tarde!"
+			);
 		}
 	};
 
@@ -147,10 +149,10 @@ export default function PrivilegedUsers() {
 					return prevUsers.filter((prevUser) => prevUser.id !== user.id);
 				});
 			}
-		} catch (error) {
+		} catch (errorMessage) {
 			event.target.value = user.role;
 			event.target.focus();
-			alert("Não foi possível alterar o privilégio desse usuário.");
+			alert(errorMessage);
 		}
 	};
 
@@ -168,7 +170,7 @@ export default function PrivilegedUsers() {
 
 			setSolicitationUsers(solicitationFiltered);
 		} catch (error) {
-			console.log(error);
+			alert("Ocorreu um erro ao processar a solicitação do usuário. Tente novamente mais tarde!");
 		}
 	};
 

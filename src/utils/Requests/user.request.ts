@@ -58,7 +58,12 @@ class UserRequests {
 	}
 
 	public async setUserRole(id: User["id"], role: User["role"]) {
-		return await api.put('/users/updateRole', { id, role })
+		try {
+			await api.put('/users/updateRole', { id, role }, { timeout: 5000 })
+		} catch (error) {
+			console.error(error);
+			throw new Error("Ocorreu um erro ao alterar o privilégio desse usuário. Tente novamente mais tarde!")
+		}
 	}
 }
 
