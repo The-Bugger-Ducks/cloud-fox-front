@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, MouseEvent } from 'react'
+import { useContext, MouseEvent } from "react";
 
 import {
   Container,
@@ -9,15 +9,17 @@ import {
   Footer,
   Logo,
   LogoTitle,
-  NavbarSpan
-} from './styles'
+  NavbarSpan,
+} from "./styles";
 
-import logo from '../../assets/logo.png'
+import logo from "../../assets/logo.png";
 
-import { AuthContext } from '../../context/AuthContext'
-import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import SidebarAdmin from "./SidebarAdmin";
+import SidebarAdvanced from "./SidebarAdvanced";
 
-interface CustomTreeItemLike {
+export interface CustomTreeItemLike {
   icon?: string;
   text?: string;
   path?: string;
@@ -25,80 +27,45 @@ interface CustomTreeItemLike {
   invisible?: boolean;
 }
 
-export default function Sidebar () {
-  const [routes, setRoutes] = useState<CustomTreeItemLike[]>();
+interface Props {
+  children: JSX.Element | JSX.Element[];
+}
 
+export default function Sidebar() {
   const { userInfo, handleClearUserInfo } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const newRoutes = filterRoutesByUserRole()
-    setRoutes(newRoutes)
-  }, [userInfo])
-
-
-  function handleLogoutUser() {    
-    handleClearUserInfo()
-    navigate('/home')
+  function handleLogoutUser() {
+    handleClearUserInfo();
+    navigate("/home");
   }
 
-  function filterRoutesByUserRole() {
-    let routesFiltered: CustomTreeItemLike[] = [
-      {
-        text: 'Página Inicial',
-        path: '/home'
-      },
-    ]
+  const SidebarContent: React.FC<Props> = ({ children }) => {
+    return <Navbar>{children}</Navbar>;
+  };
 
-    if (userInfo?.role === "admin") {
-      routesFiltered.push({
-        text: 'Usuários privilegiados',
-        path: '/privileged-users'
-      })
-    } else if (userInfo?.role === "advanced") {   
-    } else if (userInfo?.role === "simple") {
-    }    
-
-    if (userInfo?.role !== undefined) {
-      routesFiltered.push(        
-        {
-          text: 'Meu Perfil',
-          path: '/myProfile'
-        },
-        {
-          text: 'Sair',
-          onClick: () => handleLogoutUser()
-        }
-      )
-    } else {
-      routesFiltered.push(
-        {
-          text: 'Entrar',
-          path: '/login'
-        },
-      )  
-    } 
-
-    return routesFiltered as CustomTreeItemLike[]
-  }
-
-  return (     
+  return (
     <Container>
       <Header>
         <Title>MENU</Title>
 
-        <Navbar>
-          {routes?.map((route, index) => (
-            <div key={index}>
-              {route.path ? (
-                <NavbarLink  to={route.path}>{route.text}</NavbarLink>
-              ):(
-                <NavbarSpan onClick={route?.onClick}>{route.text}</NavbarSpan>
+        <SidebarContent>
+          <NavbarLink to="/home">Página Inicial</NavbarLink>
+          {userInfo ? (
+            <>
+              {userInfo.role === "admin" ? (
+                <SidebarAdmin />
+              ) : (
+                <SidebarAdvanced />
               )}
-            </div>
-          ))}
-        </Navbar>
+              <NavbarLink to="/myProfile">Meu Perfil</NavbarLink>
+              <NavbarSpan onClick={handleLogoutUser}>Sair</NavbarSpan>
+            </>
+          ) : (
+            <NavbarLink to="/login">Entrar</NavbarLink>
+          )}
+        </SidebarContent>
       </Header>
 
       <Footer>
@@ -106,5 +73,5 @@ export default function Sidebar () {
         <LogoTitle>Cloud Fox</LogoTitle>
       </Footer>
     </Container>
-  )
+  );
 }
