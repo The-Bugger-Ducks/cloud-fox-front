@@ -1,5 +1,12 @@
 import { useContext, MouseEvent } from "react";
 
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/AuthContext";
+
+import SidebarAdmin from "./SidebarAdmin";
+import SidebarAdvanced from "./SidebarAdvanced";
+
 import {
   Container,
   Header,
@@ -13,11 +20,6 @@ import {
 } from "./styles";
 
 import logo from "../../assets/logo.png";
-
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import SidebarAdmin from "./SidebarAdmin";
-import SidebarAdvanced from "./SidebarAdvanced";
 
 export interface CustomTreeItemLike {
   icon?: string;
