@@ -1,5 +1,6 @@
 import { api } from "../../services/api";
 import { ActiveStationInterface } from "../../interfaces/station";
+import { ParamInterface } from "../../interfaces/param";
 import { LatLngLiteral } from "leaflet";
 
 class StationRequests {
@@ -10,6 +11,20 @@ class StationRequests {
         : await api.get("stations/");
 
       return response.data as ActiveStationInterface[];
+    } catch (error) {
+      console.log(error);
+      alert("Não foi possível obter estações.");
+    }
+  }
+
+  public async getStation(id: string) {
+    try {
+      const response = await api.get("/stations/" + id);
+
+      return response.data as {
+        station: ActiveStationInterface;
+        parameterTypes: ParamInterface[];
+      };
     } catch (error) {
       console.log(error);
       alert("Não foi possível obter estações.");

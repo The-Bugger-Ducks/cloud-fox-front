@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import CardChart from '../../components/CardChart'
-import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons'
+import CardChart from "../../components/CardChart";
+import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 
 import {
   Container,
@@ -17,35 +17,36 @@ import {
   CardContainer,
 } from "./styles";
 
-import DashboardRequests from "../../utils/Requests/dashboard.request";
-
+import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
-import handlerDashboardData from "../../utils/handlers/handlerDashboardData"
+import { ParamInterface } from "../../interfaces/param";
+import handlerDashboardData from "../../utils/handlers/handlerDashboardData";
 
 export default function Dashboard() {
   const { id } = useParams();
 
-  const [station, setStation] = useState<ActiveStationInterface | undefined>();
-  const [charts, setCharts] = useState<any[]>();
+  const [station, setStation] = useState<{
+    station: ActiveStationInterface;
+    parameterTypes: ParamInterface[];
+  }>();
+
+  const [charts, setCharts] = useState<any[]>([]);
 
   useEffect(() => {
     getDashboardData();
   }, []);
 
   const getDashboardData = async () => {
+    debugger;
     if (id) {
-      const response = await DashboardRequests.getDashboardData(id);
+      const stationInfo = await StationRequests.getStation(id);
 
-      if (response == null) {
-        alert("Não foram encontrados dados para a estação selecionada");
-        return;
+      if (stationInfo) {
+        setStation(stationInfo);
+        const options = await handlerDashboardData(stationInfo);
+
+        setCharts(options);
       }
-
-      const stationData: ActiveStationInterface = response.station;
-      const collectsData: any = handlerDashboardData(response.collects);
-
-      setCharts(collectsData);
-      setStation(stationData);
     } else {
       alert("Estação não encontrada");
     }
@@ -61,7 +62,7 @@ export default function Dashboard() {
             <Divider src={DividerIcon} alt="Divisor" />
 
             <StationName>
-              <Subtitle>{station?.name}</Subtitle>
+              <Subtitle>{station?.station.name}</Subtitle>
               <EditButton src={EditIcon} alt="Editar estação" />
             </StationName>
           </PageTitle>
@@ -70,14 +71,13 @@ export default function Dashboard() {
         </Header>
 
         <CardContainer>
-          {charts != null &&
-            charts?.map((chart, index) => (
-              <CardChart
-                options={chart.options}
-                title={chart.title}
-                key={index}
-              />
-            ))}
+          {charts.map((chart, index) => (
+            <CardChart
+              options={chart.options}
+              title={chart.title}
+              key={index}
+            />
+          ))}
         </CardContainer>
       </Container>
     </>
