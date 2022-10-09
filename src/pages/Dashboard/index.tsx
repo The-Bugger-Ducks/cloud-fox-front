@@ -31,6 +31,7 @@ export default function Dashboard() {
   }>();
 
   const [charts, setCharts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getDashboardData();
@@ -46,6 +47,7 @@ export default function Dashboard() {
         const options = await handlerDashboardData(stationInfo);
 
         setCharts(options);
+        setIsLoading(false);
       }
     } else {
       alert("Estação não encontrada");
@@ -71,13 +73,21 @@ export default function Dashboard() {
         </Header>
 
         <CardContainer>
-          {charts.map((chart, index) => (
-            <CardChart
-              options={chart.options}
-              title={chart.title}
-              key={index}
-            />
-          ))}
+          {!isLoading ? (
+            charts.length != 0 ? (
+              charts.map((chart, index) => (
+                <CardChart
+                  options={chart.options}
+                  title={chart.title}
+                  key={index}
+                />
+              ))
+            ) : (
+              <p>Nenhum dado encontrado para estação selecionada.</p>
+            )
+          ) : (
+            <p>Carregando...</p>
+          )}
         </CardContainer>
       </Container>
     </>
