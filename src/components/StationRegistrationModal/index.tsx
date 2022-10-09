@@ -52,8 +52,13 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>(
           payload.description
         );
 
-        console.log("s", response);
-        parameterRegistrationModalRef.current?.showModal();
+        if (response != "error") {
+          closeModal();
+          parameterRegistrationModalRef.current?.showModal();
+        } else {
+          alert("Não foi possível cadastrar estação");
+        }
+
         closeModal();
       } else {
         alert("Latitude e longitude inválida");

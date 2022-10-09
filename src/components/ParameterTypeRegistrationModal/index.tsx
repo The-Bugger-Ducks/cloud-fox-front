@@ -1,6 +1,7 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import ParamRequests from "../../utils/Requests/param.request";
 import {
   Container,
   Body,
@@ -27,11 +28,7 @@ const ParameterRegistrationModal = forwardRef<
     setIsDisabled(true);
   };
 
-  useEffect(() => {
-    setIdStation(props.idStation ? props.idStation : "");
-  }, []);
-
-  const createParameter = () => {
+  const createParameter = async () => {
     const payload = {
       name: nameParameter,
       unit: unitParameter,
@@ -39,17 +36,36 @@ const ParameterRegistrationModal = forwardRef<
       type: typeParameter,
       stationId: idStation,
     };
+
+    const response = await ParamRequests.createParam(
+      payload.name,
+      payload.unit,
+      payload.factor,
+      payload.type,
+      payload.stationId
+    );
+
+    if (response != "error") {
+      closeModal();
+      alert("Parâmetro cadastrado com sucesso!");
+      window.location.reload();
+    } else {
+      alert("Não foi possível cadastrar o parâmetro");
+    }
   };
 
   useImperativeHandle(ref, () => ({
-    showModal: () => setIsDisabled(false),
+    showModal: () => {
+      setIdStation(props.idStation ? props.idStation : "");
+      setIsDisabled(false);
+    },
   }));
 
   return (
     <Container disabled={isDisabled}>
       <Body>
         <Main>
-          <Title>Cadastrar estação</Title>
+          <Title>Cadastrar parâmetros</Title>
           <Questions>
             <Label>Nome do parâmetro</Label>
             <Input
@@ -57,10 +73,9 @@ const ParameterRegistrationModal = forwardRef<
               onChange={(event) => setPameParameter(event.target.value)}
             />
 
-            <Label>Nome da estação</Label>
+            <Label>Unidade de medida</Label>
             <Input
               type="text"
-              placeholder="Unidade de medida"
               onChange={(event) => setUnitParameter(event.target.value)}
             />
 

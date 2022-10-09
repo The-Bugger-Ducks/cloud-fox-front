@@ -35,14 +35,10 @@ class StationRequests {
       };
 
       const response = await api.post("/stations", payload);
-
-      alert("Estação cadastrada com sucesso!");
-
       return response;
     } catch (error) {
       console.log(error);
-
-      alert("Não foi possível cadastrar estação.");
+      return "error";
     }
   }
 }
