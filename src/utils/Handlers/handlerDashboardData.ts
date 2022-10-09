@@ -2,114 +2,80 @@ import DashboardRequests from "../Requests/dashboard.request";
 import dashboardConfig from "../../dashboard.config";
 import { DashboardInterface } from "../../interfaces/dashboard";
 import { ActiveStationInterface } from "../../interfaces/station";
+import { ParamInterface } from "../../interfaces/param";
 
-export default function handlerDashboardData(apiResponse: any) {
-  const dashboardParams = apiResponse;
-
-  let organizedParams = _initializeObjectParams();
-
-  if (dashboardParams)
-    organizedParams = _populateObjectParams(organizedParams, dashboardParams);
-
-  const options = _generateOptions(organizedParams);
-
-  return options;
-}
-
-function _initializeObjectParams() {
-  let organizedParams: any = new Object();
-
-  dashboardConfig.possibleParams.forEach((param) => {
-    organizedParams[param.dataVariable] = [];
-    organizedParams[param.unitVariable] = [];
-  });
-
-  return organizedParams;
-}
-
-function _populateObjectParams(
-  baseObject: any,
-  rawObject: DashboardInterface[]
-) {
-  rawObject.forEach((params: any) => {
-    if (params["moment"]) {
-      for (let param in params) {
-        if (param in baseObject) {
-          if (param.includes("Unit")) {
-            baseObject[param] = params[param].toUpperCase();
-          } else {
-            baseObject[param].push([
-              parseInt(params["moment"]) * 1000,
-              params[param],
-            ]);
-          }
-        }
-      }
-    }
-  });
-  return baseObject;
-}
-
-function _generateOptions(objectPopulated: any) {
+export default async function handlerDashboardData(apiResponse: {
+  station: ActiveStationInterface;
+  parameterTypes: ParamInterface[];
+}) {
   let options: any = [];
-  const titles: any = dashboardConfig.chartsTitles;
 
-  dashboardConfig.index.forEach((key: any) => {
-    const valueKey: any = `${key}Value`;
-    const unitKey: any = `${key}Unit`;
+  console.log(apiResponse);
 
-    if (valueKey in objectPopulated && unitKey) {
-      const title: string = titles[valueKey];
-      const value: string = objectPopulated[valueKey];
-      const unit: string = objectPopulated[unitKey];
+  for (let param in apiResponse.parameterTypes) {
+    const paramData = await DashboardRequests.getDashboardData(
+      apiResponse.station.id,
+      apiResponse.parameterTypes[param].type
+    );
 
-      options.push({
-        title: title,
-        options: {
-          chart: {
-            type: "spline",
-          },
-          title: {
-            text: "",
-          },
-          yAxis: {
-            title: {
-              text: `${unit}`,
-            },
-            labels: {
-              format: "{value} " + unit,
-            },
-            tickInterval: 1,
-          },
-          xAxis: {
-            type: "datetime",
-            dateTimeLabelFormats: {
-              weekly: "%e. %b %y",
-              twicemonthly: "%e. %b %y",
-              monthly: "%b %y",
-              twomonths: "%b %y",
-              threemonths: "%b %y",
-              fourmonths: "%b %y",
-              sixmonths: "%b %y",
-              yearly: "%Y",
-            },
-            labels: {
-              format: "{value:%b}",
-              align: "left",
-              x: 3,
-            },
-          },
-          series: [
-            {
-              name: `${unit} captados pela estação`,
-              color: "#AA55DD",
-              data: value,
-            },
-          ],
-        },
-      });
-    }
-  });
+    options.push(_newOption(apiResponse.parameterTypes[param], paramData));
+  }
 
   return options;
+}
+
+function _newOption(paramInfos: ParamInterface, paramData: any) {
+  const values: any = [];
+
+  paramData.forEach((value: any) => {
+    values.push([value.moment * 1000, value.value]);
+  });
+
+  const newOption = {
+    title: paramInfos.name,
+    options: {
+      chart: {
+        type: "spline",
+      },
+      title: {
+        text: "",
+      },
+      yAxis: {
+        title: {
+          text: `${paramInfos.unit}`,
+        },
+        labels: {
+          format: "{value} " + paramInfos.unit,
+        },
+        tickInterval: 1,
+      },
+      xAxis: {
+        type: "datetime",
+        dateTimeLabelFormats: {
+          weekly: "%e. %b %y",
+          twicemonthly: "%e. %b %y",
+          monthly: "%b %y",
+          twomonths: "%b %y",
+          threemonths: "%b %y",
+          fourmonths: "%b %y",
+          sixmonths: "%b %y",
+          yearly: "%Y",
+        },
+        labels: {
+          format: "{value:%b}",
+          align: "left",
+          x: 3,
+        },
+      },
+      series: [
+        {
+          name: `${paramInfos.unit} captados pela estação`,
+          color: "#AA55DD",
+          data: values,
+        },
+      ],
+    },
+  };
+
+  return newOption;
 }

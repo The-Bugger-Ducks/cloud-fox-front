@@ -74,15 +74,3 @@ export const Input = styled.input`
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
   margin-bottom: 1rem;
 `;
-
-export const TextArea = styled.textarea`
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem;
-  color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1rem;
-  height: 3rem;
-  margin-bottom: 1rem;
-`;

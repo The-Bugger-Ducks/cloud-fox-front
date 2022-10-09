@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import CardChart from '../../components/CardChart'
-import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons'
-
+import CardChart from "../../components/CardChart";
+import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
+import Button from "../../components/Button";
 import {
   Container,
   Header,
@@ -15,18 +15,28 @@ import {
   Divider,
   Filter,
   CardContainer,
+  NewParamContainer,
 } from "./styles";
 
-import DashboardRequests from "../../utils/Requests/dashboard.request";
-
+import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
-import handlerDashboardData from "../../utils/handlers/handlerDashboardData"
+import { ParamInterface } from "../../interfaces/param";
+import handlerDashboardData from "../../utils/handlers/handlerDashboardData";
+import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
+import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 
 export default function Dashboard() {
   const { id } = useParams();
 
-  const [station, setStation] = useState<ActiveStationInterface | undefined>();
-  const [charts, setCharts] = useState<any[]>();
+  const parameterRegistrationModalRef =
+    useRef<ParameterTypeRegistrationModalRef>(null);
+
+  const [station, setStation] = useState<{
+    station: ActiveStationInterface;
+    parameterTypes: ParamInterface[];
+  }>();
+  const [charts, setCharts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getDashboardData();
@@ -34,18 +44,15 @@ export default function Dashboard() {
 
   const getDashboardData = async () => {
     if (id) {
-      const response = await DashboardRequests.getDashboardData(id);
+      const stationInfo = await StationRequests.getStation(id);
 
-      if (response == null) {
-        alert("Não foram encontrados dados para a estação selecionada");
-        return;
+      if (stationInfo) {
+        setStation(stationInfo);
+        const options = await handlerDashboardData(stationInfo);
+
+        setCharts(options);
+        setIsLoading(false);
       }
-
-      const stationData: ActiveStationInterface = response.station;
-      const collectsData: any = handlerDashboardData(response.collects);
-
-      setCharts(collectsData);
-      setStation(stationData);
     } else {
       alert("Estação não encontrada");
     }
@@ -53,6 +60,10 @@ export default function Dashboard() {
 
   return (
     <>
+      <ParameterTypeRegistrationModal
+        ref={parameterRegistrationModalRef}
+        idStation={id}
+      />
       <Container>
         <Header>
           <PageTitle>
@@ -61,24 +72,36 @@ export default function Dashboard() {
             <Divider src={DividerIcon} alt="Divisor" />
 
             <StationName>
-              <Subtitle>{station?.name}</Subtitle>
+              <Subtitle>{station?.station.name}</Subtitle>
               <EditButton src={EditIcon} alt="Editar estação" />
             </StationName>
           </PageTitle>
 
           <Filter src={FilterIcon} alt="Filtrar gráficos" />
         </Header>
-
         <CardContainer>
-          {charts != null &&
-            charts?.map((chart, index) => (
-              <CardChart
-                options={chart.options}
-                title={chart.title}
-                key={index}
-              />
-            ))}
+          {!isLoading ? (
+            charts.length != 0 ? (
+              charts.map((chart, index) => (
+                <CardChart
+                  options={chart.options}
+                  title={chart.title}
+                  key={index}
+                />
+              ))
+            ) : (
+              <p>Nenhum dado encontrado para estação selecionada.</p>
+            )
+          ) : (
+            <p>Carregando...</p>
+          )}
         </CardContainer>
+        <NewParamContainer>
+          <Button
+            title="Cadastrar parâmetro"
+            onClick={() => parameterRegistrationModalRef.current?.showModal()}
+          />
+        </NewParamContainer>
       </Container>
     </>
   );
