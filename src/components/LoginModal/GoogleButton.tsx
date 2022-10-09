@@ -20,13 +20,13 @@ export default function GoogleButton() {
 
 	useEffect(() => {
 		const initClient = () => {
-			gapi.client.init({
-				clientId: CLIENT_ID,
+			gapi.auth2.init({
+				client_id: CLIENT_ID,
 				scope: "",
 			});
 		};
 		gapi.load("client:auth2", initClient);
-	});
+	}, []);
 
 	const onSuccess = (res: any) => {
 		UserRequests.createUser(
