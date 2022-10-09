@@ -10,6 +10,8 @@ export default async function handlerDashboardData(apiResponse: {
 }) {
   let options: any = [];
 
+  console.log(apiResponse);
+
   for (let param in apiResponse.parameterTypes) {
     const paramData = await DashboardRequests.getDashboardData(
       apiResponse.station.id,

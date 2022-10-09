@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import CardChart from "../../components/CardChart";
 import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
-
+import Button from "../../components/Button";
 import {
   Container,
   Header,
@@ -15,21 +15,26 @@ import {
   Divider,
   Filter,
   CardContainer,
+  NewParamContainer,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handlers/handlerDashboardData";
+import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
+import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 
 export default function Dashboard() {
   const { id } = useParams();
+
+  const parameterRegistrationModalRef =
+    useRef<ParameterTypeRegistrationModalRef>(null);
 
   const [station, setStation] = useState<{
     station: ActiveStationInterface;
     parameterTypes: ParamInterface[];
   }>();
-
   const [charts, setCharts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -38,7 +43,6 @@ export default function Dashboard() {
   }, []);
 
   const getDashboardData = async () => {
-    debugger;
     if (id) {
       const stationInfo = await StationRequests.getStation(id);
 
@@ -56,6 +60,10 @@ export default function Dashboard() {
 
   return (
     <>
+      <ParameterTypeRegistrationModal
+        ref={parameterRegistrationModalRef}
+        idStation={id}
+      />
       <Container>
         <Header>
           <PageTitle>
@@ -71,7 +79,6 @@ export default function Dashboard() {
 
           <Filter src={FilterIcon} alt="Filtrar gráficos" />
         </Header>
-
         <CardContainer>
           {!isLoading ? (
             charts.length != 0 ? (
@@ -89,6 +96,12 @@ export default function Dashboard() {
             <p>Carregando...</p>
           )}
         </CardContainer>
+        <NewParamContainer>
+          <Button
+            title="Cadastrar parâmetro"
+            onClick={() => parameterRegistrationModalRef.current?.showModal()}
+          />
+        </NewParamContainer>
       </Container>
     </>
   );
