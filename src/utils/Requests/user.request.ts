@@ -1,6 +1,11 @@
 import { User } from '../../interfaces/user';
 import { api } from '../../services/api';
 
+interface UserAuthenticatedLike {
+	userExists: User,
+	token: string
+}
+
 class UserRequests {
 	public async getUsers() {
 		try {
@@ -40,7 +45,7 @@ class UserRequests {
 				role: 'simple',
 				imgSrc,
 			});
-			return response.data as User;
+			return response.data as UserAuthenticatedLike;
 		} catch (error) {
 			console.error(error);
 			alert('Não foi possível criar o usuário.');
