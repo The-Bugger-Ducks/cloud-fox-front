@@ -1,48 +1,53 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { User } from '../interfaces/user';
-import SessionController from '../utils/handlers/SessionController';
+import React, { createContext, useEffect, useState } from "react";
+import { User } from "../interfaces/user";
+import SessionController from "../utils/handlers/SessionController";
 
+interface UserAuthenticatedLike {
+	token: string;
+	user: User;
+}
 
 interface AuthContextLike {
-  userInfo: User | null;
-  saveUserDataInStorage: (user: User)  => void;
-  handleClearUserInfo: () => void;
+	userInfo: User | null;
+	saveUserDataInStorage: (data: UserAuthenticatedLike) => void;
+	handleClearUserInfo: () => void;
 }
 
 interface Props {
-  children: JSX.Element;
+	children: JSX.Element;
 }
 
 const AuthContext = createContext<AuthContextLike>({
-  userInfo: null,
-  saveUserDataInStorage: (user: User)  => {},
-  handleClearUserInfo: ()  => {}
+	userInfo: null,
+	saveUserDataInStorage: (data: UserAuthenticatedLike) => {},
+	handleClearUserInfo: () => {},
 });
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [userInfo, setUserInfo] = useState<User | null>(null);
-  
-  useEffect(() => {
-    const userData = SessionController.getUserInfo();
-    
-    if (userData) setUserInfo(userData)    
-  }, [])
+	const [userInfo, setUserInfo] = useState<User | null>(null);
 
-  function saveUserDataInStorage(user: User) {
-    SessionController.setUserInfo(user!!)
-    setUserInfo(user)
-  }
+	useEffect(() => {
+		const userData = SessionController.getUserInfo();
 
-  function handleClearUserInfo() {
-    SessionController.clearUserInfo()
-    setUserInfo(null)
-  }
+		if (userData) setUserInfo(userData);
+	}, []);
 
-  return (
-    <AuthContext.Provider value={{userInfo, saveUserDataInStorage, handleClearUserInfo}}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
+	function saveUserDataInStorage(data: UserAuthenticatedLike) {
+		SessionController.setUserInfo(data.user);
+		SessionController.setToken(data.token);
+		setUserInfo(data.user);
+	}
+
+	function handleClearUserInfo() {
+		SessionController.clearUserInfo();
+		setUserInfo(null);
+	}
+
+	return (
+		<AuthContext.Provider value={{ userInfo, saveUserDataInStorage, handleClearUserInfo }}>
+			{children}
+		</AuthContext.Provider>
+	);
+};
 
 export { AuthProvider, AuthContext };
