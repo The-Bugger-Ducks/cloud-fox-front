@@ -1,82 +1,65 @@
+import { useContext, MouseEvent } from "react";
 
-import { User } from '../../interfaces/user'
-import UserRequests from '../../utils/Requests/user.request'
+import { useNavigate } from "react-router-dom";
 
-import {
-  Container,
-  Header,
-  Title,
-  Navbar,
-  NavbarLink,
-  Footer,
-  Logo,
-  LogoTitle
-} from './styles'
+import { AuthContext } from "../../context/AuthContext";
 
-import logo from '../../assets/logo.png'
-import { useEffect, useState } from 'react'
+import SidebarAdmin from "./SidebarAdmin";
+import SidebarAdvanced from "./SidebarAdvanced";
 
-export default function Sidebar () {
-  const userId = localStorage.getItem('userId') ?? ''
+import { Container, Header, Title, Navbar, NavbarLink, Footer, Logo, LogoTitle, NavbarSpan } from "./styles";
 
-  const [routes, setRoutes] = useState([
-    {
-      name: 'Home',
-      path: '/home'
-    },
-    {
-      name: 'Meu Perfil',
-      path: '/myProfile'
-    },
-    {
-      name: 'Login',
-      path: '/login'
-    }
-  ])
+import logo from "../../assets/logo.png";
 
-  useEffect(() => {
-    UserRequests.getUser(userId).then(user => {
-      console.log(user)
+export interface CustomTreeItemLike {
+	icon?: string;
+	text?: string;
+	path?: string;
+	onClick?: (e: MouseEvent) => void;
+	invisible?: boolean;
+}
 
-      if (user?.role === 'admin') {
-        setRoutes([
-          {
-            name: 'Home',
-            path: '/home'
-          },
-          {
-            name: 'Meu Perfil',
-            path: '/myProfile'
-          },
-          {
-            name: 'Login',
-            path: '/login'
-          },
-          {
-            name: 'Usuários privilegiados',
-            path: '/privileged-users'
-          }
-        ])
-      }
-    })
-  }, [userId])
+interface Props {
+	children: JSX.Element | JSX.Element[];
+}
 
-  return (
-    <Container>
-      <Header>
-        <Title>MENU</Title>
+export default function Sidebar() {
+	const { userInfo, handleClearUserInfo } = useContext(AuthContext);
 
-        <Navbar>
-          {routes.map((route, index) => (
-            <NavbarLink key={index} to={route.path}>{route.name}</NavbarLink>
-          ))}
-        </Navbar>
-      </Header>
+	const navigate = useNavigate();
 
-      <Footer>
-        <Logo src={logo} alt="logo" />
-        <LogoTitle>Cloud Fox</LogoTitle>
-      </Footer>
-    </Container>
-  )
+	function handleLogoutUser() {
+		handleClearUserInfo();
+		navigate("/home");
+	}
+
+	const SidebarContent: React.FC<Props> = ({ children }) => {
+		return <Navbar>{children}</Navbar>;
+	};
+
+	return (
+		<Container>
+			<Header>
+				<Title>MENU</Title>
+
+				<SidebarContent>
+					<NavbarLink to="/home">Página Inicial</NavbarLink>
+					{userInfo ? (
+						<>
+							{userInfo.role === "admin" ? <SidebarAdmin /> : <SidebarAdvanced />}
+							<NavbarLink to="/myProfile">Meu Perfil</NavbarLink>
+							<NavbarSpan onClick={handleLogoutUser}>Sair</NavbarSpan>
+						</>
+					) : (
+						<NavbarLink to="/login">Entrar</NavbarLink>
+					)}
+				</SidebarContent>
+			</Header>
+
+			<Footer>
+				<Logo src={logo} alt="logo" />
+				<LogoTitle>Cloud Fox</LogoTitle>
+			</Footer>
+		</Container>
+	);
 }

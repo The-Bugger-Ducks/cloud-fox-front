@@ -1,19 +1,18 @@
 import { useContext, useEffect } from "react";
-import { AiFillFacebook, AiFillApple, AiOutlineGooglePlus } from "react-icons/ai";
-
-import { useNavigate } from "react-router-dom";
-
-import Button from "../Button";
-import { Container, Title, Buttons } from "./styles";
-import theme from "../../global/theme";
 
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
+import Button from "../Button";
+import { AiOutlineGooglePlus } from "react-icons/ai";
+
+import theme from "../../global/theme";
 import UserRequests from "../../utils/Requests/user.request";
+import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
 
-export default function LoginModal() {
+export default function GoogleButton() {
 	const { saveUserDataInStorage } = useContext(AuthContext);
 	const navigate = useNavigate();
 
@@ -30,8 +29,6 @@ export default function LoginModal() {
 	}, []);
 
 	const onSuccess = (res: any) => {
-		alert("Fazendo login com Google...");
-
 		UserRequests.createUser(
 			res.profileObj.givenName,
 			res.profileObj.email,
@@ -53,44 +50,23 @@ export default function LoginModal() {
 	};
 
 	return (
-		<Container>
-			<Title>Login</Title>
-
-			<Buttons>
+		<GoogleLogin
+			clientId={CLIENT_ID}
+			buttonText="Login com  Google"
+			onSuccess={onSuccess}
+			onFailure={onFailure}
+			cookiePolicy={"single_host_origin"}
+			isSignedIn={true}
+			render={(renderProps) => (
 				<Button
-					title="Login com Facebook"
-					fontColor={theme.colors.white}
-					backgroundColor={"#1877F2"}
+					title="Login com Google"
+					fontColor={theme.colors.gray}
+					backgroundColor={theme.colors.white}
 					marginBottom={"1rem"}
-					icon={<AiFillFacebook size={24} />}
+					onClick={renderProps.onClick}
+					icon={<AiOutlineGooglePlus size={24} />}
 				/>
-
-				{/* <FacebookButton /> */}
-				<GoogleLogin
-					clientId={CLIENT_ID}
-					buttonText="Login com  Google"
-					onSuccess={onSuccess}
-					onFailure={onFailure}
-					cookiePolicy={"single_host_origin"}
-					isSignedIn={true}
-					render={(renderProps) => (
-						<Button
-							title="Login com Google"
-							fontColor={theme.colors.gray}
-							backgroundColor={theme.colors.white}
-							marginBottom={"1rem"}
-							onClick={renderProps.onClick}
-							icon={<AiOutlineGooglePlus size={24} />}
-						/>
-					)}
-				/>
-				<Button
-					title="Login com Apple"
-					fontColor={theme.colors.white}
-					backgroundColor={theme.colors.black}
-					icon={<AiFillApple size={24} />}
-				/>
-			</Buttons>
-		</Container>
+			)}
+		/>
 	);
 }

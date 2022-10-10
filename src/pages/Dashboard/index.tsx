@@ -1,263 +1,95 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import Sidebar from '../../components/Sidebar'
-import CardChart from '../../components/CardChart'
-import { EditIcon, FilterIcon, DividerIcon } from '../../assets/icons'
+import CardChart from "../../components/CardChart";
+import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
+import Button from "../../components/Button";
 import {
-  Container,
-  Header,
-  PageTitle,
-  Title,
-  Subtitle,
-  StationName,
-  EditButton,
-  Divider,
-  Filter,
-  CardContainer
-} from './styles'
+	Container,
+	Header,
+	PageTitle,
+	Title,
+	Subtitle,
+	StationName,
+	EditButton,
+	Divider,
+	Filter,
+	CardContainer,
+	NewParamContainer,
+} from "./styles";
 
-import DashboardRequests from '../../utils/Requests/dashboard.request'
+import StationRequests from "../../utils/Requests/station.request";
+import { ActiveStationInterface } from "../../interfaces/station";
+import { ParamInterface } from "../../interfaces/param";
+import handlerDashboardData from "../../utils/handlers/handlerDashboardData";
+import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
+import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 
-import { ActiveStationInterface } from '../../interfaces/station'
-import { DashboardInterface } from '../../interfaces/dashboard'
+export default function Dashboard() {
+	const { id } = useParams();
 
-export default function Dashboard () {
-  const { id } = useParams()
+	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 
-  const [station, setStation] = useState<ActiveStationInterface | undefined>()
-  const [charts, setCharts] = useState<any[]>()
+	const [station, setStation] = useState<{
+		station: ActiveStationInterface;
+		parameterTypes: ParamInterface[];
+	}>();
+	const [charts, setCharts] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    // getStation();
-    getDashboardData()
-  }, [])
+	useEffect(() => {
+		getDashboardData();
+	}, []);
 
-  const getDashboardData = async () => {
-    if (id) {
-      const response = await DashboardRequests.getDashboardData(id)
+	const getDashboardData = async () => {
+		if (id) {
+			const stationInfo = await StationRequests.getStation(id);
 
-      if (response == null) {
-        alert('Não foram encontrados dados para a estação selecionada')
-        return
-      }
-      const collectsData: DashboardInterface[] = response.collects
-      const stationData: ActiveStationInterface = response.station
+			if (stationInfo) {
+				setStation(stationInfo);
+				const options = await handlerDashboardData(stationInfo);
 
-      const chartsData: any = {
-        pluvSerie: [],
-        pluvUnit: '',
+				setCharts(options);
+				setIsLoading(false);
+			}
+		} else {
+			alert("Estação não encontrada");
+		}
+	};
 
-        heatSerie: [],
-        heatUnit: '',
+	return (
+		<>
+			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
+			<Container>
+				<Header>
+					<PageTitle>
+						<Title>Dashboard</Title>
 
-        windVelocitySerie: [],
-        windVelocityUnit: ''
-      }
+						<Divider src={DividerIcon} alt="Divisor" />
 
-      collectsData?.forEach(data => {
-        if (data.pluvValue && data.pluvUnit) {
-          chartsData.pluvSerie.push([parseInt(data.moment) * 1000, data.pluvValue])
-          chartsData.pluvUnit = data.pluvUnit
-        }
+						<StationName>
+							<Subtitle>{station?.station.name}</Subtitle>
+							<EditButton src={EditIcon} alt="Editar estação" />
+						</StationName>
+					</PageTitle>
 
-        if (data.heatValue && data.heatUnit) {
-          chartsData.heatSerie.push([parseInt(data.moment) * 1000, data.heatValue])
-          chartsData.heatUnit = data.heatUnit
-        }
-
-        if (data.WindVelocityValue && data.WindVelocityUnit) {
-          chartsData.windVelocitySerie.push([
-            parseInt(data.moment) * 1000,
-            data.WindVelocityValue
-          ])
-          chartsData.windVelocityUnit = data.WindVelocityUnit
-        }
-      })
-
-      const chartsOptions: any = []
-
-      if (chartsData.pluvSerie.length !== 0) {
-        chartsOptions.push({
-          title: 'Dados pluviométrico captados pela estação',
-          options: {
-            chart: {
-              type: 'spline'
-            },
-            title: {
-              text: ''
-            },
-            yAxis: {
-              title: {
-                text: `Total de ${chartsData.pluvUnit.toUpperCase()} captados`
-              },
-              labels: {
-                format: '{value} ' + chartsData.pluvUnit.toUpperCase()
-              },
-              tickInterval: 1
-            },
-            xAxis: {
-              type: 'datetime',
-              dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
-              },
-              labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
-            },
-            series: [
-              {
-                name: `${chartsData.pluvUnit.toUpperCase()} de chuva captados pela estação`,
-                color: '#AA55DD',
-                data: chartsData.pluvSerie
-              }
-            ]
-          }
-        })
-      }
-
-      if (chartsData.heatSerie.length !== 0) {
-        chartsOptions.push({
-          title: 'Dados de temperatura captados pela estação',
-          options: {
-            chart: {
-              type: 'spline'
-            },
-            title: {
-              text: ''
-            },
-            yAxis: {
-              title: {
-                text: `Total de temperaturas (${chartsData.heatUnit.toUpperCase()}) captadas`
-              },
-              labels: {
-                format: '{value} ' + chartsData.heatUnit.toUpperCase()
-              },
-              tickInterval: 1
-            },
-            xAxis: {
-              type: 'datetime',
-              dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
-              },
-              labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
-            },
-            series: [
-              {
-                name: `Temperatura em ${chartsData.heatUnit.toUpperCase()} captada pela estação`,
-                color: '#AA55DD',
-                data: chartsData.heatSerie
-              }
-            ]
-          }
-        })
-      }
-
-      if (chartsData.windVelocitySerie.length !== 0) {
-        chartsOptions.push({
-          title: 'Dados de velocidade do vento captados pela estação',
-          options: {
-            chart: {
-              type: 'spline'
-            },
-            title: {
-              text: ''
-            },
-            yAxis: {
-              title: {
-                text: `Total de velocidade (${chartsData.windVelocityUnit.toUpperCase()}) captada`
-              },
-              labels: {
-                format: '{value} ' + chartsData.windVelocityUnit.toUpperCase()
-              },
-              tickInterval: 1
-            },
-            xAxis: {
-              type: 'datetime',
-              dateTimeLabelFormats: {
-                weekly: '%e. %b %y',
-                twicemonthly: '%e. %b %y',
-                monthly: '%b %y',
-                twomonths: '%b %y',
-                threemonths: '%b %y',
-                fourmonths: '%b %y',
-                sixmonths: '%b %y',
-                yearly: '%Y'
-              },
-              labels: {
-                format: '{value:%b}',
-                align: 'left',
-                x: 3
-              }
-            },
-            series: [
-              {
-                name: `Velocidade em ${chartsData.windVelocityUnit.toUpperCase()} captada pela estação`,
-                color: '#AA55DD',
-                data: chartsData.windVelocitySerie
-              }
-            ]
-          }
-        })
-      }
-
-      setCharts(chartsOptions)
-      setStation(stationData)
-    } else {
-      alert('Estação não encontrada')
-    }
-  }
-
-  return (
-    <>
-      <Sidebar />
-      <Container>
-        <Header>
-          <PageTitle>
-            <Title>Dashboard</Title>
-
-            <Divider src={DividerIcon} alt="Divisor" />
-
-            <StationName>
-              <Subtitle>{station?.name}</Subtitle>
-              <EditButton src={EditIcon} alt="Editar estação" />
-            </StationName>
-          </PageTitle>
-
-          <Filter src={FilterIcon} alt="Filtrar gráficos" />
-        </Header>
-
-        <CardContainer>
-          {(charts != null) &&
-            charts?.map((chart, index) => (
-              <CardChart
-                options={chart.options}
-                title={chart.title}
-                key={index}
-              />
-            ))}
-        </CardContainer>
-      </Container>
-    </>
-  )
+					<Filter src={FilterIcon} alt="Filtrar gráficos" />
+				</Header>
+				<CardContainer>
+					{!isLoading ? (
+						charts.length != 0 ? (
+							charts.map((chart, index) => <CardChart options={chart.options} title={chart.title} key={index} />)
+						) : (
+							<p>Nenhum dado encontrado para estação selecionada.</p>
+						)
+					) : (
+						<p>Carregando...</p>
+					)}
+				</CardContainer>
+				<NewParamContainer>
+					<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+				</NewParamContainer>
+			</Container>
+		</>
+	);
 }
