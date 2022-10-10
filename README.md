@@ -10,7 +10,7 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Figma, R
 
 ### :gear: Como utilizar
 
-É possível acessar a aplicação pelo link de seu deploy (clicando [aqui]()) mas também é possível rodar localmente seguindo o passo a passo abaixo:
+É possível acessar a aplicação pelo link de seu deploy (clicando [aqui](https://cloud-fox.netlify.app/)) mas também é possível rodar localmente seguindo o passo a passo abaixo:
 
 - Tutorial para rodar o projeto
 
@@ -27,13 +27,6 @@ $ npm start
 ```
 
 A aplicação inciará localmente na porta 3000. Use o navegador para acessar o link [http://localhost:3000](http://localhost:3000) e executar as funcionalidades da aplicação.
-
-## 💻 Demonstração
-
-<div align="center">
-  
-![Demonstração]()
-</div>
 
 ### Explicação da estrutura das pastas
 

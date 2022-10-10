@@ -5,17 +5,17 @@ import CardChart from "../../components/CardChart";
 import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
 import Button from "../../components/Button";
 import {
-  Container,
-  Header,
-  PageTitle,
-  Title,
-  Subtitle,
-  StationName,
-  EditButton,
-  Divider,
-  Filter,
-  CardContainer,
-  NewParamContainer,
+	Container,
+	Header,
+	PageTitle,
+	Title,
+	Subtitle,
+	StationName,
+	EditButton,
+	Divider,
+	Filter,
+	CardContainer,
+	NewParamContainer,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -26,83 +26,70 @@ import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegist
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 
 export default function Dashboard() {
-  const { id } = useParams();
+	const { id } = useParams();
 
-  const parameterRegistrationModalRef =
-    useRef<ParameterTypeRegistrationModalRef>(null);
+	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 
-  const [station, setStation] = useState<{
-    station: ActiveStationInterface;
-    parameterTypes: ParamInterface[];
-  }>();
-  const [charts, setCharts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [station, setStation] = useState<{
+		station: ActiveStationInterface;
+		parameterTypes: ParamInterface[];
+	}>();
+	const [charts, setCharts] = useState<any[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    getDashboardData();
-  }, []);
+	useEffect(() => {
+		getDashboardData();
+	}, []);
 
-  const getDashboardData = async () => {
-    if (id) {
-      const stationInfo = await StationRequests.getStation(id);
+	const getDashboardData = async () => {
+		if (id) {
+			const stationInfo = await StationRequests.getStation(id);
 
-      if (stationInfo) {
-        setStation(stationInfo);
-        const options = await handlerDashboardData(stationInfo);
+			if (stationInfo) {
+				setStation(stationInfo);
+				const options = await handlerDashboardData(stationInfo);
 
-        setCharts(options);
-        setIsLoading(false);
-      }
-    } else {
-      alert("Estação não encontrada");
-    }
-  };
+				setCharts(options);
+				setIsLoading(false);
+			}
+		} else {
+			alert("Estação não encontrada");
+		}
+	};
 
-  return (
-    <>
-      <ParameterTypeRegistrationModal
-        ref={parameterRegistrationModalRef}
-        idStation={id}
-      />
-      <Container>
-        <Header>
-          <PageTitle>
-            <Title>Dashboard</Title>
+	return (
+		<>
+			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
+			<Container>
+				<Header>
+					<PageTitle>
+						<Title>Dashboard</Title>
 
-            <Divider src={DividerIcon} alt="Divisor" />
+						<Divider src={DividerIcon} alt="Divisor" />
 
-            <StationName>
-              <Subtitle>{station?.station.name}</Subtitle>
-              <EditButton src={EditIcon} alt="Editar estação" />
-            </StationName>
-          </PageTitle>
+						<StationName>
+							<Subtitle>{station?.station.name}</Subtitle>
+							<EditButton src={EditIcon} alt="Editar estação" />
+						</StationName>
+					</PageTitle>
 
-          <Filter src={FilterIcon} alt="Filtrar gráficos" />
-        </Header>
-        <CardContainer>
-          {!isLoading ? (
-            charts.length != 0 ? (
-              charts.map((chart, index) => (
-                <CardChart
-                  options={chart.options}
-                  title={chart.title}
-                  key={index}
-                />
-              ))
-            ) : (
-              <p>Nenhum dado encontrado para estação selecionada.</p>
-            )
-          ) : (
-            <p>Carregando...</p>
-          )}
-        </CardContainer>
-        <NewParamContainer>
-          <Button
-            title="Cadastrar parâmetro"
-            onClick={() => parameterRegistrationModalRef.current?.showModal()}
-          />
-        </NewParamContainer>
-      </Container>
-    </>
-  );
+					<Filter src={FilterIcon} alt="Filtrar gráficos" />
+				</Header>
+				<CardContainer>
+					{!isLoading ? (
+						charts.length != 0 ? (
+							charts.map((chart, index) => <CardChart options={chart.options} title={chart.title} key={index} />)
+						) : (
+							<p>Nenhum dado encontrado para estação selecionada.</p>
+						)
+					) : (
+						<p>Carregando...</p>
+					)}
+				</CardContainer>
+				<NewParamContainer>
+					<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+				</NewParamContainer>
+			</Container>
+		</>
+	);
 }
