@@ -21,7 +21,7 @@ import {
 import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
-import handlerDashboardData from "../../utils/handlers/handlerDashboardData";
+import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 
