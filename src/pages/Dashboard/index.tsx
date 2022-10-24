@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import CardChart from "../../components/CardChart";
-import { EditIcon, FilterIcon, DividerIcon } from "../../assets/icons";
+import { EditIcon, DividerIcon } from "../../assets/icons";
 import Button from "../../components/Button";
 import {
 	Container,
@@ -13,7 +13,6 @@ import {
 	StationName,
 	EditButton,
 	Divider,
-	Filter,
 	CardContainer,
 	NewParamContainer,
 } from "./styles";
@@ -72,8 +71,6 @@ export default function Dashboard() {
 							<EditButton src={EditIcon} alt="Editar estação" />
 						</StationName>
 					</PageTitle>
-
-					<Filter src={FilterIcon} alt="Filtrar gráficos" />
 				</Header>
 				<CardContainer>
 					{!isLoading ? (
