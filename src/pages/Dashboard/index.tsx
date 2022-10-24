@@ -74,7 +74,7 @@ export default function Dashboard() {
 				</Header>
 				<CardContainer>
 					{!isLoading ? (
-						charts.length != 0 ? (
+						charts.length !== 0 ? (
 							charts.map((chart, index) => <CardChart options={chart.options} title={chart.title} key={index} />)
 						) : (
 							<p>Nenhum dado encontrado para estação selecionada.</p>
