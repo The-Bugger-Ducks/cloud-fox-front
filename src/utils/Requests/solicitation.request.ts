@@ -1,7 +1,7 @@
 import { SolicitationUser } from "../../interfaces/solicitation";
 import { api } from "../../services/api";
 
-import { validateStatus } from "../Handlers/HandlerResponseStatusCodeFound";
+import { validateStatus } from "../handler/HandlerResponseStatusCodeFound";
 
 class SolicitationRequests {
 	public async getSolicitations() {
