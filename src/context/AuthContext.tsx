@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { User } from "../interfaces/user";
-import SessionController from "../utils/handlers/SessionController";
+import SessionController from "../utils/Handlers/SessionController";
 
 interface UserAuthenticatedLike {
 	token: string;

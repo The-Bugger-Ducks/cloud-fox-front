@@ -1,5 +1,5 @@
 import axios from "axios";
-import SessionController from "../utils/handler/SessionController";
+import SessionController from "../utils/Handlers/SessionController";
 
 export const api = axios.create({
 	baseURL: "https://cloud-fox.onrender.com/",
