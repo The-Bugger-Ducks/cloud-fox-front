@@ -1,6 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
 import { User } from "../interfaces/user";
+<<<<<<< HEAD
 import SessionController from "../utils/Handlers/SessionController";
+=======
+import SessionController from "../utils/handler/SessionController";
+>>>>>>> main
 
 interface UserAuthenticatedLike {
 	token: string;
