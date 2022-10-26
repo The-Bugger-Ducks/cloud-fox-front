@@ -16,10 +16,7 @@ class SolicitationRequests {
 		}
 	}
 
-	public async createSolicitation(
-		userId: string,
-		role: "simple" | "advanced" | "admin"
-	) {
+	public async createSolicitation(userId: string, role: "simple" | "advanced" | "admin") {
 		try {
 			await api.post("users/solicitation", {
 				roleReq: role,
@@ -33,11 +30,7 @@ class SolicitationRequests {
 		}
 	}
 
-	public async validateSolicitation(
-		id: string,
-		userId: string,
-		role?: "simple" | "advanced" | "admin"
-	) {
+	public async validateSolicitation(id: string, userId: string, role?: "simple" | "advanced" | "admin") {
 		try {
 			const response = await api.delete("solicitation", {
 				data: { id, role, user: userId },

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AiFillFacebook, AiFillApple, AiOutlineGooglePlus } from "react-icons/ai";
+import {  AiOutlineGooglePlus } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
 
@@ -57,15 +57,6 @@ export default function LoginModal() {
 			<Title>Login</Title>
 
 			<Buttons>
-				<Button
-					title="Login com Facebook"
-					fontColor={theme.colors.white}
-					backgroundColor={"#1877F2"}
-					marginBottom={"1rem"}
-					icon={<AiFillFacebook size={24} />}
-				/>
-
-				{/* <FacebookButton /> */}
 				<GoogleLogin
 					clientId={CLIENT_ID}
 					buttonText="Login com  Google"
@@ -83,12 +74,6 @@ export default function LoginModal() {
 							icon={<AiOutlineGooglePlus size={24} />}
 						/>
 					)}
-				/>
-				<Button
-					title="Login com Apple"
-					fontColor={theme.colors.white}
-					backgroundColor={theme.colors.black}
-					icon={<AiFillApple size={24} />}
 				/>
 			</Buttons>
 		</Container>
