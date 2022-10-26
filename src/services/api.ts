@@ -1,9 +1,9 @@
-import axios from 'axios'
-import SessionController from '../utils/handlers/SessionController';
+import axios from "axios";
+import SessionController from "../utils/handler/SessionController";
 
 export const api = axios.create({
-	baseURL: 'https://cloud-fox.onrender.com/'
-})
+	baseURL: "https://cloud-fox.onrender.com/",
+});
 
 api.interceptors.request.use(async (config: any) => {
 	const token = SessionController.getToken();

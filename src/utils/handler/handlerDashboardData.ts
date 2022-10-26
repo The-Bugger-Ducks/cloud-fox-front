@@ -1,4 +1,6 @@
 import DashboardRequests from "../Requests/dashboard.request";
+import dashboardConfig from "../../dashboard.config";
+import { DashboardInterface } from "../../interfaces/dashboard";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
 
