@@ -11,50 +11,40 @@ import { ActiveStationInterface } from "../../interfaces/station";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
 
 export default function Home() {
-  const stationRegistrationModalRef = useRef<StationRegistrationModalRef>(null);
+	const stationRegistrationModalRef = useRef<StationRegistrationModalRef>(null);
 
-  const [stations, setStations] = useState<
-    ActiveStationInterface[] | undefined
-  >([]);
+	const [stations, setStations] = useState<ActiveStationInterface[] | undefined>([]);
 
-  useEffect(() => {
-    getStations();
-  }, []);
+	useEffect(() => {
+		getStations();
+	}, []);
 
-  const getStations = async () => {
-    const response = await StationRequests.getStations();
-    setStations(response);
-  };
+	const getStations = async () => {
+		const response = await StationRequests.getStations();
+		setStations(response);
+	};
 
-  const showModalStationRegistration = () => {
-    stationRegistrationModalRef.current?.showModal();
-  };
+	const showModalStationRegistration = () => {
+		stationRegistrationModalRef.current?.showModal();
+	};
 
-  return (
-    <>
-      <StationRegistrationModal ref={stationRegistrationModalRef} />
-      <Container>
-        <Title>Homepage</Title>
-        <Map stations={stations ?? []} />
-        <CardContainer>
-          {stations != null &&
-            stations.map((station, index) => (
-              <CardStation
-                key={index}
-                id={station.id}
-                title={station.name}
-                description={station.description}
-              />
-            ))}
-        </CardContainer>
+	return (
+		<>
+			<StationRegistrationModal ref={stationRegistrationModalRef} />
+			<Container>
+				<Title>Homepage</Title>
+				<Map stations={stations ?? []} />
+				<CardContainer>
+					{stations != null &&
+						stations.map((station, index) => (
+							<CardStation key={index} id={station.id} title={station.name} description={station.description} />
+						))}
+				</CardContainer>
 
-        <ButtonContainer>
-          <Button
-            title="Ativar estação"
-            onClick={() => showModalStationRegistration()}
-          />
-        </ButtonContainer>
-      </Container>
-    </>
-  );
+				<ButtonContainer>
+					<Button title="Criar estação" onClick={() => showModalStationRegistration()} />
+				</ButtonContainer>
+			</Container>
+		</>
+	);
 }
