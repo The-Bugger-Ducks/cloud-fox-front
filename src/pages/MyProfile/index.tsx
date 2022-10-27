@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { User } from "../../interfaces/user";
 import UserRequests from "../../utils/Requests/user.request";
 import SolicitationRequests from "../../utils/Requests/solicitation.request";
 
