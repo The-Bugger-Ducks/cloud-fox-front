@@ -23,13 +23,11 @@ export const Body = styled.div`
 	border-radius: 1rem;
 
 	width: 40%;
-	height: 80%;
 	padding: 3rem;
 
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
 `;
 
 export const Main = styled.div`
