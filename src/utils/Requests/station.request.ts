@@ -6,7 +6,7 @@ import { LatLngLiteral } from "leaflet";
 class StationRequests {
 	public async getStations(isActive?: boolean) {
 		try {
-			const response = isActive ? await api.get("stations/isActive=true") : await api.get("stations/");
+			const response = isActive ? await api.get("stations?isActive=true") : await api.get("stations/");
 
 			return response.data as ActiveStationInterface[];
 		} catch (error) {
