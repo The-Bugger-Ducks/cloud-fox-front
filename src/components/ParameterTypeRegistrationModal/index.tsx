@@ -53,25 +53,33 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		return (
 			<Container disabled={isDisabled}>
 				<Body>
+					<Title>Cadastrar parâmetros</Title>
 					<Main>
-						<Title>Cadastrar parâmetros</Title>
 						<Questions>
 							<Label>Nome do parâmetro</Label>
-							<Input type="text" onChange={(event) => setPameParameter(event.target.value)} />
+							<Input
+								type="text"
+								placeholder="Ex.: Pluviometro"
+								onChange={(event) => setPameParameter(event.target.value)}
+							/>
 
 							<Label>Unidade de medida</Label>
-							<Input type="text" onChange={(event) => setUnitParameter(event.target.value)} />
+							<Input type="text" placeholder="Ex.: mm" onChange={(event) => setUnitParameter(event.target.value)} />
 
 							<Label>Fator</Label>
-							<Input type="number" onChange={(event) => setFactorParameter(parseInt(event.target.value))} />
+							<Input
+								type="number"
+								placeholder="Ex.: 1.5"
+								onChange={(event) => setFactorParameter(parseInt(event.target.value))}
+							/>
 
 							<Label>Tipo de parâmetro</Label>
-							<Input type="text" onChange={(event) => setTypeParameter(event.target.value)} />
+							<Input type="text" placeholder="Ex.: pluv" onChange={(event) => setTypeParameter(event.target.value)} />
 						</Questions>
 					</Main>
 					<Footer>
-						<Button title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button title="Cadastrar" onClick={() => createParameter()} />
+						<Button width="45%" title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
+						<Button width="45%" title="Cadastrar" onClick={() => createParameter()} />
 					</Footer>
 				</Body>
 			</Container>
