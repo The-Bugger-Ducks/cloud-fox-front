@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParamRequests from "../../utils/Requests/param.request";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input } from "./styles";
+import { Container, Body, Main, Footer, Title, Questions, Label, Input, Select } from "./styles";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
 	(props, ref) => {
@@ -64,7 +64,37 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 							/>
 
 							<Label>Unidade de medida</Label>
-							<Input type="text" placeholder="Ex.: mm" onChange={(event) => setUnitParameter(event.target.value)} />
+							<Select onChange={(event) => setUnitParameter(event.target.value)}>
+								<option>mm</option>
+								<option>cm</option>
+								<option>m</option>
+								<option>km</option>
+								<option>hm</option>
+								<option>dam</option>
+								<option>mm²</option>
+								<option>cm²</option>
+								<option>m²</option>
+								<option>km²</option>
+								<option>hm²</option>
+								<option>dam²</option>
+								<option>segundos</option>
+								<option>minutos</option>
+								<option>horas</option>
+								<option>g</option>
+								<option>kg</option>
+								<option>hg</option>
+								<option>dag</option>
+								<option>dg</option>
+								<option>cg</option>
+								<option>mg</option>
+								<option>K</option>
+								<option>m/s</option>
+								<option>km/s</option>
+								<option>m/s</option>
+								<option>km/h</option>
+								<option>°C</option>
+								<option>°F</option>
+							</Select>
 
 							<Label>Fator</Label>
 							<Input
