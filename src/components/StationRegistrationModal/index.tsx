@@ -84,8 +84,8 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 						</Questions>
 					</Main>
 					<Footer>
-						<Button title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button title="Cadastrar" onClick={() => createStation()} />
+						<Button title="Cancelar" backgroundColor="#A0938C" width="45%" onClick={() => closeModal()} />
+						<Button title="Cadastrar" width="45%" onClick={() => createStation()} />
 					</Footer>
 				</Body>
 			</Container>

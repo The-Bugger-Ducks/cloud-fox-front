@@ -70,8 +70,8 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 						</Questions>
 					</Main>
 					<Footer>
-						<Button title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button title="Cadastrar" onClick={() => createParameter()} />
+						<Button title="Cancelar" backgroundColor="#A0938C" width="45%" onClick={() => closeModal()} />
+						<Button title="Cadastrar" width="45%" onClick={() => createParameter()} />
 					</Footer>
 				</Body>
 			</Container>
