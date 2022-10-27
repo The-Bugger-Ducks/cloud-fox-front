@@ -5,6 +5,7 @@ interface ButtonProps {
 	backgroundColor?: string;
 	marginBottom?: string;
 	width?: string;
+	height?: string;
 }
 
 export const CustomButton = styled.button<ButtonProps>`
@@ -20,7 +21,7 @@ export const CustomButton = styled.button<ButtonProps>`
 	color: ${({ theme, fontColor }) => fontColor ?? theme.colors.white};
 	margin-bottom: ${({ marginBottom }) => marginBottom};
 	min-width: ${({ width }) => width ?? "15.625rem"};
-	height: 2.25rem;
+	height: ${({ height }) => height ?? "2.25rem"};
 	text-align: center;
 	cursor: pointer;
 

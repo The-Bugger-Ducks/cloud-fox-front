@@ -1,6 +1,4 @@
 import DashboardRequests from "../Requests/dashboard.request";
-import dashboardConfig from "../../dashboard.config";
-import { DashboardInterface } from "../../interfaces/dashboard";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
 
@@ -10,14 +8,11 @@ export default async function handlerDashboardData(apiResponse: {
 }) {
 	let options: any = [];
 
-	console.log(apiResponse);
-
 	for (let param in apiResponse.parameterTypes) {
 		const paramData = await DashboardRequests.getDashboardData(
 			apiResponse.station.id,
 			apiResponse.parameterTypes[param].type
 		);
-
 		options.push(_newOption(apiResponse.parameterTypes[param], paramData));
 	}
 
@@ -28,7 +23,7 @@ function _newOption(paramInfos: ParamInterface, paramData: any) {
 	const values: any = [];
 
 	paramData.forEach((value: any) => {
-		values.push([value.moment * 1000, value.value]);
+		values.push([value.moment * 1000, value.value * paramInfos.factor]);
 	});
 
 	const newOption = {

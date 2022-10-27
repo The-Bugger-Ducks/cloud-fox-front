@@ -8,6 +8,7 @@ interface ButtonProps {
 	onClick?: () => void;
 	icon?: any;
 	width?: string;
+	height?: string;
 }
 
 export default function Button({
@@ -17,6 +18,7 @@ export default function Button({
 	marginBottom,
 	onClick,
 	icon,
+	height,
 	width,
 	...rest
 }: ButtonProps) {
@@ -25,8 +27,9 @@ export default function Button({
 			fontColor={fontColor}
 			backgroundColor={backgroundColor}
 			marginBottom={marginBottom}
-			width={width}
 			onClick={onClick}
+			width={width}
+			height={height}
 			{...rest}
 		>
 			{icon && <Icon>{icon}</Icon>}

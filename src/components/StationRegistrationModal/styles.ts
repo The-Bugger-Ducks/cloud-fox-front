@@ -37,6 +37,8 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
+	overflow-y: scroll;
+	padding-right: 1.5rem;
 `;
 
 export const Footer = styled.div`
@@ -45,6 +47,7 @@ export const Footer = styled.div`
 	justify-content: space-between;
 	gap: 1.5rem;
 	width: 100%;
+	margin-top: 3rem;
 `;
 
 export const Title = styled.h1`

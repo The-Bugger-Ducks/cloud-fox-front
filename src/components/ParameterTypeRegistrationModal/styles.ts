@@ -23,11 +23,13 @@ export const Body = styled.div`
 	border-radius: 1rem;
 
 	width: 40%;
+	height: 80%;
 	padding: 3rem;
 
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
 `;
 
 export const Main = styled.div`
@@ -35,14 +37,16 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
+	overflow-y: scroll;
+	padding-right: 1.5rem;
 `;
 
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	gap: 1.5rem;
 	width: 100%;
+	margin-top: 3rem;
 `;
 
 export const Title = styled.h1`
@@ -66,6 +70,16 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input`
+	border: none;
+	border-radius: 5px;
+	padding: 0.5rem;
+	color: ${({ theme }) => theme.colors.gray};
+	background-color: ${({ theme }) => theme.colors.white};
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+	margin-bottom: 1rem;
+`;
+
+export const Select = styled.select`
 	border: none;
 	border-radius: 5px;
 	padding: 0.5rem;
