@@ -21,7 +21,7 @@ export default function Home() {
 	}, []);
 
 	const getStations = async () => {
-		const response = await StationRequests.getStations(userInfo?.role === "simple");
+		const response = await StationRequests.getStations(!userInfo?.role || userInfo?.role === "simple");
 		setStations(response);
 	};
 
