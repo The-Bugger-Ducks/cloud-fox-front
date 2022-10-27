@@ -15,6 +15,7 @@ import {
 	Divider,
 	CardContainer,
 	NewParamContainer,
+	LoadingContainer,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -81,7 +82,9 @@ export default function Dashboard() {
 							<p>Nenhum dado encontrado para estação selecionada.</p>
 						)
 					) : (
-						<Loading />
+						<LoadingContainer>
+							<Loading />
+						</LoadingContainer>
 					)}
 				</CardContainer>
 				<NewParamContainer>
