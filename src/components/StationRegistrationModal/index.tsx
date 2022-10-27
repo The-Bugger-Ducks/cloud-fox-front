@@ -4,9 +4,8 @@ import { MinimapRef } from "../../interfaces/Minimap";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
 import Minimap from "../Minimap";
 import StationRequests from "../../utils/Requests/station.request";
-import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
-import ParameterTypeRegistrationModal from "../ParameterTypeRegistrationModal";
 import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((props, ref) => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -14,7 +13,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	const [desriptionStation, setDescriptionStation] = useState<string>("");
 	const [idStation, setIdStation] = useState<string>("");
 	const minimapRef = useRef<MinimapRef>(null);
-	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
+	const navigate = useNavigate();
 
 	const closeModal = () => {
 		setIsDisabled(true);
@@ -42,7 +41,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 
 			if (response !== "error") {
 				closeModal();
-				parameterRegistrationModalRef.current?.showModal();
+				navigate("/dashboard/" + idStation);
 			} else {
 				alert("Não foi possível cadastrar estação");
 			}
@@ -59,8 +58,6 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 
 	return (
 		<>
-			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={idStation} />
-
 			<Container disabled={isDisabled}>
 				<Body>
 					<Main>
