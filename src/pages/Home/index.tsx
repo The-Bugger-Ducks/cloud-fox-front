@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import Map from "../../components/Map";
 import CardStation from "../../components/CardStation";
@@ -9,18 +9,20 @@ import { Container, Title, CardContainer, ButtonContainer } from "./styles";
 import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Home() {
 	const stationRegistrationModalRef = useRef<StationRegistrationModalRef>(null);
-
 	const [stations, setStations] = useState<ActiveStationInterface[] | undefined>([]);
+	const { userInfo } = useContext(AuthContext);
+	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	useEffect(() => {
 		getStations();
 	}, []);
 
 	const getStations = async () => {
-		const response = await StationRequests.getStations();
+		const response = await StationRequests.getStations(isSimpleUser);
 		setStations(response);
 	};
 
@@ -41,9 +43,11 @@ export default function Home() {
 						))}
 				</CardContainer>
 
-				<ButtonContainer>
-					<Button title="Criar estação" onClick={() => showModalStationRegistration()} />
-				</ButtonContainer>
+				{!isSimpleUser && (
+					<ButtonContainer>
+						<Button title="Criar estação" onClick={() => showModalStationRegistration()} />
+					</ButtonContainer>
+				)}
 			</Container>
 		</>
 	);

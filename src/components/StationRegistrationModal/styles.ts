@@ -44,6 +44,7 @@ export const Main = styled.div`
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 	gap: 1.5rem;
 	width: 100%;
 	margin-top: 3rem;

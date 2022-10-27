@@ -20,7 +20,7 @@ export const CustomButton = styled.button<ButtonProps>`
 	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.168), 0px 0px 3px rgba(0, 0, 0, 0.084);
 	color: ${({ theme, fontColor }) => fontColor ?? theme.colors.white};
 	margin-bottom: ${({ marginBottom }) => marginBottom};
-	width: ${({ width }) => width ?? "15.625rem"};
+	min-width: ${({ width }) => width ?? "15.625rem"};
 	height: ${({ height }) => height ?? "2.25rem"};
 	text-align: center;
 	cursor: pointer;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import CardChart from "../../components/CardChart";
@@ -23,9 +23,12 @@ import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Dashboard() {
 	const { id } = useParams();
+	const { userInfo } = useContext(AuthContext);
+	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 
@@ -68,7 +71,7 @@ export default function Dashboard() {
 
 						<StationName>
 							<Subtitle>{station?.station.name}</Subtitle>
-							<EditButton src={EditIcon} alt="Editar estação" />
+							{!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />}
 						</StationName>
 					</PageTitle>
 				</Header>
@@ -83,9 +86,11 @@ export default function Dashboard() {
 						<p>Carregando...</p>
 					)}
 				</CardContainer>
-				<NewParamContainer>
-					<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
-				</NewParamContainer>
+				{!isSimpleUser && (
+					<NewParamContainer>
+						<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+					</NewParamContainer>
+				)}
 			</Container>
 		</>
 	);
