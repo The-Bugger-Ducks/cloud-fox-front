@@ -23,6 +23,7 @@ import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import Loading from "../../components/Loading";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -80,7 +81,7 @@ export default function Dashboard() {
 							<p>Nenhum dado encontrado para estação selecionada.</p>
 						)
 					) : (
-						<p>Carregando...</p>
+						<Loading />
 					)}
 				</CardContainer>
 				<NewParamContainer>
