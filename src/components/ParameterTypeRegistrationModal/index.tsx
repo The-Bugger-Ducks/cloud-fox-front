@@ -2,7 +2,8 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParamRequests from "../../utils/Requests/param.request";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input } from "./styles";
+import { Container, Body, Main, Footer, Title, Questions, Label, Input, LoadingContainer } from "./styles";
+import Loading from "../Loading";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
 	(props, ref) => {
@@ -12,12 +13,14 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		const [factorParameter, setFactorParameter] = useState<number>(0);
 		const [typeParameter, setTypeParameter] = useState<string>("");
 		const [idStation, setIdStation] = useState<string>("");
+		const [isLoading, setIsloading] = useState<boolean>(false);
 
 		const closeModal = () => {
 			setIsDisabled(true);
 		};
 
 		const createParameter = async () => {
+			setIsloading(true);
 			const payload = {
 				name: nameParameter,
 				unit: unitParameter,
@@ -33,6 +36,8 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 				payload.type,
 				payload.stationId
 			);
+
+			setIsloading(false);
 
 			if (response !== "error") {
 				closeModal();
@@ -52,6 +57,10 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 
 		return (
 			<Container disabled={isDisabled}>
+				<LoadingContainer disabled={!isLoading}>
+					<Loading width={250} height={250} />
+				</LoadingContainer>
+
 				<Body>
 					<Main>
 						<Title>Cadastrar parâmetros</Title>
