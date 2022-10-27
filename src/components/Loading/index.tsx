@@ -1,7 +1,12 @@
 import Lottie from "react-lottie";
 import animationData from "../../assets/loading.json";
 
-export default function Loading() {
+interface LoadingPros {
+	width?: number;
+	height?: number;
+}
+
+export default function Loading({ width, height }: LoadingPros) {
 	const defaultOptions = {
 		loop: true,
 		autoplay: true,
@@ -13,7 +18,7 @@ export default function Loading() {
 
 	return (
 		<div>
-			<Lottie options={defaultOptions} height={400} width={400} />
+			<Lottie options={defaultOptions} height={height ? height : 400} width={width ? width : 400} />
 		</div>
 	);
 }

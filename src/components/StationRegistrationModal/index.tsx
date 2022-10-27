@@ -6,7 +6,8 @@ import Minimap from "../Minimap";
 import StationRequests from "../../utils/Requests/station.request";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParameterTypeRegistrationModal from "../ParameterTypeRegistrationModal";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea } from "./styles";
+import { LoadingContainer, Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea } from "./styles";
+import Loading from "../Loading";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((props, ref) => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -14,6 +15,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	const [desriptionStation, setDescriptionStation] = useState<string>("");
 	const [idStation, setIdStation] = useState<string>("");
 	const minimapRef = useRef<MinimapRef>(null);
+	const [isLoading, setIsloading] = useState<boolean>(false);
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 
 	const closeModal = () => {
@@ -21,6 +23,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	};
 
 	const createStation = async () => {
+		setIsloading(true);
 		const latLng: any = minimapRef.current?.getLatLng();
 
 		if (latLng) {
@@ -39,6 +42,8 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 				payload.lon,
 				payload.description
 			);
+
+			setIsloading(false);
 
 			if (response !== "error") {
 				closeModal();
@@ -62,6 +67,9 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={idStation} />
 
 			<Container disabled={isDisabled}>
+				<LoadingContainer disabled={!isLoading}>
+					<Loading width={250} height={250} />
+				</LoadingContainer>
 				<Body>
 					<Main>
 						<Title>Cadastrar estação</Title>
