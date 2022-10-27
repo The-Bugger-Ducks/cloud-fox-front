@@ -40,6 +40,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 			);
 
 			if (response !== "error") {
+				alert("Estação cadastrada com sucesso!");
 				closeModal();
 				navigate("/dashboard/" + idStation);
 			} else {
