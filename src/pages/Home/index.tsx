@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import Map from "../../components/Map";
 import CardStation from "../../components/CardStation";
@@ -9,18 +9,19 @@ import { Container, Title, CardContainer, ButtonContainer } from "./styles";
 import StationRequests from "../../utils/Requests/station.request";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Home() {
 	const stationRegistrationModalRef = useRef<StationRegistrationModalRef>(null);
-
 	const [stations, setStations] = useState<ActiveStationInterface[] | undefined>([]);
+	const { userInfo } = useContext(AuthContext);
 
 	useEffect(() => {
 		getStations();
 	}, []);
 
 	const getStations = async () => {
-		const response = await StationRequests.getStations();
+		const response = await StationRequests.getStations(userInfo?.role === "simple");
 		setStations(response);
 	};
 
