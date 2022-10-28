@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
-import {  AiOutlineGooglePlus } from "react-icons/ai";
+import { useContext, useEffect, useState } from "react";
+import { AiOutlineGooglePlus } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
-import { Container, Title, Buttons } from "./styles";
+import { Container, Title, Buttons, LoadingContainer } from "./styles";
 import theme from "../../global/theme";
 
 import { GoogleLogin } from "react-google-login";
@@ -12,9 +12,11 @@ import { gapi } from "gapi-script";
 
 import UserRequests from "../../utils/Requests/user.request";
 import { AuthContext } from "../../context/AuthContext";
+import Loading from "../Loading";
 
 export default function LoginModal() {
 	const { saveUserDataInStorage } = useContext(AuthContext);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	const CLIENT_ID = "826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com";
@@ -30,7 +32,7 @@ export default function LoginModal() {
 	}, []);
 
 	const onSuccess = (res: any) => {
-		alert("Fazendo login com Google...");
+		setIsLoading(true);
 
 		UserRequests.createUser(
 			res.profileObj.givenName,
@@ -41,9 +43,13 @@ export default function LoginModal() {
 		)
 			.then((response) => {
 				saveUserDataInStorage({ user: response!.userExists, token: response!.token });
+				setIsLoading(false);
 				navigate("/myProfile");
 			})
-			.catch((err) => onFailure(err));
+			.catch((err) => {
+				onFailure(err);
+				setIsLoading(false);
+			});
 	};
 
 	const onFailure = (err: any) => {
@@ -56,26 +62,32 @@ export default function LoginModal() {
 		<Container>
 			<Title>Login</Title>
 
-			<Buttons>
-				<GoogleLogin
-					clientId={CLIENT_ID}
-					buttonText="Login com  Google"
-					onSuccess={onSuccess}
-					onFailure={onFailure}
-					cookiePolicy={"single_host_origin"}
-					isSignedIn={true}
-					render={(renderProps) => (
-						<Button
-							title="Login com Google"
-							fontColor={theme.colors.gray}
-							backgroundColor={theme.colors.white}
-							marginBottom={"1rem"}
-							onClick={renderProps.onClick}
-							icon={<AiOutlineGooglePlus size={24} />}
-						/>
-					)}
-				/>
-			</Buttons>
+			{isLoading ? (
+				<LoadingContainer>
+					<Loading width={100} height={100} />
+				</LoadingContainer>
+			) : (
+				<Buttons>
+					<GoogleLogin
+						clientId={CLIENT_ID}
+						buttonText="Login com  Google"
+						onSuccess={onSuccess}
+						onFailure={onFailure}
+						cookiePolicy={"single_host_origin"}
+						isSignedIn={true}
+						render={(renderProps) => (
+							<Button
+								title="Login com Google"
+								fontColor={theme.colors.gray}
+								backgroundColor={theme.colors.white}
+								marginBottom={"1rem"}
+								onClick={renderProps.onClick}
+								icon={<AiOutlineGooglePlus size={24} />}
+							/>
+						)}
+					/>
+				</Buttons>
+			)}
 		</Container>
 	);
 }
