@@ -37,12 +37,22 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
+<<<<<<< HEAD
+=======
+	overflow-y: scroll;
+	padding-right: 1.5rem;
+>>>>>>> development
 `;
 
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 1.5rem;
+<<<<<<< HEAD
+=======
+	width: 100%;
+	margin-top: 3rem;
+>>>>>>> development
 `;
 
 export const Title = styled.h1`
@@ -85,4 +95,14 @@ export const LoadingContainer = styled.div<ContainerProps>`
 	border-radius: 1rem;
 	align-items: center;
 	justify-content: center;
+`;
+
+export const Select = styled.select`
+	border: none;
+	border-radius: 5px;
+	padding: 0.5rem;
+	color: ${({ theme }) => theme.colors.gray};
+	background-color: ${({ theme }) => theme.colors.white};
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+	margin-bottom: 1rem;
 `;
