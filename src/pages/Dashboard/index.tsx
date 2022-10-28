@@ -24,6 +24,8 @@ import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import { AuthContext } from "../../context/AuthContext";
+import { StationEditModalRef } from "../../interfaces/StationEditModalRef";
+import StationEditModal from "../../components/StationEditModal";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -31,6 +33,7 @@ export default function Dashboard() {
 	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
+	const stationEditModalRef = useRef<StationEditModalRef>(null);
 
 	const [station, setStation] = useState<{
 		station: ActiveStationInterface;
@@ -62,6 +65,7 @@ export default function Dashboard() {
 	return (
 		<>
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
+			<StationEditModal ref={stationEditModalRef} station={station!.station} />
 			<Container>
 				<Header>
 					<PageTitle>
@@ -71,7 +75,15 @@ export default function Dashboard() {
 
 						<StationName>
 							<Subtitle>{station?.station.name}</Subtitle>
-							{!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />}
+							{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
+							<EditButton
+								src={EditIcon}
+								alt="Editar estação"
+								onClick={() => {
+									console.log("clicado");
+									stationEditModalRef.current?.showModal();
+								}}
+							/>
 						</StationName>
 					</PageTitle>
 				</Header>
