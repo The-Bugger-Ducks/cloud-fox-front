@@ -23,7 +23,6 @@ export const Body = styled.div`
 	border-radius: 1rem;
 
 	width: 40%;
-	height: 80%;
 	padding: 3rem;
 
 	display: flex;
@@ -37,22 +36,16 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
-<<<<<<< HEAD
-=======
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-right: 1.5rem;
->>>>>>> development
 `;
 
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 1.5rem;
-<<<<<<< HEAD
-=======
 	width: 100%;
 	margin-top: 3rem;
->>>>>>> development
 `;
 
 export const Title = styled.h1`
