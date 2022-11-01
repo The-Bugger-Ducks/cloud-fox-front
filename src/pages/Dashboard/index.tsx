@@ -90,16 +90,11 @@ export default function Dashboard() {
 						</LoadingContainer>
 					)}
 				</CardContainer>
-				{!isLoading
-					? isSimpleUser && (
-							<NewParamContainer>
-								<Button
-									title="Cadastrar parâmetro"
-									onClick={() => parameterRegistrationModalRef.current?.showModal()}
-								/>
-							</NewParamContainer>
-					  )
-					: ""}
+				{!isLoading && isSimpleUser && (
+					<NewParamContainer>
+						<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+					</NewParamContainer>
+				)}
 			</Container>
 		</>
 	);

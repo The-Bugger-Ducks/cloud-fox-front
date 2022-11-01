@@ -18,7 +18,7 @@ export default function Loading({ width, height }: LoadingPros) {
 
 	return (
 		<div>
-			<Lottie options={defaultOptions} height={height ? height : 400} width={width ? width : 400} />
+			<Lottie options={defaultOptions} height={height ?? 400} width={height ?? 400} />
 		</div>
 	);
 }
