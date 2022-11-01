@@ -86,9 +86,9 @@ export default function Dashboard() {
 						<p>Carregando...</p>
 					)}
 				</CardContainer>
-				{!isSimpleUser && (
+				{isSimpleUser && (
 					<NewParamContainer>
-						<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+						<Button title="Adicionar parâmetros" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
 					</NewParamContainer>
 				)}
 			</Container>

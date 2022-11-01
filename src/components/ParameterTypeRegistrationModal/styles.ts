@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import Accordion from "@mui/material/Accordion";
 interface ContainerProps {
 	disabled: boolean;
 }
@@ -62,6 +62,14 @@ export const Questions = styled.div`
 	width: 100%;
 `;
 
+export const Checkbox = styled.input`
+	border: none;
+	border-radius: 5px;
+	color: ${({ theme }) => theme.colors.gray};
+	background-color: ${({ theme }) => theme.colors.white};
+	margin: 0 8px 0 0;
+`;
+
 export const Label = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
@@ -87,4 +95,45 @@ export const Select = styled.select`
 	background-color: ${({ theme }) => theme.colors.white};
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
 	margin-bottom: 1rem;
+`;
+
+export const ParamsTable = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	margin: 1.5rem 0;
+`;
+
+export const Item = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 0 0 0.5rem 0;
+`;
+
+export const ItemLabel = styled.label`
+	color: ${({ theme }) => theme.colors.black};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.text};
+`;
+
+export const ItemTitle = styled.label`
+	color: ${({ theme }) => theme.colors.secondary};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.text};
+	margin: 0 0 0.5rem 0;
+`;
+
+export const ItemTitleInit = styled.label`
+	color: ${({ theme }) => theme.colors.secondary};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.text};
+	margin: 0 0 0.5rem 1.4rem;
+`;
+
+export const NoItem = styled.div`
+	grid-column-start: 1;
+	grid-column-start: 5;
+`;
+
+export const CustomAccordion = styled(Accordion)`
+	background-color: ${({ theme }) => theme.colors.white} !important;
 `;

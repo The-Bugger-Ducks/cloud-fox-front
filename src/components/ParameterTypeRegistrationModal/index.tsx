@@ -2,7 +2,27 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParamRequests from "../../utils/Requests/param.request";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input, Select } from "./styles";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+	Container,
+	Body,
+	Main,
+	Footer,
+	Title,
+	Questions,
+	Label,
+	Input,
+	Select,
+	ParamsTable,
+	Checkbox,
+	Item,
+	ItemLabel,
+	ItemTitle,
+	ItemTitleInit,
+	CustomAccordion,
+} from "./styles";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
 	(props, ref) => {
@@ -12,6 +32,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		const [factorParameter, setFactorParameter] = useState<number>(0);
 		const [typeParameter, setTypeParameter] = useState<string>("");
 		const [idStation, setIdStation] = useState<string>("");
+		const [params, setParams] = useState<Object[]>([]);
 
 		const closeModal = () => {
 			setIsDisabled(true);
@@ -43,6 +64,20 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 			}
 		};
 
+		const handleTableParams = async (event: any, param: Object) => {
+			if (event.target.checked) {
+				const actualParams = params;
+				actualParams.push(param);
+				const updatedParams = actualParams;
+				setParams(updatedParams);
+			} else {
+				const updatedParams = params.filter((parameterInCheck) => {
+					return parameterInCheck === param;
+				});
+				setParams(updatedParams);
+			}
+		};
+
 		useImperativeHandle(ref, () => ({
 			showModal: () => {
 				setIdStation(props.idStation ? props.idStation : "");
@@ -53,9 +88,90 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		return (
 			<Container disabled={isDisabled}>
 				<Body>
-					<Title>Cadastrar parâmetros</Title>
+					<Title>Adicionar parâmetros</Title>
 					<Main>
 						<Questions>
+							<Label>Selecione na tabela a seguir o(s) parâmetro(s) que deseja adicionar a estação</Label>
+							<ParamsTable>
+								<Item>
+									<ItemTitleInit>Nome</ItemTitleInit>
+								</Item>
+								<Item>
+									<ItemTitle>Unidade</ItemTitle>
+								</Item>
+								<Item>
+									<ItemTitle>Fator</ItemTitle>
+								</Item>
+								<Item>
+									<ItemTitle>Tipo</ItemTitle>
+								</Item>
+
+								<Item>
+									<Checkbox
+										type="checkbox"
+										name="teste"
+										onChange={(event) =>
+											handleTableParams(event, {
+												name: "teste",
+												unit: "mm",
+												factor: "200",
+												type: "aue",
+												stationId: idStation,
+											})
+										}
+									/>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+
+								<Item>
+									<Checkbox
+										type="checkbox"
+										name="teste"
+										onChange={(event) =>
+											handleTableParams(event, {
+												name: "a",
+												unit: "mm",
+												factor: "200",
+												type: "aue",
+												stationId: idStation,
+											})
+										}
+									/>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+								<Item>
+									<ItemLabel>Teste</ItemLabel>
+								</Item>
+							</ParamsTable>
+							<CustomAccordion>
+								<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+									<Label>Faltou algum parâmetro? Clique aqui para cadastrar!</Label>
+								</AccordionSummary>
+								<AccordionDetails>
+									<Label>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet
+										blandit leo lobortis eget.
+									</Label>
+								</AccordionDetails>
+							</CustomAccordion>
+						</Questions>
+
+						{/* <Questions>
 							<Label>Nome do parâmetro</Label>
 							<Input
 								type="text"
@@ -105,11 +221,11 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 
 							<Label>Tipo de parâmetro</Label>
 							<Input type="text" placeholder="Ex.: pluv" onChange={(event) => setTypeParameter(event.target.value)} />
-						</Questions>
+						</Questions> */}
 					</Main>
 					<Footer>
 						<Button width="45%" title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button width="45%" title="Cadastrar" onClick={() => createParameter()} />
+						<Button width="45%" title="Adicionar parâmetros" onClick={() => createParameter()} />
 					</Footer>
 				</Body>
 			</Container>
