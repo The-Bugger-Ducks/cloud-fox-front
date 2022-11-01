@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 interface ContainerProps {
 	disabled: boolean;
 }
@@ -60,6 +62,7 @@ export const Questions = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	margin: 0 0 1rem 0;
 `;
 
 export const Checkbox = styled.input`
@@ -73,7 +76,7 @@ export const Checkbox = styled.input`
 export const Label = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin-bottom: 0.5rem;
 `;
 
@@ -112,20 +115,20 @@ export const Item = styled.div`
 export const ItemLabel = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 `;
 
 export const ItemTitle = styled.label`
 	color: ${({ theme }) => theme.colors.secondary};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin: 0 0 0.5rem 0;
 `;
 
 export const ItemTitleInit = styled.label`
 	color: ${({ theme }) => theme.colors.secondary};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin: 0 0 0.5rem 1.4rem;
 `;
 
@@ -136,4 +139,13 @@ export const NoItem = styled.div`
 
 export const CustomAccordion = styled(Accordion)`
 	background-color: ${({ theme }) => theme.colors.white} !important;
+	box-shadow: none !important;
+`;
+
+export const CustomAccordionSummary = styled(AccordionSummary)`
+	padding: 0 !important;
+`;
+
+export const CustomAccordionDetails = styled(AccordionDetails)`
+	padding: 0 !important;
 `;
