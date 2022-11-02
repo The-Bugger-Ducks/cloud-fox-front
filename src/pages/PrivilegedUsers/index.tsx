@@ -205,21 +205,33 @@ export default function PrivilegedUsers() {
 					</thead>
 					<tbody>
 						{userContentPage &&
-							users.map((user) => (
-								<tr key={user.id}>
-									<TableData>{user.username}</TableData>
-									<TableData>{user.email}</TableData>
-									<PrivilegeLabelElement role={user.role} />
-									<SelectUserRole user={user} />
+							(users.length !== 0 ? (
+								users.map((user) => (
+									<tr key={user.id}>
+										<TableData>{user.username}</TableData>
+										<TableData>{user.email}</TableData>
+										<PrivilegeLabelElement role={user.role} />
+										<SelectUserRole user={user} />
+									</tr>
+								))
+							) : (
+								<tr>
+									<TableData colSpan={4}>Nenhuma usuário encontrado</TableData>
 								</tr>
 							))}
 						{solicitaionContentPage &&
-							solicitationUsers.map((solicitation) => (
-								<tr key={solicitation.id}>
-									<TableData>{solicitation.user.username}</TableData>
-									<TableData>{solicitation.user.email}</TableData>
-									<PrivilegeLabelElement role={solicitation.roleReq} />
-									<ActionsUserRole solicitation={solicitation} />
+							(solicitationUsers.length !== 0 ? (
+								solicitationUsers.map((solicitation) => (
+									<tr key={solicitation.id}>
+										<TableData>{solicitation.user.username}</TableData>
+										<TableData>{solicitation.user.email}</TableData>
+										<PrivilegeLabelElement role={solicitation.roleReq} />
+										<ActionsUserRole solicitation={solicitation} />
+									</tr>
+								))
+							) : (
+								<tr>
+									<TableData colSpan={4}>Nenhuma solicitação encontrada</TableData>
 								</tr>
 							))}
 					</tbody>
