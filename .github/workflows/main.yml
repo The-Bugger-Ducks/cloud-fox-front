@@ -1,0 +1,42 @@
+name: Deploy-frontend
+on: 
+  push:	
+    branches: [main]	
+  pull_request:	
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build folder
+      - uses: actions/upload-artifact@1
+        with:
+          name: buildfolder
+          path: build/*
+          
+  download_build_folder:
+    name: Download build folder
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: buildfolder
+      - run: cat _redirects
+        
+    
