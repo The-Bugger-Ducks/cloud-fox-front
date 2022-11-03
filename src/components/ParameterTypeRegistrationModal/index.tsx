@@ -28,6 +28,7 @@ import {
 	RegisteredSensors,
 	ParamsContainer,
 	LabelAlert,
+	NoItem,
 } from "./styles";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
@@ -39,7 +40,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		const [typeParameter, setTypeParameter] = useState<string>("");
 		const [idStation, setIdStation] = useState<string>("");
 		const [newParams, setNewParams] = useState<ParamInterface[]>([]);
-		const [newParamsElement, setNewParamsElement] = useState<any[]>([]);
+		const [newParamsElement, setNewParamsElement] = useState<JSX.Element[]>([]);
 		const [oldParams, setOldParams] = useState<ParamInterface[]>([]);
 		const [allParams, setAllParams] = useState<ParamInterface[]>([]);
 
@@ -76,7 +77,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		};
 
 		const updateNewParamsElement = () => {
-			const updatedElements: any[] = [];
+			const updatedElements: JSX.Element[] = [];
 			newParams.map((newParamElement, index) => {
 				updatedElements.push(<Param key={index} name={newParamElement.name} onClick={() => removeNewParam(index)} />);
 			});
@@ -105,7 +106,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 			updateNewParamsElement();
 		};
 
-		const handleTableParams = async (event: any, param: ParamInterface) => {
+		const handleTableParams = async (event: React.ChangeEvent<HTMLInputElement>, param: ParamInterface) => {
 			const clearParam = {
 				name: param.name,
 				unit: param.unit,
@@ -155,27 +156,33 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 									<ItemTitle>Tipo</ItemTitle>
 								</Item>
 
-								{allParams.map((paramItem, index) => (
-									<>
-										<Item>
-											<Checkbox
-												type="checkbox"
-												name={paramItem.name}
-												onChange={(event) => handleTableParams(event, paramItem)}
-											/>
-											<ItemLabel title={paramItem.name}>{paramItem.name}</ItemLabel>
-										</Item>
-										<Item>
-											<ItemLabel title={paramItem.unit}>{paramItem.unit}</ItemLabel>
-										</Item>
-										<Item>
-											<ItemLabel title={paramItem.factor.toString()}>{paramItem.factor}</ItemLabel>
-										</Item>
-										<Item>
-											<ItemLabel title={paramItem.type}>{paramItem.type}</ItemLabel>
-										</Item>
-									</>
-								))}
+								{allParams.length === 0 ? (
+									<NoItem>
+										<LabelAlert>Nenhum parâmetro enccontrado</LabelAlert>
+									</NoItem>
+								) : (
+									allParams.map((paramItem, index) => (
+										<div key={index}>
+											<Item>
+												<Checkbox
+													type="checkbox"
+													name={paramItem.name}
+													onChange={(event) => handleTableParams(event, paramItem)}
+												/>
+												<ItemLabel title={paramItem.name}>{paramItem.name}</ItemLabel>
+											</Item>
+											<Item>
+												<ItemLabel title={paramItem.unit}>{paramItem.unit}</ItemLabel>
+											</Item>
+											<Item>
+												<ItemLabel title={paramItem.factor.toString()}>{paramItem.factor}</ItemLabel>
+											</Item>
+											<Item>
+												<ItemLabel title={paramItem.type}>{paramItem.type}</ItemLabel>
+											</Item>
+										</div>
+									))
+								)}
 							</ParamsTable>
 							<CustomAccordion>
 								<CustomAccordionSummary
