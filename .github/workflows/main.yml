@@ -30,15 +30,14 @@ jobs:
           path: .build/
 
   download_build_folder:
-   - name: Download build folder
-     runs-on: self-hosted
+     runs-on: self-hosted    
      needs: build
     
-  steps:
-   - name: Start download
-     uses: actions/download-artifact@v3
-     with:
-      name: buildfolder
+     steps:
+     - name: Start download build
+       uses: actions/download-artifact@v3
+       with:
+        name: buildfolder
     
-   - name: List files build
-     run: ls -R
+     - name: List files build
+       run: ls -R
