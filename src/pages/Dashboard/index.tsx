@@ -15,6 +15,7 @@ import {
 	Divider,
 	CardContainer,
 	NewParamContainer,
+	LoadingContainer,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -23,6 +24,7 @@ import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Dashboard() {
@@ -83,10 +85,12 @@ export default function Dashboard() {
 							<p>Nenhum dado encontrado para estação selecionada.</p>
 						)
 					) : (
-						<p>Carregando...</p>
+						<LoadingContainer>
+							<Loading />
+						</LoadingContainer>
 					)}
 				</CardContainer>
-				{!isSimpleUser && (
+				{!isLoading && isSimpleUser && (
 					<NewParamContainer>
 						<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
 					</NewParamContainer>
