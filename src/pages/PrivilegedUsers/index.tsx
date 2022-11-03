@@ -216,7 +216,7 @@ export default function PrivilegedUsers() {
 								))
 							) : (
 								<tr>
-									<TableData colSpan={4}>Nenhuma usuário encontrado</TableData>
+									<TableData colSpan={4}>Nenhum usuário encontrado</TableData>
 								</tr>
 							))}
 						{solicitaionContentPage &&
