@@ -30,7 +30,6 @@ import {
 	LabelAlert,
 	NoItem,
 } from "./styles";
-import zIndex from "@mui/material/styles/zIndex";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
 	(props, ref) => {
@@ -272,8 +271,8 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 						</Questions>
 					</Main>
 					<Footer>
-						<Button width="45%" title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button width="45%" title="Adicionar parâmetros" onClick={() => createParameter()} />
+						<Button width="50%" title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
+						<Button width="50%" title="Adicionar parâmetros" onClick={() => createParameter()} />
 					</Footer>
 				</Body>
 			</Container>

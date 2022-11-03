@@ -28,3 +28,10 @@ export const Buttons = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
+
+export const LoadingContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(2px);
+	z-index: 7000 !important;
+`;
