@@ -4,7 +4,10 @@ import { MinimapRef } from "../../interfaces/Minimap";
 import { StationRegistrationModalRef } from "../../interfaces/StationRegistrationModalRef";
 import Minimap from "../Minimap";
 import StationRequests from "../../utils/Requests/station.request";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea } from "./styles";
+import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import ParameterTypeRegistrationModal from "../ParameterTypeRegistrationModal";
+import Loading from "../Loading";
+import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea, LoadingContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((props, ref) => {
@@ -13,6 +16,8 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	const [desriptionStation, setDescriptionStation] = useState<string>("");
 	const [idStation, setIdStation] = useState<string>("");
 	const minimapRef = useRef<MinimapRef>(null);
+	const [isLoading, setIsloading] = useState<boolean>(false);
+	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 	const navigate = useNavigate();
 
 	const closeModal = () => {
@@ -20,6 +25,7 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	};
 
 	const createStation = async () => {
+		setIsloading(true);
 		const latLng: any = minimapRef.current?.getLatLng();
 
 		if (latLng) {
@@ -38,6 +44,8 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 				payload.lon,
 				payload.description
 			);
+
+			setIsloading(false);
 
 			if (response !== "error") {
 				alert("Estação cadastrada com sucesso!");
@@ -60,6 +68,9 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	return (
 		<>
 			<Container disabled={isDisabled}>
+				<LoadingContainer disabled={!isLoading}>
+					<Loading width={250} height={250} />
+				</LoadingContainer>
 				<Body>
 					<Title>Cadastrar estação</Title>
 					<Main>

@@ -23,7 +23,6 @@ export const Body = styled.div`
 	border-radius: 1rem;
 
 	width: 40%;
-	height: 80%;
 	padding: 3rem;
 
 	display: flex;
@@ -37,7 +36,7 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-right: 1.5rem;
 `;
 
@@ -77,6 +76,18 @@ export const Input = styled.input`
 	background-color: ${({ theme }) => theme.colors.white};
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
 	margin-bottom: 1rem;
+`;
+
+export const LoadingContainer = styled.div<ContainerProps>`
+	display: ${({ disabled }) => (disabled ? "none" : "flex")};
+	backdrop-filter: blur(2px);
+	position: fixed;
+	z-index: 7000 !important;
+	width: 40%;
+	height: 80%;
+	border-radius: 1rem;
+	align-items: center;
+	justify-content: center;
 `;
 
 export const Select = styled.select`
