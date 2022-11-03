@@ -251,7 +251,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 											<Button
 												width="100%"
 												onClick={() => addNewParam()}
-												title="Adicionar a fila de cadastro"
+												title="Adicionar na fila de cadastro"
 												backgroundColor="#7711BB"
 											/>
 										</ButtonContainer>
