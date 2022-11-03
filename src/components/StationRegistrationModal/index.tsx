@@ -6,7 +6,9 @@ import Minimap from "../Minimap";
 import StationRequests from "../../utils/Requests/station.request";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParameterTypeRegistrationModal from "../ParameterTypeRegistrationModal";
-import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea } from "./styles";
+import Loading from "../Loading";
+import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea, LoadingContainer } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((props, ref) => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -14,13 +16,16 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 	const [desriptionStation, setDescriptionStation] = useState<string>("");
 	const [idStation, setIdStation] = useState<string>("");
 	const minimapRef = useRef<MinimapRef>(null);
+	const [isLoading, setIsloading] = useState<boolean>(false);
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
+	const navigate = useNavigate();
 
 	const closeModal = () => {
 		setIsDisabled(true);
 	};
 
 	const createStation = async () => {
+		setIsloading(true);
 		const latLng: any = minimapRef.current?.getLatLng();
 
 		if (latLng) {
@@ -40,9 +45,12 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 				payload.description
 			);
 
+			setIsloading(false);
+
 			if (response !== "error") {
+				alert("Estação cadastrada com sucesso!");
 				closeModal();
-				parameterRegistrationModalRef.current?.showModal();
+				navigate("/dashboard/" + idStation);
 			} else {
 				alert("Não foi possível cadastrar estação");
 			}
@@ -59,33 +67,41 @@ const StationRegistrationModal = forwardRef<StationRegistrationModalRef, {}>((pr
 
 	return (
 		<>
-			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={idStation} />
-
 			<Container disabled={isDisabled}>
+				<LoadingContainer disabled={!isLoading}>
+					<Loading width={250} height={250} />
+				</LoadingContainer>
 				<Body>
+					<Title>Cadastrar estação</Title>
 					<Main>
-						<Title>Cadastrar estação</Title>
 						<Questions>
 							<Label>MAC Address da estação</Label>
-							<Input type="text" onChange={(event) => setIdStation(event.target.value)} />
+							<Input
+								type="text"
+								placeholder="Ex.: AAHBCUTOSHFE"
+								onChange={(event) => setIdStation(event.target.value)}
+							/>
 
 							<Label>Nome da estação</Label>
 							<Input
 								type="text"
-								placeholder="Escola Fulano de Tal"
+								placeholder="Ex.: Escola Fulano de Tal"
 								onChange={(event) => setNameStation(event.target.value)}
 							/>
 
 							<Label>Descrição da estação</Label>
-							<TextArea onChange={(event) => setDescriptionStation(event.target.value)} />
+							<TextArea
+								placeholder="Ex.: Estação pluviométrica"
+								onChange={(event) => setDescriptionStation(event.target.value)}
+							/>
 
 							<Label>Localização da estação</Label>
 							<Minimap ref={minimapRef} />
 						</Questions>
 					</Main>
 					<Footer>
-						<Button title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
-						<Button title="Cadastrar" onClick={() => createStation()} />
+						<Button width="45%" title="Cancelar" backgroundColor="#A0938C" onClick={() => closeModal()} />
+						<Button width="45%" title="Cadastrar" onClick={() => createStation()} />
 					</Footer>
 				</Body>
 			</Container>

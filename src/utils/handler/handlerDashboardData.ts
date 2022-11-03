@@ -1,6 +1,4 @@
 import DashboardRequests from "../Requests/dashboard.request";
-import dashboardConfig from "../../dashboard.config";
-import { DashboardInterface } from "../../interfaces/dashboard";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
 
@@ -9,8 +7,7 @@ export default async function handlerDashboardData(apiResponse: {
 	parameterTypes: ParamInterface[];
 }) {
 	let options: any = [];
-
-	console.log(apiResponse);
+	let error = 0;
 
 	for (let param in apiResponse.parameterTypes) {
 		const paramData = await DashboardRequests.getDashboardData(
@@ -18,7 +15,15 @@ export default async function handlerDashboardData(apiResponse: {
 			apiResponse.parameterTypes[param].type
 		);
 
-		options.push(_newOption(apiResponse.parameterTypes[param], paramData));
+		if (paramData === "error") {
+			error = 1;
+		} else {
+			options.push(_newOption(apiResponse.parameterTypes[param], paramData));
+		}
+
+		if (error != 0) {
+			alert("Não foi possível carregar todos os dados");
+		}
 	}
 
 	return options;
@@ -28,7 +33,7 @@ function _newOption(paramInfos: ParamInterface, paramData: any) {
 	const values: any = [];
 
 	paramData.forEach((value: any) => {
-		values.push([value.moment * 1000, value.value]);
+		values.push([value.moment * 1000, value.value * paramInfos.factor]);
 	});
 
 	const newOption = {
