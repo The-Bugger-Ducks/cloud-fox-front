@@ -30,6 +30,7 @@ import {
 	LabelAlert,
 	NoItem,
 } from "./styles";
+import zIndex from "@mui/material/styles/zIndex";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
 	(props, ref) => {
@@ -162,8 +163,8 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 									</NoItem>
 								) : (
 									allParams.map((paramItem, index) => (
-										<div key={index}>
-											<Item>
+										<>
+											<Item key={paramItem.name + index}>
 												<Checkbox
 													type="checkbox"
 													name={paramItem.name}
@@ -171,16 +172,16 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 												/>
 												<ItemLabel title={paramItem.name}>{paramItem.name}</ItemLabel>
 											</Item>
-											<Item>
+											<Item key={paramItem.unit + index}>
 												<ItemLabel title={paramItem.unit}>{paramItem.unit}</ItemLabel>
 											</Item>
-											<Item>
+											<Item key={paramItem.factor + index}>
 												<ItemLabel title={paramItem.factor.toString()}>{paramItem.factor}</ItemLabel>
 											</Item>
-											<Item>
+											<Item key={paramItem.type + index}>
 												<ItemLabel title={paramItem.type}>{paramItem.type}</ItemLabel>
 											</Item>
-										</div>
+										</>
 									))
 								)}
 							</ParamsTable>
