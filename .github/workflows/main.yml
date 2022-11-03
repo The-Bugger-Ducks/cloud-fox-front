@@ -24,18 +24,21 @@ jobs:
         run: npm run build
 
       - name: Upload build folder
-      - uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: buildfolder
           path: .build/
 
   download_build_folder:
-    name: Download build folder
-    runs-on: self-hosted
-    needs: build
-    steps:
-		- uses: actions/download-artifact@v1
-			with:
-				name: buildfolder
-		- name: build files
-			run: ls -R
+   - name: Download build folder
+     runs-on: self-hosted
+     needs: build
+    
+  steps:
+   - name: Start download
+     uses: actions/download-artifact@v3
+     with:
+      name: buildfolder
+    
+   - name: List files build
+     run: ls -R
