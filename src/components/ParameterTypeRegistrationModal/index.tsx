@@ -1,9 +1,10 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParamRequests from "../../utils/Requests/param.request";
 import Param from "../Param";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ParamInterface } from "../../interfaces/param";
 import {
 	Container,
 	Body,
@@ -26,6 +27,7 @@ import {
 	ButtonContainer,
 	RegisteredSensors,
 	ParamsContainer,
+	LabelAlert,
 } from "./styles";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
@@ -36,29 +38,34 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 		const [factorParameter, setFactorParameter] = useState<number>(0);
 		const [typeParameter, setTypeParameter] = useState<string>("");
 		const [idStation, setIdStation] = useState<string>("");
-		const [params, setParams] = useState<Object[]>([]);
+		const [newParams, setNewParams] = useState<ParamInterface[]>([]);
+		const [newParamsElement, setNewParamsElement] = useState<any[]>([]);
+		const [oldParams, setOldParams] = useState<ParamInterface[]>([]);
+		const [allParams, setAllParams] = useState<ParamInterface[]>([]);
+
+		useEffect(() => {
+			getParameters();
+		}, []);
 
 		const closeModal = () => {
+			setNewParams([]);
+			setOldParams([]);
+			setNewParamsElement([]);
 			setIsDisabled(true);
 		};
 
+		const getParameters = async () => {
+			const response = await ParamRequests.getParams();
+			if (response === "error") {
+				alert("Não foi possível buscar por parâmetros cadastrados");
+			} else {
+				setAllParams(response);
+			}
+		};
+
 		const createParameter = async () => {
-			const payload = {
-				name: nameParameter,
-				unit: unitParameter,
-				factor: factorParameter,
-				type: typeParameter,
-				stationId: idStation,
-			};
-
-			const response = await ParamRequests.createParam(
-				payload.name,
-				payload.unit,
-				payload.factor,
-				payload.type,
-				payload.stationId
-			);
-
+			const params: ParamInterface[] = oldParams.concat(newParams);
+			const response = await ParamRequests.createParam(params);
 			if (response !== "error") {
 				closeModal();
 				alert("Parâmetro cadastrado com sucesso!");
@@ -68,17 +75,55 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 			}
 		};
 
-		const handleTableParams = async (event: any, param: Object) => {
+		const updateNewParamsElement = () => {
+			const updatedElements: any[] = [];
+			newParams.map((newParamElement, index) => {
+				updatedElements.push(<Param key={index} name={newParamElement.name} onClick={() => removeNewParam(index)} />);
+			});
+			setNewParamsElement(updatedElements);
+		};
+
+		const addNewParam = () => {
+			const newParam: ParamInterface = {
+				name: nameParameter,
+				unit: unitParameter,
+				factor: factorParameter,
+				type: typeParameter,
+				stationId: idStation,
+			};
+
+			let updatedParams = newParams;
+			updatedParams.push(newParam);
+			setNewParams(updatedParams);
+			updateNewParamsElement();
+		};
+
+		const removeNewParam = (index: number) => {
+			let updatedParams = newParams;
+			updatedParams.splice(index, 1);
+			setNewParams(updatedParams);
+			updateNewParamsElement();
+		};
+
+		const handleTableParams = async (event: any, param: ParamInterface) => {
+			const clearParam = {
+				name: param.name,
+				unit: param.unit,
+				factor: param.factor,
+				type: param.type,
+				stationId: param.stationId,
+			};
+
 			if (event.target.checked) {
-				const actualParams = params;
-				actualParams.push(param);
+				const actualParams = oldParams;
+				actualParams.push(clearParam);
 				const updatedParams = actualParams;
-				setParams(updatedParams);
+				setOldParams(updatedParams);
 			} else {
-				const updatedParams = params.filter((parameterInCheck) => {
-					return parameterInCheck === param;
+				const updatedParams = oldParams.filter((parameterInCheck) => {
+					return parameterInCheck !== clearParam;
 				});
-				setParams(updatedParams);
+				setOldParams(updatedParams);
 			}
 		};
 
@@ -110,57 +155,27 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 									<ItemTitle>Tipo</ItemTitle>
 								</Item>
 
-								<Item>
-									<Checkbox
-										type="checkbox"
-										name="teste"
-										onChange={(event) =>
-											handleTableParams(event, {
-												name: "teste",
-												unit: "mm",
-												factor: "200",
-												type: "aue",
-												stationId: idStation,
-											})
-										}
-									/>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-
-								<Item>
-									<Checkbox
-										type="checkbox"
-										name="teste"
-										onChange={(event) =>
-											handleTableParams(event, {
-												name: "a",
-												unit: "mm",
-												factor: "200",
-												type: "aue",
-												stationId: idStation,
-											})
-										}
-									/>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
-								<Item>
-									<ItemLabel>Teste</ItemLabel>
-								</Item>
+								{allParams.map((paramItem, index) => (
+									<>
+										<Item>
+											<Checkbox
+												type="checkbox"
+												name={paramItem.name}
+												onChange={(event) => handleTableParams(event, paramItem)}
+											/>
+											<ItemLabel title={paramItem.name}>{paramItem.name}</ItemLabel>
+										</Item>
+										<Item>
+											<ItemLabel title={paramItem.unit}>{paramItem.unit}</ItemLabel>
+										</Item>
+										<Item>
+											<ItemLabel title={paramItem.factor.toString()}>{paramItem.factor}</ItemLabel>
+										</Item>
+										<Item>
+											<ItemLabel title={paramItem.type}>{paramItem.type}</ItemLabel>
+										</Item>
+									</>
+								))}
 							</ParamsTable>
 							<CustomAccordion>
 								<CustomAccordionSummary
@@ -226,13 +241,21 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 											onChange={(event) => setTypeParameter(event.target.value)}
 										/>
 										<ButtonContainer>
-											<Button width="100%" title="Cadastrar" backgroundColor="#7711BB" onClick={() => {}} />
+											<Button
+												width="100%"
+												onClick={() => addNewParam()}
+												title="Adicionar a fila de cadastro"
+												backgroundColor="#7711BB"
+											/>
 										</ButtonContainer>
 										<RegisteredSensors>
 											<Label>Parâmetros a serem cadastrados</Label>
 											<ParamsContainer>
-												<Param name="Chuva" onClick={() => console.log("Cliqueu")} />
-												<Param name="Chuva" onClick={() => console.log("Cliqueu")} />
+												{newParamsElement.length === 0 ? (
+													<LabelAlert>Nenhum parâmetro a ser cadastrado</LabelAlert>
+												) : (
+													newParamsElement
+												)}
 											</ParamsContainer>
 										</RegisteredSensors>
 									</Questions>

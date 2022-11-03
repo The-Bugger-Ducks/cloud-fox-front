@@ -24,7 +24,7 @@ export const Body = styled.div`
 	background: ${({ theme }) => theme.colors.white};
 	border-radius: 1rem;
 
-	width: 40%;
+	width: 65%;
 	height: 80%;
 	padding: 3rem;
 
@@ -80,6 +80,13 @@ export const Label = styled.label`
 	margin-bottom: 0.5rem;
 `;
 
+export const LabelAlert = styled.label`
+	color: ${({ theme }) => theme.colors.gray};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
+	margin-bottom: 0.5rem;
+`;
+
 export const Input = styled.input`
 	border: none;
 	border-radius: 5px;
@@ -110,6 +117,10 @@ export const Item = styled.div`
 	display: flex;
 	align-items: center;
 	margin: 0 0 0.5rem 0;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 `;
 
 export const ItemLabel = styled.label`
