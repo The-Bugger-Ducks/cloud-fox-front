@@ -2,8 +2,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import Button from "../Button";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import ParamRequests from "../../utils/Requests/param.request";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
+import Param from "../Param";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
 	Container,
@@ -24,6 +23,9 @@ import {
 	CustomAccordion,
 	CustomAccordionSummary,
 	CustomAccordionDetails,
+	ButtonContainer,
+	RegisteredSensors,
+	ParamsContainer,
 } from "./styles";
 
 const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { idStation?: string }>(
@@ -223,8 +225,16 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 											placeholder="Ex.: pluv"
 											onChange={(event) => setTypeParameter(event.target.value)}
 										/>
-
-										<Button width="100%" title="Cadastrar" backgroundColor="#7711BB" onClick={() => {}} />
+										<ButtonContainer>
+											<Button width="100%" title="Cadastrar" backgroundColor="#7711BB" onClick={() => {}} />
+										</ButtonContainer>
+										<RegisteredSensors>
+											<Label>Parâmetros a serem cadastrados</Label>
+											<ParamsContainer>
+												<Param name="Chuva" onClick={() => console.log("Cliqueu")} />
+												<Param name="Chuva" onClick={() => console.log("Cliqueu")} />
+											</ParamsContainer>
+										</RegisteredSensors>
 									</Questions>
 								</CustomAccordionDetails>
 							</CustomAccordion>

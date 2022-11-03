@@ -149,3 +149,20 @@ export const CustomAccordionSummary = styled(AccordionSummary)`
 export const CustomAccordionDetails = styled(AccordionDetails)`
 	padding: 0 !important;
 `;
+
+export const ButtonContainer = styled.div`
+	padding: 2rem 0;
+	border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+`;
+
+export const RegisteredSensors = styled.div`
+	margin: 2rem 0;
+	width: auto;
+`;
+
+export const ParamsContainer = styled.div`
+	margin: 0.5rem 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+`;
