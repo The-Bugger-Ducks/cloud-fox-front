@@ -21,7 +21,7 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build project
-        run: npm run build
+        run: DISABLE_ESLINT_PLUGIN=true && npm run build
 
       - name: Upload build folder
         uses: actions/upload-artifact@v3
