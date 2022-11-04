@@ -39,8 +39,10 @@ jobs:
        with:
         name: buildfolder
         
-     - name: Copy files
-       run: sudo cp -R build/* /home/ubuntu/cloud-fox-web
-    
      - name: List files build
-       run: ls build
+       run: ls
+        
+     - name: Copy files
+       run: sudo cp -R . /home/ubuntu/cloud-fox-web
+    
+     
