@@ -20,12 +20,10 @@ export default async function handlerDashboardData(apiResponse: {
 		} else {
 			options.push(_newOption(apiResponse.parameterTypes[param], paramData));
 		}
-
-		if (error != 0) {
-			alert("Não foi possível carregar todos os dados");
-		}
 	}
-
+	if (error != 0) {
+		alert("Não foi possível carregar todos os dados");
+	}
 	return options;
 }
 

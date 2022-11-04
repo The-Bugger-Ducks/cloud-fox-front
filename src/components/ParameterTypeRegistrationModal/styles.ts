@@ -1,5 +1,7 @@
 import styled from "styled-components";
-
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 interface ContainerProps {
 	disabled: boolean;
 }
@@ -22,7 +24,8 @@ export const Body = styled.div`
 	background: ${({ theme }) => theme.colors.white};
 	border-radius: 1rem;
 
-	width: 40%;
+	width: 65%;
+	max-height: 80%;
 	padding: 3rem;
 
 	display: flex;
@@ -43,6 +46,7 @@ export const Main = styled.div`
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
 	gap: 1.5rem;
 	width: 100%;
 	margin-top: 3rem;
@@ -59,12 +63,28 @@ export const Questions = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	margin: 0 0 1rem 0;
+`;
+
+export const Checkbox = styled.input`
+	border: none;
+	border-radius: 5px;
+	color: ${({ theme }) => theme.colors.gray};
+	background-color: ${({ theme }) => theme.colors.white};
+	margin: 0 8px 0 0;
 `;
 
 export const Label = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
+	margin-bottom: 0.5rem;
+`;
+
+export const LabelAlert = styled.label`
+	color: ${({ theme }) => theme.colors.gray};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin-bottom: 0.5rem;
 `;
 
@@ -98,4 +118,75 @@ export const Select = styled.select`
 	background-color: ${({ theme }) => theme.colors.white};
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
 	margin-bottom: 1rem;
+`;
+
+export const ParamsTable = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	margin: 1.5rem 0;
+`;
+
+export const Item = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 0 0 0.5rem 0;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`;
+
+export const ItemLabel = styled.label`
+	color: ${({ theme }) => theme.colors.black};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
+`;
+
+export const ItemTitle = styled.label`
+	color: ${({ theme }) => theme.colors.secondary};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
+	margin: 0 0 0.5rem 0;
+`;
+
+export const ItemTitleInit = styled.label`
+	color: ${({ theme }) => theme.colors.secondary};
+	font-weight: ${({ theme }) => theme.fontWeights.regular};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
+	margin: 0 0 0.5rem 1.4rem;
+`;
+
+export const NoItem = styled.div`
+	grid-column-start: 1;
+	grid-column-start: 5;
+`;
+
+export const CustomAccordion = styled(Accordion)`
+	background-color: ${({ theme }) => theme.colors.white} !important;
+	box-shadow: none !important;
+`;
+
+export const CustomAccordionSummary = styled(AccordionSummary)`
+	padding: 0 !important;
+`;
+
+export const CustomAccordionDetails = styled(AccordionDetails)`
+	padding: 0 !important;
+`;
+
+export const ButtonContainer = styled.div`
+	padding: 2rem 0;
+	border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+`;
+
+export const RegisteredSensors = styled.div`
+	margin: 2rem 0;
+	width: auto;
+`;
+
+export const ParamsContainer = styled.div`
+	margin: 0.5rem 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
 `;

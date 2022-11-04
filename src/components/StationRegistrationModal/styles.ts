@@ -66,7 +66,7 @@ export const Questions = styled.div`
 export const Label = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin-bottom: 0.5rem;
 `;
 
