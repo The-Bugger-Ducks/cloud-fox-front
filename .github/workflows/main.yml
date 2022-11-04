@@ -38,6 +38,9 @@ jobs:
        uses: actions/download-artifact@v3
        with:
         name: buildfolder
+        
+     - name: Copy files
+       run: sudo cp -R build/* /home/ubuntu/cloud-fox-web
     
      - name: List files build
-       run: ls -R
+       run: ls build
