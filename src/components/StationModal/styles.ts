@@ -23,7 +23,6 @@ export const Body = styled.div`
 	border-radius: 1rem;
 
 	width: 40%;
-	height: 80%;
 	padding: 3rem;
 
 	display: flex;
@@ -37,13 +36,14 @@ export const Main = styled.div`
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-right: 1.5rem;
 `;
 
 export const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
+	gap: 1.5rem;
 	justify-content: space-between;
 	gap: 1.5rem;
 	width: 100%;
@@ -66,7 +66,7 @@ export const Questions = styled.div`
 export const Label = styled.label`
 	color: ${({ theme }) => theme.colors.black};
 	font-weight: ${({ theme }) => theme.fontWeights.regular};
-	font-size: ${({ theme }) => theme.fontSizes.text};
+	font-size: ${({ theme }) => theme.fontSizes.subtitle};
 	margin-bottom: 0.5rem;
 `;
 
@@ -90,4 +90,16 @@ export const TextArea = styled.textarea`
 	margin-bottom: 1rem;
 	height: 3rem;
 	margin-bottom: 1rem;
+`;
+
+export const LoadingContainer = styled.div<ContainerProps>`
+	display: ${({ disabled }) => (disabled ? "none" : "flex")};
+	backdrop-filter: blur(2px);
+	position: fixed;
+	z-index: 7000 !important;
+	width: 40%;
+	height: 80%;
+	border-radius: 1rem;
+	align-items: center;
+	justify-content: center;
 `;

@@ -63,3 +63,8 @@ export const NewParamContainer = styled.div`
 	display: flex;
 	justify-content: flex-end;
 `;
+
+export const LoadingContainer = styled.div`
+	grid-column-start: 1;
+	grid-column-end: 3;
+`;

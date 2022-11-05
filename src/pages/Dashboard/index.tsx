@@ -15,6 +15,7 @@ import {
 	Divider,
 	CardContainer,
 	NewParamContainer,
+	LoadingContainer,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -23,9 +24,10 @@ import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
+import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
-import { StationEditModalRef } from "../../interfaces/StationEditModalRef";
-import StationEditModal from "../../components/StationEditModal";
+import { StationModalRef } from "../../interfaces/StationModalRef";
+import StationModal from "../../components/StationModal";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -33,7 +35,7 @@ export default function Dashboard() {
 	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
-	const stationEditModalRef = useRef<StationEditModalRef>(null);
+	const stationModalRef = useRef<StationModalRef>(null);
 
 	const [station, setStation] = useState<{
 		station: ActiveStationInterface;
@@ -65,7 +67,7 @@ export default function Dashboard() {
 	return (
 		<>
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
-			<StationEditModal ref={stationEditModalRef} station={station!.station} />
+			<StationModal ref={stationModalRef} station={station!.station} />
 			<Container>
 				<Header>
 					<PageTitle>
@@ -81,7 +83,7 @@ export default function Dashboard() {
 								alt="Editar estação"
 								onClick={() => {
 									console.log("clicado");
-									stationEditModalRef.current?.showModal();
+									stationModalRef.current?.showModal();
 								}}
 							/>
 						</StationName>
@@ -95,12 +97,14 @@ export default function Dashboard() {
 							<p>Nenhum dado encontrado para estação selecionada.</p>
 						)
 					) : (
-						<p>Carregando...</p>
+						<LoadingContainer>
+							<Loading />
+						</LoadingContainer>
 					)}
 				</CardContainer>
-				{!isSimpleUser && (
+				{!isLoading && !isSimpleUser && (
 					<NewParamContainer>
-						<Button title="Cadastrar parâmetro" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
+						<Button title="Adicionar parâmetros" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
 					</NewParamContainer>
 				)}
 			</Container>
