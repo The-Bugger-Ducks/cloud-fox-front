@@ -54,6 +54,24 @@ class StationRequests {
 			return "error";
 		}
 	}
+
+	public async editStation(id: string, name: string, lat: LatLngLiteral, lon: LatLngLiteral, description: string) {
+		try {
+			const payload = {
+				id: id,
+				name: name,
+				lat: lat,
+				lon: lon,
+				description: description,
+			};
+
+			const response = await api.put("/stations/activate/" + id, payload);
+			return response;
+		} catch (error) {
+			console.log(error);
+			return "error";
+		}
+	}
 }
 
 export default new StationRequests();

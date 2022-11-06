@@ -9,8 +9,11 @@ import { MinimapEventsRef } from "../../interfaces/MinimapEventsRef";
 import { MinimapRef } from "../../interfaces/Minimap";
 import "leaflet/dist/leaflet.css";
 
-const MinimapEvents = forwardRef<MinimapEventsRef, {}>((props, ref) => {
-	const [mousePos, setMousePos] = useState<LatLngLiteral>({ lat: 0, lng: 0 });
+const MinimapEvents = forwardRef<MinimapEventsRef, { initialLocal?: { lat: number; lng: number } }>((props, ref) => {
+	const [mousePos, setMousePos] = useState<LatLngLiteral>({
+		lat: props.initialLocal?.lat ?? 0,
+		lng: props.initialLocal?.lng ?? 0,
+	});
 
 	const useMapEvent = useMapEvents({
 		click: (event) => {
@@ -41,7 +44,7 @@ const MinimapEvents = forwardRef<MinimapEventsRef, {}>((props, ref) => {
 	);
 });
 
-const Minimap = forwardRef<MinimapRef, {}>((props, ref) => {
+const Minimap = forwardRef<MinimapRef, { initialLocal?: { lat: number; lng: number } }>((props, ref) => {
 	const minimapEventsRef = useRef<MinimapEventsRef>(null);
 
 	useImperativeHandle(ref, () => ({
@@ -53,12 +56,18 @@ const Minimap = forwardRef<MinimapRef, {}>((props, ref) => {
 
 	return (
 		<Container>
-			<MapContainer center={[-23.1895062, -45.8630127]} zoom={13}>
+			<MapContainer
+				center={[
+					props.initialLocal?.lat === 0 ? -23.1895062 : props.initialLocal?.lat ?? 0,
+					props.initialLocal?.lng === 0 ? -45.8630127 : props.initialLocal?.lng ?? 0,
+				]}
+				zoom={13}
+			>
 				<TileLayer
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				<MinimapEvents ref={minimapEventsRef} />
+				<MinimapEvents initialLocal={props.initialLocal} ref={minimapEventsRef} />
 			</MapContainer>
 		</Container>
 	);
