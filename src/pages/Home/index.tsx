@@ -52,7 +52,7 @@ export default function Home() {
 					)}
 				</CardContainer>
 
-				{!isSimpleUser && (
+				{isSimpleUser && (
 					<ButtonContainer>
 						<Button title="Criar estação" onClick={() => showModalStationRegistration()} />
 					</ButtonContainer>

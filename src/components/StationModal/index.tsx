@@ -4,8 +4,6 @@ import { MinimapRef } from "../../interfaces/Minimap";
 import { StationModalRef } from "../../interfaces/StationModalRef";
 import Minimap from "../Minimap";
 import StationRequests from "../../utils/Requests/station.request";
-import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
-import ParameterTypeRegistrationModal from "../ParameterTypeRegistrationModal";
 import Loading from "../Loading";
 import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea, LoadingContainer } from "./styles";
 import { ActiveStationInterface } from "../../interfaces/station";
@@ -18,7 +16,6 @@ const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterf
 	const [idStation, setIdStation] = useState<string>(props.station?.id ?? "");
 	const minimapRef = useRef<MinimapRef>(null);
 	const [isLoading, setIsloading] = useState<boolean>(false);
-	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 	const navigate = useNavigate();
 
 	const closeModal = () => {
@@ -69,6 +66,7 @@ const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterf
 								type="text"
 								defaultValue={idStation}
 								placeholder="Ex.: AAHBCUTOSHFE"
+								disabled={props.station ? true : false}
 								onChange={(event) => setIdStation(event.target.value)}
 							/>
 
@@ -88,7 +86,13 @@ const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterf
 							/>
 
 							<Label>Localização da estação</Label>
-							<Minimap ref={minimapRef} />
+							<Minimap
+								initialLocal={{
+									lat: props.station ? props.station?.lat : 0,
+									lng: props.station ? props.station?.lon : 0,
+								}}
+								ref={minimapRef}
+							/>
 						</Questions>
 					</Main>
 					<Footer>

@@ -65,7 +65,7 @@ class StationRequests {
 				description: description,
 			};
 
-			const response = await api.put("/stations", payload);
+			const response = await api.put("/stations/activate/" + id, payload);
 			return response;
 		} catch (error) {
 			console.log(error);
