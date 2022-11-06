@@ -67,26 +67,29 @@ export default function Dashboard() {
 	return (
 		<>
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
-			<StationModal ref={stationModalRef} station={station!.station} />
+			{!isLoading && <StationModal ref={stationModalRef} station={station!.station} />}
 			<Container>
 				<Header>
 					<PageTitle>
 						<Title>Dashboard</Title>
 
-						<Divider src={DividerIcon} alt="Divisor" />
-
-						<StationName>
-							<Subtitle>{station?.station.name}</Subtitle>
-							{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
-							<EditButton
-								src={EditIcon}
-								alt="Editar estação"
-								onClick={() => {
-									console.log("clicado");
-									stationModalRef.current?.showModal();
-								}}
-							/>
-						</StationName>
+						{!isLoading && (
+							<>
+								<Divider src={DividerIcon} alt="Divisor" />
+								<StationName>
+									<Subtitle>{station?.station.name}</Subtitle>
+									{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
+									<EditButton
+										src={EditIcon}
+										alt="Editar estação"
+										onClick={() => {
+											console.log("clicado");
+											stationModalRef.current?.showModal();
+										}}
+									/>
+								</StationName>
+							</>
+						)}
 					</PageTitle>
 				</Header>
 				<CardContainer>
