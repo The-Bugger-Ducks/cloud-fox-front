@@ -1,9 +1,9 @@
-import { User } from '../../interfaces/user';
-import { api } from '../../services/api';
+import { User } from "../../interfaces/user";
+import { api } from "../../services/api";
 
 interface UserAuthenticatedLike {
-	userExists: User,
-	token: string
+	userExists: User;
+	token: string;
 }
 
 class UserRequests {
@@ -13,7 +13,7 @@ class UserRequests {
 			return response.data as User[];
 		} catch (error) {
 			console.error(error);
-			alert('Não foi possível obter os dados dos usuários.');
+			alert("Não foi possível obter os dados dos usuários.");
 		}
 	}
 
@@ -23,7 +23,7 @@ class UserRequests {
 			return response.data as User;
 		} catch (error) {
 			console.error(error);
-			alert('Não foi possível obter os dados do usuário.');
+			alert("Não foi possível obter os dados do usuário.");
 		}
 	}
 
@@ -33,7 +33,7 @@ class UserRequests {
 			return response.data as User[];
 		} catch (error) {
 			console.error(error);
-			alert('Não foi possível obter os dados dos usuários.');
+			alert("Não foi possível obter os dados dos usuários.");
 		}
 	}
 
@@ -42,32 +42,31 @@ class UserRequests {
 			const response = await api.post(`users/`, {
 				username,
 				email,
-				role: 'simple',
+				role: "simple",
 				imgSrc,
 			});
 			return response.data as UserAuthenticatedLike;
 		} catch (error) {
 			console.error(error);
-			alert('Não foi possível criar o usuário.');
 		}
 	}
 
 	public async deleteUser(id: string) {
 		try {
 			await api.delete(`users/${id}`);
-			alert('Conta deletada com sucesso!');
+			alert("Conta deletada com sucesso!");
 		} catch (error) {
 			console.error(error);
-			alert('Não foi possível deletar a conta.');
+			alert("Não foi possível deletar a conta.");
 		}
 	}
 
 	public async setUserRole(id: User["id"], role: User["role"]) {
 		try {
-			await api.put('/users/updateRole', { id, role }, { timeout: 5000 })
+			await api.put("/users/updateRole", { id, role }, { timeout: 5000 });
 		} catch (error) {
 			console.error(error);
-			throw new Error("Ocorreu um erro ao alterar o privilégio desse usuário. Tente novamente mais tarde!")
+			throw new Error("Ocorreu um erro ao alterar o privilégio desse usuário. Tente novamente mais tarde!");
 		}
 	}
 }

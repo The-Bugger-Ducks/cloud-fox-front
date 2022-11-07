@@ -26,6 +26,8 @@ import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegist
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
+import { StationModalRef } from "../../interfaces/StationModalRef";
+import StationModal from "../../components/StationModal";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -33,6 +35,7 @@ export default function Dashboard() {
 	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
+	const stationModalRef = useRef<StationModalRef>(null);
 
 	const [station, setStation] = useState<{
 		station: ActiveStationInterface;
@@ -64,17 +67,29 @@ export default function Dashboard() {
 	return (
 		<>
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
+			{!isLoading && <StationModal ref={stationModalRef} station={station!.station} />}
 			<Container>
 				<Header>
 					<PageTitle>
 						<Title>Dashboard</Title>
 
-						<Divider src={DividerIcon} alt="Divisor" />
-
-						<StationName>
-							<Subtitle>{station?.station.name}</Subtitle>
-							{!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />}
-						</StationName>
+						{!isLoading && (
+							<>
+								<Divider src={DividerIcon} alt="Divisor" />
+								<StationName>
+									<Subtitle>{station?.station.name}</Subtitle>
+									{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
+									<EditButton
+										src={EditIcon}
+										alt="Editar estação"
+										onClick={() => {
+											console.log("clicado");
+											stationModalRef.current?.showModal();
+										}}
+									/>
+								</StationName>
+							</>
+						)}
 					</PageTitle>
 				</Header>
 				<CardContainer>
