@@ -24,8 +24,8 @@ class StationRequests {
 				parameterTypes: ParamInterface[];
 			};
 		} catch (error) {
-			console.log(error);
-			alert("Não foi possível obter estações.");
+			console.error(error);
+			alert("Não foi possível obter os dados da estação.");
 		}
 	}
 

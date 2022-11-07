@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineGooglePlus } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
@@ -21,19 +21,7 @@ export default function LoginModal() {
 
 	const CLIENT_ID = "826612899243-r80v2i58suusduq8p3iht9sbaip815db.apps.googleusercontent.com";
 
-	useEffect(() => {
-		const initClient = () => {
-			gapi.auth2.init({
-				client_id: CLIENT_ID,
-				scope: "",
-			});
-		};
-		gapi.load("client:auth2", initClient);
-	}, []);
-
 	const onSuccess = (res: any) => {
-		setIsLoading(true);
-
 		UserRequests.createUser(
 			res.profileObj.givenName,
 			res.profileObj.email,
@@ -53,9 +41,8 @@ export default function LoginModal() {
 	};
 
 	const onFailure = (err: any) => {
-		console.log("failed:", err);
-
-		alert("Que pena! Algo deu errado com seu login. Tente novamente mais tarde!");
+		console.error(err);
+		alert("Algo deu errado com seu login. Tente novamente mais tarde!");
 	};
 
 	return (
@@ -74,14 +61,24 @@ export default function LoginModal() {
 						onSuccess={onSuccess}
 						onFailure={onFailure}
 						cookiePolicy={"single_host_origin"}
-						isSignedIn={true}
+						isSignedIn={false}
 						render={(renderProps) => (
 							<Button
 								title="Login com Google"
 								fontColor={theme.colors.gray}
 								backgroundColor={theme.colors.white}
 								marginBottom={"1rem"}
-								onClick={renderProps.onClick}
+								onClick={() => {
+									setIsLoading(true);
+									const initClient = () => {
+										gapi.auth2.init({
+											client_id: CLIENT_ID,
+											scope: "",
+										});
+									};
+									gapi.load("client:auth2", initClient);
+									renderProps.onClick();
+								}}
 								icon={<AiOutlineGooglePlus size={24} />}
 							/>
 						)}
