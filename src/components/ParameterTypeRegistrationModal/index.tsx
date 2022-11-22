@@ -158,7 +158,7 @@ const ParameterRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef,
 
 								{allParams.length === 0 ? (
 									<NoItem>
-										<LabelAlert>Nenhum parâmetro enccontrado</LabelAlert>
+										<LabelAlert>Nenhum parâmetro encontrado</LabelAlert>
 									</NoItem>
 								) : (
 									allParams.map((paramItem, index) => (

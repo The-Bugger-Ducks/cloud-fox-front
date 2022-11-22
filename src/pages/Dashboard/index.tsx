@@ -23,6 +23,7 @@ import { ActiveStationInterface } from "../../interfaces/station";
 import { ParamInterface } from "../../interfaces/param";
 import handlerDashboardData from "../../utils/handler/handlerDashboardData";
 import ParameterTypeRegistrationModal from "../../components/ParameterTypeRegistrationModal";
+import AlertRegistrationModal from "../../components/AlertRegistrationModal";
 import { ParameterTypeRegistrationModalRef } from "../../interfaces/ParameterTypeRegistrationModalRef";
 import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
@@ -35,6 +36,7 @@ export default function Dashboard() {
 	const isSimpleUser = !userInfo?.role || userInfo?.role === "simple";
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
+	const alertRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 	const stationModalRef = useRef<StationModalRef>(null);
 
 	const [station, setStation] = useState<{
@@ -66,7 +68,9 @@ export default function Dashboard() {
 
 	return (
 		<>
+			<AlertRegistrationModal ref={alertRegistrationModalRef} idStation={id} />
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
+
 			{!isLoading && <StationModal ref={stationModalRef} station={station!.station} />}
 			<Container>
 				<Header>
@@ -105,8 +109,14 @@ export default function Dashboard() {
 						</LoadingContainer>
 					)}
 				</CardContainer>
-				{!isLoading && !isSimpleUser && (
+				{!isLoading && isSimpleUser && (
 					<NewParamContainer>
+						<Button
+							title="Adicionar alerta"
+							backgroundColor="#AA55DD"
+							onClick={() => alertRegistrationModalRef.current?.showModal()}
+						/>
+
 						<Button title="Adicionar parâmetros" onClick={() => parameterRegistrationModalRef.current?.showModal()} />
 					</NewParamContainer>
 				)}

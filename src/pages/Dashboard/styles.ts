@@ -62,6 +62,7 @@ export const NewParamContainer = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
+	gap: 1rem;
 `;
 
 export const LoadingContainer = styled.div`
