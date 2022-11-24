@@ -36,12 +36,13 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	const [idStation, setIdStation] = useState<string>("");
 	const [paramsSelected, setParamsSelected] = useState<ParamInterface[]>([]);
 	const [allParams, setAllParams] = useState<ParamInterface[]>([]);
+	const [alertsInfo, setAlertsInfo] = useState<JSX.Element[]>([]);
 
 	useEffect(() => {
 		getParameters();
 	}, []);
 
-	const closeModal = () => {
+	const closeModal: () => void = () => {
 		setParamsSelected([]);
 		setIsDisabled(true);
 	};
@@ -80,10 +81,49 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 			});
 			setParamsSelected(updatedParams);
 		}
+
+		updateAlertsElement();
 	};
 
-	const addToQueue = async () => {
-		console.log("Adicionar a fila de cadastro");
+	// const addToQueue = async () => {
+	// 	console.log("Adicionar a fila de cadastro");
+	// };
+
+	const updateAlertsElement = () => {
+		const updatedElements: JSX.Element[] = [];
+		paramsSelected.map((param, index) => {
+			updatedElements.push(
+				<div key={index}>
+					<ParamsContainer>
+						<Param name={param.name} onClick={() => removeAlert(index)} />
+					</ParamsContainer>
+					<Values>
+						<ValuesItem>
+							<Label>Mínimo</Label>
+							<Input type="number" defaultValue={30} />
+						</ValuesItem>
+
+						<ValuesItem>
+							<Label>Máximo</Label>
+							<Input type="number" defaultValue={75} />
+						</ValuesItem>
+					</Values>
+				</div>
+			);
+		});
+		setAlertsInfo(updatedElements);
+	};
+
+	const removeAlert = (index: number) => {
+		let updatedParams = paramsSelected;
+		updatedParams.splice(index, 1);
+		setParamsSelected(updatedParams);
+
+		let updatedAlerts = alertsInfo;
+		updatedAlerts.splice(index, 1);
+		setAlertsInfo(updatedAlerts);
+
+		updateAlertsElement();
 	};
 
 	useImperativeHandle(ref, () => ({
@@ -145,14 +185,14 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 								))
 							)}
 						</ParamsTable>
-						<ButtonContainer>
+						{/* <ButtonContainer>
 							<Button
 								width="100%"
 								onClick={() => addToQueue()}
 								title="Adicionar na fila de cadastro"
 								backgroundColor="#7711BB"
 							/>
-						</ButtonContainer>
+						</ButtonContainer> */}
 					</Questions>
 
 					<Questions>
@@ -160,22 +200,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 							Estabeleça um limite mínimo e máximo que servirá de base para a emissão de alertas para cada parâmetro
 							selecionado
 						</Label>
-
-						<ParamsContainer>
-							<Param name="Exemplo de alerta" onClick={() => console.log("Remover parâmetro")} />
-						</ParamsContainer>
-
-						<Values>
-							<ValuesItem>
-								<Label>Mínimo</Label>
-								<Input type="number" defaultValue={30} />
-							</ValuesItem>
-
-							<ValuesItem>
-								<Label>Máximo</Label>
-								<Input type="number" defaultValue={75} />
-							</ValuesItem>
-						</Values>
+						{alertsInfo.length === 0 ? <LabelAlert>Nenhum parâmetro a ser cadastrado</LabelAlert> : alertsInfo}
 					</Questions>
 				</Main>
 				<Footer>
