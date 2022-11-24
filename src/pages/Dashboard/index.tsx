@@ -109,7 +109,7 @@ export default function Dashboard() {
 						</LoadingContainer>
 					)}
 				</CardContainer>
-				{!isLoading && isSimpleUser && (
+				{!isLoading && !isSimpleUser && (
 					<NewParamContainer>
 						<Button
 							title="Adicionar alerta"

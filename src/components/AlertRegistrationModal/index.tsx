@@ -35,6 +35,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
 	const [idStation, setIdStation] = useState<string>("");
 	const [paramsSelected, setParamsSelected] = useState<ParamInterface[]>([]);
+	const [paramsToCreate, setParamsToCreate] = useState<ParamInterface[]>([]);
 	const [allParams, setAllParams] = useState<ParamInterface[]>([]);
 	const [alertsInfo, setAlertsInfo] = useState<JSX.Element[]>([]);
 
@@ -43,7 +44,6 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	}, []);
 
 	const closeModal: () => void = () => {
-		setParamsSelected([]);
 		setIsDisabled(true);
 	};
 
@@ -67,7 +67,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 			unit: param.unit,
 			factor: param.factor,
 			type: param.type,
-			stationId: param.stationId,
+			stationId: idStation,
 		};
 
 		if (event.target.checked) {
@@ -76,22 +76,31 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 			const updatedParams = actualParams;
 			setParamsSelected(updatedParams);
 		} else {
-			const updatedParams = paramsSelected.filter((parameterInCheck) => {
-				return parameterInCheck !== clearParam;
+			const updatedParams = paramsSelected.filter((parameterInCheck: any) => {
+				let params: any = clearParam;
+				for (let key in parameterInCheck) {
+					console.log("parameterInCheck[key]", parameterInCheck[key]);
+					console.log(" clearParam[key as any]", params[key]);
+					if (parameterInCheck[key].toString() != params[key].toString()) {
+						return true;
+					}
+				}
+				return false;
 			});
 			setParamsSelected(updatedParams);
 		}
 
-		updateAlertsElement();
+		console.log(paramsSelected);
 	};
 
-	// const addToQueue = async () => {
-	// 	console.log("Adicionar a fila de cadastro");
-	// };
+	const addToQueue = async () => {
+		updateAlertsElement(paramsSelected);
+	};
 
-	const updateAlertsElement = () => {
+	const updateAlertsElement = (params: ParamInterface[]) => {
+		setParamsToCreate(params);
 		const updatedElements: JSX.Element[] = [];
-		paramsSelected.map((param, index) => {
+		params.map((param, index) => {
 			updatedElements.push(
 				<div key={index}>
 					<ParamsContainer>
@@ -115,15 +124,15 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	};
 
 	const removeAlert = (index: number) => {
-		let updatedParams = paramsSelected;
+		let updatedParams = paramsToCreate;
 		updatedParams.splice(index, 1);
-		setParamsSelected(updatedParams);
+		setParamsToCreate(updatedParams);
 
 		let updatedAlerts = alertsInfo;
 		updatedAlerts.splice(index, 1);
 		setAlertsInfo(updatedAlerts);
 
-		updateAlertsElement();
+		updateAlertsElement(paramsToCreate);
 	};
 
 	useImperativeHandle(ref, () => ({
@@ -185,14 +194,14 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 								))
 							)}
 						</ParamsTable>
-						{/* <ButtonContainer>
+						<ButtonContainer>
 							<Button
 								width="100%"
 								onClick={() => addToQueue()}
 								title="Adicionar na fila de cadastro"
 								backgroundColor="#7711BB"
 							/>
-						</ButtonContainer> */}
+						</ButtonContainer>
 					</Questions>
 
 					<Questions>
