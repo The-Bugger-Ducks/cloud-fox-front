@@ -6,5 +6,6 @@ import EditIcon from "./edit.svg";
 import DividerIcon from "./divider.svg";
 import ClimatologyIcon from "./climatology.png";
 import CloseIcon from "./close.svg";
+import AlertIcon from "./alert.svg";
 
-export { OneIcon, TwoIcon, ThreeIcon, Trash, EditIcon, DividerIcon, ClimatologyIcon, CloseIcon };
+export { OneIcon, TwoIcon, ThreeIcon, Trash, EditIcon, DividerIcon, ClimatologyIcon, CloseIcon, AlertIcon };

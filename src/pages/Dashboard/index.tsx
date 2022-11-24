@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import CardChart from "../../components/CardChart";
-import { EditIcon, DividerIcon } from "../../assets/icons";
+import { EditIcon, DividerIcon, AlertIcon } from "../../assets/icons";
 import Button from "../../components/Button";
 import {
 	Container,
@@ -16,6 +16,9 @@ import {
 	CardContainer,
 	NewParamContainer,
 	LoadingContainer,
+	AlertButton,
+	StationInfo,
+	StationInfoContent,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -28,6 +31,8 @@ import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
 import { StationModalRef } from "../../interfaces/StationModalRef";
 import StationModal from "../../components/StationModal";
+import { StatusModalRef } from "../../interfaces/StatusModalRef";
+import StatusModal from "../../components/StatusModal";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -36,6 +41,7 @@ export default function Dashboard() {
 
 	const parameterRegistrationModalRef = useRef<ParameterTypeRegistrationModalRef>(null);
 	const stationModalRef = useRef<StationModalRef>(null);
+	const statusModalRef = useRef<StatusModalRef>(null);
 
 	const [station, setStation] = useState<{
 		station: ActiveStationInterface;
@@ -68,27 +74,32 @@ export default function Dashboard() {
 		<>
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
 			{!isLoading && <StationModal ref={stationModalRef} station={station!.station} />}
+			{!isLoading && <StatusModal ref={statusModalRef} />}
 			<Container>
 				<Header>
 					<PageTitle>
 						<Title>Dashboard</Title>
 
 						{!isLoading && (
-							<>
-								<Divider src={DividerIcon} alt="Divisor" />
-								<StationName>
-									<Subtitle>{station?.station.name}</Subtitle>
-									{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
-									<EditButton
-										src={EditIcon}
-										alt="Editar estação"
-										onClick={() => {
-											console.log("clicado");
-											stationModalRef.current?.showModal();
-										}}
-									/>
-								</StationName>
-							</>
+							<StationInfo>
+								<StationInfoContent>
+									<Divider src={DividerIcon} alt="Divisor" />
+									<StationName>
+										<Subtitle>{station?.station.name}</Subtitle>
+										{/* {!isSimpleUser && <EditButton src={EditIcon} alt="Editar estação" />} */}
+										<EditButton
+											src={EditIcon}
+											alt="Editar estação"
+											onClick={() => stationModalRef.current?.showModal()}
+										/>
+									</StationName>
+								</StationInfoContent>
+								<AlertButton
+									src={AlertIcon}
+									alt="Ver alertas da estação"
+									onClick={() => statusModalRef.current?.showModal()}
+								/>
+							</StationInfo>
 						)}
 					</PageTitle>
 				</Header>
