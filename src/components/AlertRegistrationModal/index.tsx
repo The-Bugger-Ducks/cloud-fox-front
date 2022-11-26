@@ -35,7 +35,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
 	const [idStation, setIdStation] = useState<string>("");
 	const [paramsSelected, setParamsSelected] = useState<ParamInterface[]>([]);
-	const [paramsToCreate, setParamsToCreate] = useState<ParamInterface[]>([]);
+	const [paramsToCreated, setParamsToCreated] = useState<ParamInterface[]>([]);
 	const [allParams, setAllParams] = useState<ParamInterface[]>([]);
 	const [alertsInfo, setAlertsInfo] = useState<JSX.Element[]>([]);
 
@@ -58,7 +58,6 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 
 	const createAlerts = async () => {
 		console.log("Adicionar alertas");
-		console.log("paramsSelected", paramsSelected);
 	};
 
 	const handleTableParams = async (event: React.ChangeEvent<HTMLInputElement>, param: ParamInterface) => {
@@ -78,9 +77,9 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 		} else {
 			const updatedParams = paramsSelected.filter((parameterInCheck: any) => {
 				let params: any = clearParam;
+
+				// Validei item por item pq de outro jeito nao funcionava
 				for (let key in parameterInCheck) {
-					console.log("parameterInCheck[key]", parameterInCheck[key]);
-					console.log(" clearParam[key as any]", params[key]);
 					if (parameterInCheck[key].toString() != params[key].toString()) {
 						return true;
 					}
@@ -89,18 +88,16 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 			});
 			setParamsSelected(updatedParams);
 		}
-
-		console.log(paramsSelected);
 	};
 
 	const addToQueue = async () => {
-		updateAlertsElement(paramsSelected);
+		setParamsToCreated(paramsSelected);
+		updateAlertsElement();
 	};
 
-	const updateAlertsElement = (params: ParamInterface[]) => {
-		setParamsToCreate(params);
+	const updateAlertsElement = () => {
 		const updatedElements: JSX.Element[] = [];
-		params.map((param, index) => {
+		paramsToCreated.map((param, index) => {
 			updatedElements.push(
 				<div key={index}>
 					<ParamsContainer>
@@ -124,15 +121,11 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	};
 
 	const removeAlert = (index: number) => {
-		let updatedParams = paramsToCreate;
+		let updatedParams = paramsToCreated;
 		updatedParams.splice(index, 1);
-		setParamsToCreate(updatedParams);
+		setParamsToCreated(updatedParams);
 
-		let updatedAlerts = alertsInfo;
-		updatedAlerts.splice(index, 1);
-		setAlertsInfo(updatedAlerts);
-
-		updateAlertsElement(paramsToCreate);
+		updateAlertsElement();
 	};
 
 	useImperativeHandle(ref, () => ({
