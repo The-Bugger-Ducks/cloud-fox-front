@@ -38,6 +38,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	const [paramsToCreated, setParamsToCreated] = useState<ParamInterface[]>([]);
 	const [allParams, setAllParams] = useState<ParamInterface[]>([]);
 	const [alertsInfo, setAlertsInfo] = useState<JSX.Element[]>([]);
+	const [hasError, setHasError] = useState<boolean>(false);
 
 	useEffect(() => {
 		getParameters();
@@ -50,7 +51,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	const getParameters = async () => {
 		const response = await ParamRequests.getParams();
 		if (response === "error") {
-			alert("Não foi possível buscar por parâmetros cadastrados");
+			setHasError(true);
 		} else {
 			setAllParams(response);
 		}
@@ -158,10 +159,19 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 
 							{allParams.length === 0 ? (
 								<NoItem>
-									<LabelAlert>Nenhum parâmetro encontrado</LabelAlert>
-									<LabelAlert>
-										Selecione o botão "Adicionar parâmetros" na Dashboard para inserir novos parâmetros
-									</LabelAlert>
+									{hasError ? (
+										<>
+											<LabelAlert>Não foi possível buscar por parâmetros cadastrados</LabelAlert>
+											<LabelAlert>Recarregue a página e tente novamente</LabelAlert>
+										</>
+									) : (
+										<>
+											<LabelAlert>Nenhum parâmetro encontrado</LabelAlert>
+											<LabelAlert>
+												Selecione o botão "Adicionar parâmetros" na Dashboard para inserir novos parâmetros
+											</LabelAlert>
+										</>
+									)}
 								</NoItem>
 							) : (
 								allParams.map((paramItem, index) => (
