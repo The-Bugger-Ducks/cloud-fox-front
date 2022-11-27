@@ -158,7 +158,10 @@ export const ItemTitleInit = styled.label`
 
 export const NoItem = styled.div`
 	grid-column-start: 1;
-	grid-column-start: 5;
+	grid-column-end: 5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 export const CustomAccordion = styled(Accordion)`

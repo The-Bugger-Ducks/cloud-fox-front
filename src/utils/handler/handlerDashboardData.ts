@@ -7,7 +7,7 @@ export default async function handlerDashboardData(apiResponse: {
 	parameterTypes: ParamInterface[];
 }) {
 	let options: any = [];
-	let error = 0;
+	let error = 1;
 
 	for (let param in apiResponse.parameterTypes) {
 		const paramData = await DashboardRequests.getDashboardData(
@@ -22,9 +22,10 @@ export default async function handlerDashboardData(apiResponse: {
 		}
 	}
 	if (error != 0) {
-		alert("Não foi possível carregar todos os dados");
+		return { error: true, options: options };
+	} else {
+		return { error: false, options: options };
 	}
-	return options;
 }
 
 function _newOption(paramInfos: ParamInterface, paramData: any) {

@@ -19,6 +19,7 @@ import {
 	AlertButton,
 	StationInfo,
 	StationInfoContent,
+	CustomAlert,
 } from "./styles";
 
 import StationRequests from "../../utils/Requests/station.request";
@@ -49,6 +50,7 @@ export default function Dashboard() {
 	}>();
 	const [charts, setCharts] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [hasError, setHasError] = useState<boolean>(false);
 
 	useEffect(() => {
 		getDashboardData();
@@ -62,7 +64,14 @@ export default function Dashboard() {
 				setStation(stationInfo);
 				const options = await handlerDashboardData(stationInfo);
 
-				setCharts(options);
+				if (options.error) {
+					setHasError(true);
+					console.log(hasError);
+				} else {
+					setHasError(false);
+				}
+
+				setCharts(options.options);
 				setIsLoading(false);
 			}
 		} else {
@@ -103,7 +112,17 @@ export default function Dashboard() {
 						)}
 					</PageTitle>
 				</Header>
+
 				<CardContainer>
+					{!isLoading && hasError && (
+						<CustomAlert severity="warning">
+							Não foi possível carregar as informações de todos os gráficos corretamente!
+						</CustomAlert>
+					)}
+					{/* <CustomAlert severity="warning">
+						Não foi possível carregar as informações de todos os gráficos corretamente!
+					</CustomAlert> */}
+
 					{!isLoading ? (
 						charts.length !== 0 ? (
 							charts.map((chart, index) => <CardChart options={chart.options} title={chart.title} key={index} />)
