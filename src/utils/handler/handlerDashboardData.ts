@@ -7,7 +7,7 @@ export default async function handlerDashboardData(apiResponse: {
 	parameterTypes: ParamInterface[];
 }) {
 	let options: any = [];
-	let error = 1;
+	let error = 0;
 
 	for (let param in apiResponse.parameterTypes) {
 		const paramData = await DashboardRequests.getDashboardData(
