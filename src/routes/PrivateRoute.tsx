@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 
+import AboutSensors from "../pages/AboutSensors";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -20,6 +21,7 @@ export default function PrivateRoute() {
         <Route path="/dashboard/:id" element={<Dashboard />} />
         <Route path="/myProfile" element={<MyProfile />} />
         <Route path="/privileged-users" element={<PrivilegedUsers />} />
+        <Route path="/aboutSensors" element={<AboutSensors />} />
       </Routes>
     </BrowserRouter>
   );
