@@ -12,6 +12,8 @@ import { User } from "../../interfaces/user";
 import { SolicitationUser } from "../../interfaces/solicitation";
 
 import { ActionButtonContainer, Divider, Main, PageTitle, Select, Table, TableData, TableHead, Title } from "./styles";
+import ToastService from "../../utils/Toast/ToastService";
+import { ToastContainer } from "react-toastify";
 
 export default function PrivilegedUsers() {
 	const [userContentPage, setUserContentPage] = useState<boolean>(true);
@@ -35,7 +37,10 @@ export default function PrivilegedUsers() {
 
 			setUsers(response ?? []);
 		} catch (error) {
-			alert("Ocorreu um erro ao listar os usuários privilegiados. Tente novamente mais tarde!");
+			ToastService.warning({
+				title: "Atenção",
+				message: "Ocorreu um erro ao listar os usuários privilegiados. Tente novamente mais tarde!"
+			})
 		}
 	};
 
@@ -47,9 +52,10 @@ export default function PrivilegedUsers() {
 
 			setSolicitationUsers(response ?? []);
 		} catch (error) {
-			alert(
-				"Ocorreu um erro ao listar as solicitações de troca de privilégio dos usuários. Tente novamente mais tarde!"
-			);
+			ToastService.warning({
+				title: "Atenção",
+				message: "Ocorreu um erro ao listar as solicitações de troca de privilégio dos usuários. Tente novamente mais tarde!"
+			})
 		}
 	};
 
@@ -152,7 +158,10 @@ export default function PrivilegedUsers() {
 		} catch (errorMessage) {
 			event.target.value = user.role;
 			event.target.focus();
-			alert(errorMessage);
+			ToastService.warning({
+				title: "Atenção",
+				message: "Algo de errado aconteceu, tente novamente!"
+			})
 		}
 	};
 
@@ -170,7 +179,10 @@ export default function PrivilegedUsers() {
 
 			setSolicitationUsers(solicitationFiltered);
 		} catch (error) {
-			alert("Ocorreu um erro ao processar a solicitação do usuário. Tente novamente mais tarde!");
+			ToastService.warning({
+				title: "Atenção",
+				message: "Ocorreu um erro ao processar a solicitação do usuário. Tente novamente mais tarde!"
+			})
 		}
 	};
 
@@ -183,6 +195,7 @@ export default function PrivilegedUsers() {
 
 	return (
 		<>
+			<ToastContainer />
 			<Main>
 				<PageTitle>
 					<Title pageActive={userContentPage} onClick={() => onChangePage(userContentPage)}>

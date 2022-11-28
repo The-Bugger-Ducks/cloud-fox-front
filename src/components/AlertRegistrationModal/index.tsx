@@ -58,7 +58,7 @@ const AlertRegistrationModal = forwardRef<ParameterTypeRegistrationModalRef, { i
 	};
 
 	const createAlerts = async () => {
-		console.log("Adicionar alertas");
+		closeModal()
 	};
 
 	const handleTableParams = async (event: React.ChangeEvent<HTMLInputElement>, param: ParamInterface) => {

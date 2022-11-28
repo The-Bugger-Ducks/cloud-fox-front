@@ -11,6 +11,8 @@ import { ActiveStationInterface } from "../../interfaces/station";
 import { StationModalRef } from "../../interfaces/StationModalRef";
 import Loading from "../../components/Loading";
 import { AuthContext } from "../../context/AuthContext";
+import ToastService from "../../utils/Toast/ToastService";
+import { ToastContainer } from "react-toastify";
 
 export default function Home() {
 	const stationModalRef = useRef<StationModalRef>(null);
@@ -25,6 +27,13 @@ export default function Home() {
 
 	const getStations = async () => {
 		const response = await StationRequests.getStations(isSimpleUser);
+
+		if (!response) {
+			ToastService.warning({
+				title: "Atenção",
+				message: "Não foi possível obter os dados das estações"
+			})
+		}
 		setIsLoading(false);
 		setStations(response);
 	};
@@ -35,6 +44,7 @@ export default function Home() {
 
 	return (
 		<>
+			<ToastContainer />
 			<StationModal ref={stationModalRef} />
 			<Container>
 				<Title>Homepage</Title>
