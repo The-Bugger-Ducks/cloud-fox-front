@@ -26,6 +26,8 @@ import {
 } from "./styles";
 import { OneIcon, ThreeIcon, Trash, TwoIcon } from "../../assets/icons";
 import { AuthContext } from "../../context/AuthContext";
+import ToastService from "../../utils/Toast/ToastService";
+import { ToastContainer } from "react-toastify";
 
 interface LevelCardProps {
 	icon: string;
@@ -71,17 +73,41 @@ export default function MyProfile() {
 		return "Solicitar nível de acesso";
 	}
 
-	function handleLevelAccess(role: "simple" | "advanced" | "admin") {
-		SolicitationRequests.createSolicitation(userInfo!.id, role);
+	async function handleLevelAccess(role: "simple" | "advanced" | "admin") {
+		try {
+			await SolicitationRequests.createSolicitation(userInfo!.id, role);
+
+			ToastService.success({
+				title: "Sucesso",
+				message: "Solicitação enviada com sucesso"
+			})
+		} catch (error) {
+			ToastService.warning({
+				title: "Atenção",
+				message: "Não foi possível solicitar a troca de nível de perfil."
+			})
+		}
 	}
 
 	function handleDeleteAccount() {
 		const confirmation = window.confirm("Tem certeza que quer deletar a conta?");
-		confirmation &&
+
+		if (confirmation) {
 			UserRequests.deleteUser(userInfo!.id).then(() => {
+				ToastService.success({
+					title: "Sucesso",
+					message: "Conta deletada com sucesso!"
+				})
+
 				navigate("/home");
 				localStorage.clear();
+			}).catch(() => {
+				ToastService.warning({
+					title: "Atenção",
+					message: "Não foi possível deletar a conta."
+				})
 			});
+		}
 	}
 
 	useEffect(() => {
@@ -89,45 +115,48 @@ export default function MyProfile() {
 	}, []);
 
 	return (
-		<Container>
-			{userInfo == null ? (
-				<>Carregando informações...</>
-			) : (
-				<>
-					<Title>MEU PERFIL</Title>
-					<ProfileContainer>
-						<ProfileContent>
-							<DeleteIcon>
-								<img alt="ìcone de lixeira para deletar conta" src={Trash} onClick={handleDeleteAccount} />
-							</DeleteIcon>
-							<ProfileInformations>
-								<Avatar src={userInfo!.imgSrc} />
-								<UserName>{userInfo!.username}</UserName>
-								<UserEmail>{userInfo!.email}</UserEmail>
-							</ProfileInformations>
-						</ProfileContent>
-					</ProfileContainer>
-					<Topic>Nível de permissão</Topic>
-					<LevelCards>
-						{levelCards.map((card, index) => (
-							<LevelCard key={index}>
-								<ImageCard src={card.icon} />
-								<TitleCard>{card.title}</TitleCard>
-								<SubtitleCard>{card.subtitle}</SubtitleCard>
-								<Button
-									title={levelAccessTitle(index + 1)}
-									backgroundColor={
-										levelAccessTitle(index + 1) === "Nível de acesso atual"
-											? theme.colors.secondary
-											: theme.colors.primary
-									}
-									onClick={() => handleLevelAccess(card.value)}
-								/>
-							</LevelCard>
-						))}
-					</LevelCards>
-				</>
-			)}
-		</Container>
+		<>
+			<ToastContainer />
+			<Container>
+				{userInfo == null ? (
+					<>Carregando informações...</>
+				) : (
+					<>
+						<Title>MEU PERFIL</Title>
+						<ProfileContainer>
+							<ProfileContent>
+								<DeleteIcon>
+									<img alt="ìcone de lixeira para deletar conta" src={Trash} onClick={handleDeleteAccount} />
+								</DeleteIcon>
+								<ProfileInformations>
+									<Avatar src={userInfo!.imgSrc} />
+									<UserName>{userInfo!.username}</UserName>
+									<UserEmail>{userInfo!.email}</UserEmail>
+								</ProfileInformations>
+							</ProfileContent>
+						</ProfileContainer>
+						<Topic>Nível de permissão</Topic>
+						<LevelCards>
+							{levelCards.map((card, index) => (
+								<LevelCard key={index}>
+									<ImageCard src={card.icon} />
+									<TitleCard>{card.title}</TitleCard>
+									<SubtitleCard>{card.subtitle}</SubtitleCard>
+									<Button
+										title={levelAccessTitle(index + 1)}
+										backgroundColor={
+											levelAccessTitle(index + 1) === "Nível de acesso atual"
+												? theme.colors.secondary
+												: theme.colors.primary
+										}
+										onClick={() => handleLevelAccess(card.value)}
+									/>
+								</LevelCard>
+							))}
+						</LevelCards>
+					</>
+				)}
+			</Container>
+		</>
 	);
 }

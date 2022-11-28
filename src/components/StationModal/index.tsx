@@ -8,6 +8,8 @@ import Loading from "../Loading";
 import { Container, Body, Main, Footer, Title, Questions, Label, Input, TextArea, LoadingContainer } from "./styles";
 import { ActiveStationInterface } from "../../interfaces/station";
 import { useNavigate } from "react-router-dom";
+import ToastService from "../../utils/Toast/ToastService";
+import { ToastContainer } from "react-toastify";
 
 const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterface }>((props, ref) => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -34,16 +36,33 @@ const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterf
 			setIsloading(false);
 
 			if (response !== "error") {
-				props.station ? alert("Estação atualizada com sucesso!") : alert("Estação cadastrada com sucesso!");
+				let message = ""
+				props.station ? message = "Estação atualizada com sucesso!" : message = "Estação cadastrada com sucesso!";
+
+				ToastService.success({
+					title: "Sucesso",
+					message
+				})
+
 				closeModal();
 				navigate("/dashboard/" + idStation);
 			} else {
-				props.station ? alert("Não foi possível atualizar a estação") : alert("Não foi possível cadastrar a estação");
+				let message = ""
+
+				props.station ? message = "Não foi possível atualizar a estação" : message = "Não foi possível cadastrar a estação";
+
+				ToastService.error({
+					title: "Atenção",
+					message
+				})
 			}
 
 			closeModal();
 		} else {
-			alert("Latitude e longitude inválida");
+			ToastService.error({
+				title: "Atenção",
+				message: "Latitude e longitude inválida"
+			})
 		}
 	};
 
@@ -53,6 +72,7 @@ const StationModal = forwardRef<StationModalRef, { station?: ActiveStationInterf
 
 	return (
 		<>
+			<ToastContainer />
 			<Container disabled={isDisabled}>
 				<LoadingContainer disabled={!isLoading}>
 					<Loading width={250} height={250} />

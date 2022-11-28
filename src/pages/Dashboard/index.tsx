@@ -1,6 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+
 import CardChart from "../../components/CardChart";
 import { EditIcon, DividerIcon, AlertIcon } from "../../assets/icons";
 import Button from "../../components/Button";
@@ -35,6 +37,7 @@ import { StationModalRef } from "../../interfaces/StationModalRef";
 import StationModal from "../../components/StationModal";
 import { StatusModalRef } from "../../interfaces/StatusModalRef";
 import StatusModal from "../../components/StatusModal";
+import ToastService from "../../utils/Toast/ToastService";
 
 export default function Dashboard() {
 	const { id } = useParams();
@@ -75,14 +78,24 @@ export default function Dashboard() {
 
 				setCharts(options.options);
 				setIsLoading(false);
+			}	else {
+				ToastService.warning({
+					title: "Atenção",
+					message: "Estação não encontrada",
+				})
 			}
+
 		} else {
-			alert("Estação não encontrada");
+			ToastService.warning({
+				title: "Atenção",
+				message: "Estação não encontrada",
+			})
 		}
 	};
 
 	return (
 		<>
+			<ToastContainer />
 			<AlertRegistrationModal ref={alertRegistrationModalRef} idStation={id} />
 			<ParameterTypeRegistrationModal ref={parameterRegistrationModalRef} idStation={id} />
 
