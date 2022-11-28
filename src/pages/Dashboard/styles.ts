@@ -1,4 +1,10 @@
 import styled from "styled-components";
+import Alert from "@mui/material/Alert";
+
+export const CustomAlert = styled(Alert)`
+	grid-column-start: 1;
+	grid-column-end: 3;
+`;
 
 export const Title = styled.h1`
 	text-transform: uppercase;
