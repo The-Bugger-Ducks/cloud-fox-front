@@ -10,7 +10,7 @@ export default function Param({ name, onClick }: ParamComponentProps) {
 	return (
 		<ParamComponent>
 			<Label>{name}</Label>
-			<Icon src={CloseIcon} alt="Remover parâmetro" onClick={onClick} />
+			<Icon title="Remover parâmetro" src={CloseIcon} alt="Remover parâmetro" onClick={onClick} />
 		</ParamComponent>
 	);
 }

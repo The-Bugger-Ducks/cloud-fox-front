@@ -22,9 +22,10 @@ export default async function handlerDashboardData(apiResponse: {
 		}
 	}
 	if (error != 0) {
-		alert("Não foi possível carregar todos os dados");
+		return { error: true, options: options };
+	} else {
+		return { error: false, options: options };
 	}
-	return options;
 }
 
 function _newOption(paramInfos: ParamInterface, paramData: any) {

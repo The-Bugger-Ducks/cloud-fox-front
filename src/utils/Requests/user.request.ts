@@ -13,7 +13,6 @@ class UserRequests {
 			return response.data as User[];
 		} catch (error) {
 			console.error(error);
-			alert("Não foi possível obter os dados dos usuários.");
 		}
 	}
 
@@ -23,7 +22,6 @@ class UserRequests {
 			return response.data as User;
 		} catch (error) {
 			console.error(error);
-			alert("Não foi possível obter os dados do usuário.");
 		}
 	}
 
@@ -33,7 +31,6 @@ class UserRequests {
 			return response.data as User[];
 		} catch (error) {
 			console.error(error);
-			alert("Não foi possível obter os dados dos usuários.");
 		}
 	}
 
@@ -54,10 +51,8 @@ class UserRequests {
 	public async deleteUser(id: string) {
 		try {
 			await api.delete(`users/${id}`);
-			alert("Conta deletada com sucesso!");
 		} catch (error) {
 			console.error(error);
-			alert("Não foi possível deletar a conta.");
 		}
 	}
 

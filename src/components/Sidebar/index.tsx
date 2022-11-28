@@ -44,15 +44,19 @@ export default function Sidebar() {
 
 				<SidebarContent>
 					<NavbarLink to="/home">Página Inicial</NavbarLink>
+					<NavbarLink to="/aboutSensors">Sobre sensores</NavbarLink>
+
 					{userInfo ? (
 						<>
 							{userInfo.role === "admin" ? <SidebarAdmin /> : <SidebarAdvanced />}
 							<NavbarLink to="/myProfile">Meu Perfil</NavbarLink>
+
 							<NavbarSpan onClick={handleLogoutUser}>Sair</NavbarSpan>
 						</>
 					) : (
 						<NavbarLink to="/login">Entrar</NavbarLink>
 					)}
+
 				</SidebarContent>
 			</Header>
 

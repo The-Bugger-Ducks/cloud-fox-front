@@ -12,7 +12,6 @@ class SolicitationRequests {
 			return response.data as SolicitationUser[];
 		} catch (error) {
 			console.log(error);
-			alert("Não foi possível obter os dados das solicitações.");
 		}
 	}
 
@@ -22,11 +21,8 @@ class SolicitationRequests {
 				roleReq: role,
 				user: userId,
 			});
-
-			alert("Solicitação enviada com sucesso");
 		} catch (error) {
 			console.log(error);
-			alert("Não foi possível solicitar a troca de nível de perfil.");
 		}
 	}
 
@@ -39,7 +35,6 @@ class SolicitationRequests {
 			return response.data;
 		} catch (error) {
 			console.log(error);
-			alert("Não foi possível alterar a solicitação.");
 		}
 	}
 }

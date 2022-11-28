@@ -160,6 +160,7 @@ export const NoItem = styled.div`
 	grid-column-start: 1;
 	grid-column-end: 5;
 	display: flex;
+	justify-content: center;
 	flex-direction: column;
 	align-items: center;
 `;
@@ -192,4 +193,16 @@ export const ParamsContainer = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
+`;
+
+export const Values = styled.div`
+	margin: 1rem 0 0 1px !important;
+	max-width: 40%;
+	margin: 0 0 1rem 0;
+	display: flex;
+	gap: 0.5rem;
+`;
+
+export const ValuesItem = styled.div`
+	display: inline;
 `;

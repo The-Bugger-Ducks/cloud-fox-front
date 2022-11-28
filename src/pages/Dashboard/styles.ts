@@ -1,4 +1,10 @@
 import styled from "styled-components";
+import Alert from "@mui/material/Alert";
+
+export const CustomAlert = styled(Alert)`
+	grid-column-start: 1;
+	grid-column-end: 3;
+`;
 
 export const Title = styled.h1`
 	text-transform: uppercase;
@@ -21,7 +27,9 @@ export const Container = styled.div`
 	overflow-y: scroll;
 `;
 
-export const Divider = styled.img``;
+export const Divider = styled.img`
+	margin-right: 0.5rem;
+`;
 
 export const Header = styled.div`
 	display: flex;
@@ -31,6 +39,7 @@ export const Header = styled.div`
 
 export const PageTitle = styled.div`
 	height: 1.5rem;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -49,6 +58,12 @@ export const EditButton = styled.img`
 	height: 1.5rem;
 `;
 
+export const AlertButton = styled.img`
+	cursor: pointer;
+	width: 2.5rem;
+	height: 2.5rem;
+`;
+
 export const CardContainer = styled.div`
 	padding: 0;
 	margin-top: 3rem;
@@ -62,9 +77,23 @@ export const NewParamContainer = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
+	gap: 1rem;
 `;
 
 export const LoadingContainer = styled.div`
 	grid-column-start: 1;
 	grid-column-end: 3;
+`;
+
+export const StationInfo = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
+export const StationInfoContent = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `;
