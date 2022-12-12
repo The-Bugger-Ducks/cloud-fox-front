@@ -207,7 +207,7 @@ export default function PrivilegedUsers() {
 					</Title>
 				</PageTitle>
 
-				<Table>
+				<Table data-testid='content'>
 					<thead>
 						<tr>
 							{userContentPage &&
@@ -222,7 +222,7 @@ export default function PrivilegedUsers() {
 								users.map((user) => (
 									<tr key={user.id}>
 										<TableData>{user.username}</TableData>
-										<TableData>{user.email}</TableData>
+										<TableData data-testid='test-email'>{user.email}</TableData>
 										<PrivilegeLabelElement role={user.role} />
 										<SelectUserRole user={user} />
 									</tr>
